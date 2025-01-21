@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "708740508280",
+    "project_id": "ventout-new",
+    "storage_bucket": "ventout-new.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708740508280:android:5c598a756610866dd35b8d",
+        "android_client_info": {
+          "package_name": "com.example.ventout_therepist_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq_uLWUjwlskPlHjXGRAAO5KRsykHdRm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708740508280:android:8dd8752c39f71c2bd35b8d",
+        "android_client_info": {
+          "package_name": "com.ventout.gossip_mark"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq_uLWUjwlskPlHjXGRAAO5KRsykHdRm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
