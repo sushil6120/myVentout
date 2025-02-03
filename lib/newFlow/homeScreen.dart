@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:ventout/Utils/colors.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:ventout/Utils/responsive.dart';
 import 'package:ventout/newFlow/login/assessmentScreen.dart';
@@ -140,12 +142,10 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.transparent,
             centerTitle: true,
             surfaceTintColor: Colors.transparent,
-            title: Text(
-              'VentOut.',
-              style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: MediaQuery.of(context).size.width * .06),
-            ),
+            title: SizedBox(
+                height: 50,
+                width: 50,
+                child: SvgPicture.asset('assets/img/VO4.svg')),
           ),
           body: SafeArea(
             child: SingleChildScrollView(
@@ -210,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                                     color: const Color(0xff202020),
                                     border: Border.all(
                                       color: widget.isFilter == true
-                                          ? greenColor
+                                          ? primaryColor
                                           : Colors.transparent,
                                       width: 0.5,
                                     ),
@@ -254,7 +254,7 @@ class _HomePageState extends State<HomePage> {
                                     border: Border.all(
                                       color: selectedindex == null &&
                                               widget.isFilter == false
-                                          ? greenColor
+                                          ? primaryColor
                                           : Colors
                                               .transparent, // Green border if "All" is selected
                                       width: 0.5,
@@ -299,7 +299,7 @@ class _HomePageState extends State<HomePage> {
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                         color: selectedindex == index
-                                            ? greenColor
+                                            ? primaryColor
                                             : Colors.transparent,
                                         width: 0.5,
                                       ),
@@ -366,7 +366,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Icon(
                               CupertinoIcons.checkmark_seal_fill,
-                              color: greenColor,
+                              color: primaryColor,
                               size: 20,
                             ),
                             const SizedBox(
@@ -704,7 +704,7 @@ class _HomePageState extends State<HomePage> {
         decoration: BoxDecoration(
             border: Border.all(
                 color: selectedCategoryId == null
-                    ? greenColor
+                    ? primaryColor
                     : Colors.transparent,
                 width: .5),
             color: const Color(0xff202020),

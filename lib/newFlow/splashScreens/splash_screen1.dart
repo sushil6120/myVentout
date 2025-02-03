@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ventout/newFlow/services/sharedPrefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,12 +47,10 @@ class _SplashScreen10State extends ConsumerState<SplashScreen10> {
         body: Center(
             child: Padding(
           padding: const EdgeInsets.only(left: 10),
-          child: Image.asset(
-            "assets/img/AppIcon.png",
-            width: width * .54,
-            // height: height * .54,
-            fit: BoxFit.cover,
-          ),
+          child: SizedBox(
+              height: 100,
+              width: 100,
+              child: SvgPicture.asset('assets/img/VO4.svg')),
         )));
   }
 }

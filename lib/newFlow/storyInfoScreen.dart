@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ventout/Utils/colors.dart';
 import 'package:ventout/Utils/valueConstants.dart';
 import 'package:ventout/newFlow/routes/routeName.dart';
 import 'package:ventout/newFlow/services/sharedPrefs.dart';
@@ -198,7 +199,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                     children: [
                                       Icon(
                                         CupertinoIcons.checkmark_seal_fill,
-                                        color: greenColor,
+                                        color: primaryColor,
                                       ),
                                       const SizedBox(
                                         width: 5,

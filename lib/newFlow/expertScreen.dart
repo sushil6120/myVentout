@@ -277,7 +277,7 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Session',
+                                        Text('Full Session',
                                             style: GoogleFonts.inter(
                                               color: Colors.white,
                                               fontSize: MediaQuery.of(context)
@@ -651,7 +651,7 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                                       height:
                                           MediaQuery.of(context).size.height *
                                               .028),
-                                  'Mini session', () {
+                                  'Mini Session', () {
                                 if (balance! <
                                         value.therapistProfileModel!
                                             .feesForTenMinute! &&
@@ -752,7 +752,7 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                                     height: MediaQuery.of(context).size.height *
                                         .028,
                                   ),
-                                  'Session', () {
+                                  'Full Session', () {
                                 int? balancess = value.therapistProfileModel!
                                             .discountedFees !=
                                         null
@@ -909,7 +909,7 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
         padding: const EdgeInsets.only(left: 8, right: 8),
         child: ElevatedButton.icon(
           onPressed: oonTap,
-          icon: icon,
+          icon: null,
           label: Text(label,
               style: TextStyle(
                   color: Colors.black,

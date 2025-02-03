@@ -36,101 +36,127 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
               SizedBox(height: 30),
               HtmlWidget(
                 '''
-                <h1>Ventout Privacy Policy</h1>
-                <p>Last Updated: [05/09/2024]</p>
-                <p>Welcome to Ventout’s Privacy Policy. This document outlines how we collect, store, protect, and share your information, as well as your rights and choices regarding your data. We encourage you to read this Privacy Policy alongside our Terms and Conditions of Use.</p>
-                <p>Your privacy is of paramount importance to us. This Privacy Policy explains our practices in clear, straightforward language to help you understand how we handle your information.</p>
-                <p>This Privacy Policy applies from [Date].</p>
-                <h2>1. Who Are We?</h2>
-                <p>Ventout is a digital platform designed to connect users with licensed psychologists and therapists. For any queries about our data practices, you can reach us at ventoutright@gmail.com.</p>
-                <h2>2. Where This Policy Applies</h2>
-                <p>This Privacy Policy applies to all services provided by Ventout, including our website, mobile app, and any other services we operate. For certain services, a separate privacy policy may apply. In such cases, that specific policy will take precedence over this Privacy Policy.</p>
-                <h2>3. Information We Collect</h2>
-                <h3>Personal Information</h3>
-                <p>At Ventout, we collect and use the following types of information to enhance your experience while respecting your privacy:</p>
-                <ul>
-                  <li>Nickname: Used to maintain your anonymity and personalize your interactions on the app.</li>
-                  <li>Date of Birth and Age Group: Helps therapists provide age-appropriate care and support.</li>
-                  <li>Phone Number: Ensures unique account identification and facilitates communication with you.</li>
-                </ul>
-                <h3>Profile Information</h3>
-                <p>You may choose to add additional information to your profile. We advise against including sensitive details such as email addresses, phone numbers, or financial information.</p>
-                <h3>Geolocation Information</h3>
-                <p>If you enable location services, we collect information about your geographical location to enhance features and improve your app experience.</p>
-                <h3>Communication Data</h3>
-                <p>We gather information from interactions with our customer support team and from messages and content shared on the app.</p>
-                <h3>Technical Data</h3>
-                <p>When using our services, we automatically collect:</p>
-                <ul>
-                  <li>Usage Information: Details about your app usage, including features accessed and interactions with other users.</li>
-                  <li>Device Information: Data about your device, such as IP address, device ID, and app settings.</li>
-                  <li>Cookies and Similar Technologies: To recognize you and track usage patterns.</li>
-                </ul>
-                <h2>4. How We Use Your Information</h2>
-                <h3>A. To Provide and Manage Our Services</h3>
-                <ul>
-                  <li>Create and manage your account</li>
-                  <li>Offer customer support and respond to inquiries</li>
-                  <li>Communicate about updates and changes</li>
-                  <li>Personalize your experience and complete transactions</li>
-                </ul>
-                <h3>B. To Facilitate User Connections</h3>
-                <ul>
-                  <li>Recommend users to each other</li>
-                  <li>Enable profile visibility and interactions</li>
-                </ul>
-                <h3>C. To Operate Advertising and Marketing Campaigns</h3>
-                <ul>
-                  <li>Measure the effectiveness of ads</li>
-                  <li>Inform you about relevant products and services</li>
-                </ul>
-                <h3>D. To Improve and Develop Our Services</h3>
-                <ul>
-                  <li>Conduct surveys and analyze feedback</li>
-                  <li>Enhance app features based on user behavior</li>
-                </ul>
-                <h3>E. To Prevent and Address Fraud and Illegal Activities</h3>
-                <ul>
-                  <li>Monitor for and address policy violations</li>
-                  <li>Enforce our rights and assist law enforcement</li>
-                </ul>
-                <h3>F. To Ensure Legal Compliance</h3>
-                <ul>
-                  <li>Comply with legal requirements and regulations</li>
-                </ul>
-                <h3>Legal Bases for Processing</h3>
-                <ul>
-                  <li>Contractual Necessity: To fulfill our contract with you, such as managing your account.</li>
-                  <li>Legitimate Interests: For purposes like service improvement, advertising, and fraud prevention.</li>
-                  <li>Compliance with Laws: To meet legal obligations.</li>
-                  <li>Consent: For processing sensitive data and specific requests (you can withdraw consent at any time).</li>
-                </ul>
-                <h2>5. How We Share Your Information</h2>
-                <p>We share your information with:</p>
-                <ul>
-                  <li>Other Users: To facilitate connections and interactions.</li>
-                  <li>Service Providers: Third parties that assist with app operations.</li>
-                  <li>Legal Authorities: When required by law or to protect our rights.</li>
-                </ul>
-                <h2>6. Your Rights and Choices</h2>
-                <h3>Access and Update</h3>
-                <p>You can review, update, or delete your information through your account settings. For additional help, contact our support team.</p>
-                <h3>Device Permissions</h3>
-                <p>Adjust device settings to control data collection, such as location services or notifications.</p>
-                <h3>Account Closure</h3>
-                <p>Uninstalling the app stops data collection but does not delete your account. To close your account, use the app’s functionality.</p>
-                <h2>7. How Long We Retain Your Information</h2>
-                <p>We retain your data only as long as necessary for legitimate business purposes:</p>
-                <h3>General Retention</h3>
-                <p>Data is deleted after account closure, with additional safety windows for potential investigations.</p>
-                <h3>Legal and Compliance</h3>
-                <p>Retain records to comply with legal requirements.</p>
-                <h2>8. No Children Allowed</h2>
-                <p>Our services are for individuals 18 years of age or older. If you suspect a user is underage, please report them via the app.</p>
-                <h2>9. Privacy Policy Changes</h2>
-                <p>We may update this Privacy Policy periodically. We will notify you of significant changes, allowing time for you to review and understand the updates.</p>
-                <h2>10. How to Contact Us</h2>
-                <p>For questions about this Privacy Policy, contact us at ventoutright@gmail.com.</p>
+                <h1>VO Privacy Policy</h1>
+<p>Last Updated: [25/01/2025]</p>
+<p>Welcome to the VO Privacy Policy. This document explains how we collect, handle, protect, and share your information, along with the rights and choices you have regarding your data. We recommend reviewing this Privacy Policy in conjunction with our Terms of Use.</p>
+<p>Your privacy matters greatly to us. This Privacy Policy is designed to clearly explain how we manage your information in a straightforward manner.</p>
+<p>This Privacy Policy is effective from [Date].</p>
+
+<h2>1. About Us</h2>
+<p>VO is a digital platform aimed at connecting users with licensed psychologists and therapists. If you have questions about our data practices, feel free to contact us at ventoutright@gmail.com.</p>
+
+<h2>2. Scope of This Policy</h2>
+<p>This Privacy Policy applies to all services provided by VO, including our website, mobile app, and related offerings. In certain cases, specific services may have their own privacy policies, which will take precedence over this document.</p>
+
+<h2>3. Information We Collect</h2>
+
+<h3>Personal Data</h3>
+<p>We collect the following information to enhance your experience while safeguarding your privacy:</p>
+<ul>
+  <li><strong>Nickname:</strong> To maintain anonymity and personalize your experience.</li>
+  <li><strong>Date of Birth and Age Group:</strong> To enable age-appropriate support from therapists.</li>
+  <li><strong>Phone Number:</strong> For account identification and communication purposes.</li>
+</ul>
+
+<h3>Profile Details</h3>
+<p>You may optionally add information to your profile. Please avoid sharing sensitive details like financial information or personal contact details.</p>
+
+<h3>Location Data</h3>
+<p>If location services are enabled, we collect geolocation data to improve functionality and personalize your experience.</p>
+
+<h3>Communication Records</h3>
+<p>We collect data from customer support interactions and messages exchanged on the platform.</p>
+
+<h3>Technical Information</h3>
+<p>Automatically collected data includes:</p>
+<ul>
+  <li><strong>Usage Data:</strong> Insights into how you use our app and interact with others.</li>
+  <li><strong>Device Data:</strong> Details like your device type, IP address, and app preferences.</li>
+  <li><strong>Cookies and Similar Technologies:</strong> To recognize users and analyze app usage trends.</li>
+</ul>
+
+<h2>4. How We Use Your Information</h2>
+
+<h3>A. Delivering and Managing Services</h3>
+<ul>
+  <li>Account creation and management</li>
+  <li>Providing customer support</li>
+  <li>Sending updates and notifications</li>
+  <li>Personalizing user experience</li>
+</ul>
+
+<h3>B. Facilitating Connections</h3>
+<ul>
+  <li>Recommending compatible users</li>
+  <li>Allowing profile visibility and interaction</li>
+</ul>
+
+<h3>C. Advertising and Marketing</h3>
+<ul>
+  <li>Assessing the effectiveness of advertisements</li>
+  <li>Informing users about relevant services</li>
+</ul>
+
+<h3>D. Improving Services</h3>
+<ul>
+  <li>Conducting surveys and analyzing feedback</li>
+  <li>Enhancing app features and functionality</li>
+</ul>
+
+<h3>E. Ensuring Security</h3>
+<ul>
+  <li>Monitoring and addressing policy violations</li>
+  <li>Assisting law enforcement when necessary</li>
+</ul>
+
+<h3>F. Legal Compliance</h3>
+<ul>
+  <li>Meeting legal and regulatory requirements</li>
+</ul>
+
+<h3>Legal Basis for Data Processing</h3>
+<ul>
+  <li><strong>Contractual Obligation:</strong> To provide the agreed-upon services.</li>
+  <li><strong>Legitimate Interests:</strong> For improving services, advertising, and fraud prevention.</li>
+  <li><strong>Legal Compliance:</strong> To meet legal obligations.</li>
+  <li><strong>Consent:</strong> For specific purposes, such as sharing sensitive data (can be withdrawn at any time).</li>
+</ul>
+
+<h2>5. Sharing Your Information</h2>
+<p>We may share your information with:</p>
+<ul>
+  <li><strong>Other Users:</strong> To enable meaningful connections.</li>
+  <li><strong>Service Providers:</strong> Trusted third parties supporting app operations.</li>
+  <li><strong>Legal Entities:</strong> When legally required or to safeguard our rights.</li>
+</ul>
+
+<h2>6. Your Rights and Options</h2>
+
+<h3>Access and Modify</h3>
+<p>Update or delete your data through account settings. Contact support for assistance.</p>
+
+<h3>Device Permissions</h3>
+<p>Control data collection (e.g., location or notifications) through device settings.</p>
+
+<h3>Close Your Account</h3>
+<p>Deleting the app doesn’t delete your account. Use in-app options for account closure.</p>
+
+<h2>7. Data Retention</h2>
+
+<h3>Retention Period</h3>
+<p>We keep data only as long as necessary for business purposes or legal compliance.</p>
+
+<h3>Legal Requirements</h3>
+<p>Certain records may be retained to fulfill legal obligations.</p>
+
+<h2>8. Age Restrictions</h2>
+<p>Our services are intended for users 18 years or older. Report underage users via the app.</p>
+
+<h2>9. Updates to This Policy</h2>
+<p>We may revise this policy occasionally and will notify you of significant changes.</p>
+
+<h2>10. Contact Us</h2>
+<p>Questions? Reach us at ventoutright@gmail.com.</p> 
                 ''',
                 textStyle: TextStyle(fontSize: 10.0, color: Colors.white),
               ),

@@ -145,14 +145,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       //   ),
                       SizedBox(height: height * 0.02),
                       Text(
-                        'What do we call you?',
+                        "We know you're amazing",
                         style: GoogleFonts.inter(
                             color: Colors.white,
                             height: 1,
                             fontSize: context.deviceWidth * .094,
                             fontWeight: FontWeight.w800),
                       ),
-                      SizedBox(height: height * 0.06),
+                      SizedBox(height: height * 0.04),
                       FormField<String?>(
                         validator: (value) {
                           var valueText = textController.text;

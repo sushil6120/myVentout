@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:provider/provider.dart';
 import 'package:ventout/Utils/components.dart';
@@ -66,30 +67,47 @@ class _DOBScreenState extends State<DOBScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: height * 0.08),
-            Center(
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Welcome to ',
-                      style: TextStyle(
-                        fontFamily: 'LeagueSpartan',
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white.withOpacity(0.4),
-                      ),
-                    ),
-                    const TextSpan(
-                      text: 'VentOut',
-                      style: TextStyle(
-                        fontFamily: 'LeagueSpartan',
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+            // Center(
+            //   child: RichText(
+            //     text: TextSpan(
+            //       children: [
+            //         TextSpan(
+            //           text: 'Welcome to ',
+            //           style: TextStyle(
+            //             fontFamily: 'LeagueSpartan',
+            //             fontSize: 32,
+            //             fontWeight: FontWeight.w600,
+            //             color: Colors.white.withOpacity(0.4),
+            //           ),
+            //         ),
+            //         const TextSpan(
+            //           text: 'VO',
+            //           style: TextStyle(
+            //             fontFamily: 'LeagueSpartan',
+            //             fontSize: 32,
+            //             fontWeight: FontWeight.w600,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            Row(
+              children: [
+                Text(
+                  'Welcome to ',
+                  style: TextStyle(
+                    fontFamily: 'LeagueSpartan',
+                    fontSize: 32,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withOpacity(0.4),
+                  ),
                 ),
-              ),
+                SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: SvgPicture.asset('assets/im27g/VO4.svg')),
+              ],
             ),
             SizedBox(height: height * 0.07),
             Text(

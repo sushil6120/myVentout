@@ -50,7 +50,7 @@ class AssessmentScreen extends StatelessWidget {
                     TextSpan(
                       text: "clinically tested questions",
                       style: TextStyle(
-                        color: Color(0xff00ECCA),
+                        color: primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -101,7 +101,7 @@ class AssessmentScreen extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.white.withOpacity(0.6),
-                    fontSize: 14,
+                    fontSize: 18,
                   ),
                 ),
               ),

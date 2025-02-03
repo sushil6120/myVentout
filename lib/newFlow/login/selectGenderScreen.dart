@@ -43,7 +43,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
         margin: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xff003D2A) : popupColor,
+          color: isSelected ? Color(0xff003D2A) : backgroundColor2,
           borderRadius: BorderRadius.circular(10),
         ),
         width: context.deviceWidth * .4,

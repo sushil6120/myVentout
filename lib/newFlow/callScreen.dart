@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:ventout/Utils/colors.dart';
 import 'package:ventout/Utils/responsive.dart';
 import 'package:ventout/newFlow/model/allTherapistModel.dart';
 import 'package:ventout/newFlow/prefrencesScreen/prefrencesScreen.dart';
@@ -14,7 +15,7 @@ import 'package:ventout/newFlow/viewModel/sessionViewModel.dart';
 import 'package:ventout/newFlow/viewModel/utilsClass.dart';
 import 'package:ventout/newFlow/viewModel/walletViewModel.dart';
 import 'package:ventout/newFlow/widgets/agentCardWidget.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
@@ -561,7 +562,7 @@ class _CallScreenPageState extends State<CallScreenPage> {
                                   text: TextSpan(
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 8,
+                                      fontSize: 12,
                                     ),
                                     children: [
                                       TextSpan(
@@ -571,7 +572,7 @@ class _CallScreenPageState extends State<CallScreenPage> {
                                       TextSpan(
                                         text: "clinically tested questions",
                                         style: TextStyle(
-                                          color: Color(0xff00ECCA),
+                                          color: primaryColor,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -604,7 +605,7 @@ class _CallScreenPageState extends State<CallScreenPage> {
                     children: [
                       Icon(
                         CupertinoIcons.checkmark_seal_fill,
-                        color: greenColor,
+                        color: primaryColor,
                         size: 20,
                       ),
                       const SizedBox(

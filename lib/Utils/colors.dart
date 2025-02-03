@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
-Color primaryColor = Color(0xff6F56F8);
+Color primaryColor = Color(0xff1DB954);
 Color greenColor = Color(0xff1DB954);
-Color popupColor = Color(0xff2B284C);
-Color buttonColor = Color(0xff6F56F8);
+Color popupColor = Color(0xff003D2A);
+Color buttonColor = Color(0xff1DB954);
+
+//Color primaryColor = Color(0xff6F56F8);
+//Color buttonColor = Color(0xff6F56F8);
+//Color popupColor = Color(0xff2B284C);
 
 Color primaryColorDark = Color(0xff211f20);
 const Color greyColorDark = Color(0xff222831);

@@ -9,7 +9,7 @@ import 'package:ventout/Utils/responsive.dart';
 import 'package:ventout/newFlow/homeScreen.dart';
 import 'package:ventout/newFlow/routes/routeName.dart';
 import 'package:ventout/newFlow/viewModel/utilsClass.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+
 
 class AgentCardWidget extends StatefulWidget {
   final VoidCallback? onTap, onCardTap, onCallTap;
@@ -370,7 +370,7 @@ class _AgentCardWidgetState extends State<AgentCardWidget> {
                   padding: const EdgeInsets.only(
                       left: 14, right: 14, top: 2, bottom: 2),
                   decoration: BoxDecoration(
-                      color: Color(0xff2B284C), // Badge background color
+                      color: popupColor, // Badge background color
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           bottomRight: Radius.circular(20))),

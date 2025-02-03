@@ -153,6 +153,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
             backgroundColor: Colors.transparent,
             extendBodyBehindAppBar: true,
             appBar: AppBar(
+              centerTitle: false,
               backgroundColor: Colors.transparent,
               surfaceTintColor: Colors.transparent,
               title: Text(
@@ -160,6 +161,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: MediaQuery.of(context).size.width * .05),
+
               ),
               leading: IconButton(
                   onPressed: _previousPage,
@@ -205,11 +207,12 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                         ),
                         Text(
                           'Q1:-Gender of the psychologist',
-                          style: GoogleFonts.openSans(
+                          style:TextStyle(
                               color: Colors.white,
                               height: 1,
                               fontSize: context.deviceWidth * .058,
-                              fontWeight: FontWeight.w700),
+                              fontWeight: FontWeight.w700
+                          ),
                         ),
                         SizedBox(height: 20),
                         Row(
@@ -510,7 +513,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
         margin: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xff003D2A) : popupColor,
+          color: isSelected ? Color(0xff003D2A) : backgroundColor2,
           borderRadius: BorderRadius.circular(10),
         ),
         width: context.deviceWidth * .4,

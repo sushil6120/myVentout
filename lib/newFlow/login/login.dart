@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -130,17 +131,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 14),
-                      child: Text(
-                        'VentOut.',
-                        style: TextStyle(
-                            height: 1,
-                            color: colorLightWhite,
-                            fontWeight: FontWeight.w900,
-                            fontSize: context.deviceWidth * .1),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(left: 14),
+                    //   child: Text(
+                    //     'VentOut.',
+                    //     style: TextStyle(
+                    //         height: 1,
+                    //         color: colorLightWhite,
+                    //         fontWeight: FontWeight.w900,
+                    //         fontSize: context.deviceWidth * .1),
+                    //   ),
+                    // ),
+                    SizedBox(
+                         height: 100,
+                        width: 100,
+                        child: SvgPicture.asset('assets/img/VO4.svg')),
                     SizedBox(
                       height: 4,
                     ),
