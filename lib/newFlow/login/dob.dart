@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/components.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/viewModel/authViewModel.dart';
+import 'package:overcooked/Utils/assetConstants.dart';
+import 'package:overcooked/Utils/components.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/viewModel/authViewModel.dart';
 
 class DOBScreen extends StatefulWidget {
   Map<String, dynamic>? arguments;
@@ -106,7 +107,7 @@ class _DOBScreenState extends State<DOBScreen> {
                 SizedBox(
                     height: 30,
                     width: 30,
-                    child: SvgPicture.asset('assets/im27g/VO4.svg')),
+                    child: SvgPicture.asset(AppAssets.ocLogo)),
               ],
             ),
             SizedBox(height: height * 0.07),

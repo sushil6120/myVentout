@@ -1,8 +1,8 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/route_manager.dart';
-// import 'package:ventout/chat/chat.dart';
-// import 'package:ventout/home/home.dart';
-// import 'package:ventout/profile.dart';
+// import 'package:overcooked/chat/chat.dart';
+// import 'package:overcooked/home/home.dart';
+// import 'package:overcooked/profile.dart';
 
 // class BottomNavBar extends StatefulWidget {
 //   @override

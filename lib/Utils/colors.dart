@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 Color primaryColor = Color(0xff1DB954);
 Color greenColor = Color(0xff1DB954);
 Color popupColor = Color(0xff003D2A);
+Color popupColor2 = Color(0xff2D004B);
+//#
 Color buttonColor = Color(0xff1DB954);
 
 //Color primaryColor = Color(0xff6F56F8);
@@ -39,7 +41,8 @@ const Color warningColor3 = Color(0xffffe882);
 const Color tertiaryColor = Color(0xfff7faf5);
 const Color colorDark1 = Color(0xff212121); //primary text
 const Color colorDark2 = Color(0xff3b3b3b); //header/label/placeholder text
-const Color colorDark3 = Color(0xff757575); //secondary text
+const Color colorDark3 = Color(0xff757575);
+const Color colorDark4 = Color(0xff414141);//secondary text
 const Color colorLight1 = Color(0xfff2f2f2); //light background
 const Color colorLight2 = Color(0xffe8e8e8); //inactive element
 const Color colorLight3 = Color(0xffb1b1b1); //border/separator

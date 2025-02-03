@@ -4,17 +4,17 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/model/allTherapistModel.dart';
-import 'package:ventout/newFlow/prefrencesScreen/prefrencesScreen.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/shimmer/walletHistoryShimmer.dart';
-import 'package:ventout/newFlow/viewModel/sessionViewModel.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
-import 'package:ventout/newFlow/viewModel/walletViewModel.dart';
-import 'package:ventout/newFlow/widgets/agentCardWidget.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/model/allTherapistModel.dart';
+import 'package:overcooked/newFlow/prefrencesScreen/prefrencesScreen.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/shimmer/walletHistoryShimmer.dart';
+import 'package:overcooked/newFlow/viewModel/sessionViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
+import 'package:overcooked/newFlow/viewModel/walletViewModel.dart';
+import 'package:overcooked/newFlow/widgets/agentCardWidget.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -504,98 +504,7 @@ class _CallScreenPageState extends State<CallScreenPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            PreferenceScreen(
-                          isRegisterScreen: false,
-                        ),
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          const begin = Offset(1.0, 0.0);
-                          const end = Offset(0.0, 0.0);
-                          const curve = Curves.easeInOut;
-
-                          var tween = Tween(begin: begin, end: end)
-                              .chain(CurveTween(curve: curve));
-                          var offsetAnimation = animation.drive(tween);
-
-                          return SlideTransition(
-                            position: offsetAnimation,
-                            child: child,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 16),
-                    margin: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF003D2A), // Green background
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Not sure where to begin?",
-                                style: GoogleFonts.inter(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 24,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(right: 10),
-                                child: RichText(
-                                  textAlign: TextAlign.start,
-                                  text: TextSpan(
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:
-                                            "Try our free assessment where we're going to ask you a series of ",
-                                      ),
-                                      TextSpan(
-                                        text: "clinically tested questions",
-                                        style: TextStyle(
-                                          color: primaryColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text:
-                                            " to help us understand your needs and emotional state.",
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                          size: 34,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                ///point4
                 const SizedBox(
                   height: 10,
                 ),

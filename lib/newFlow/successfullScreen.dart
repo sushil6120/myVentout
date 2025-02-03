@@ -1,9 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/widgets/color.dart';
 
 class WalletSuccessScreen extends StatefulWidget {
   const WalletSuccessScreen({super.key});
@@ -80,7 +80,7 @@ class _WalletSuccessScreenState extends State<WalletSuccessScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  backgroundColor: const Color(0xffA2D9A0), // Button color
+                  backgroundColor: primaryColor, // Button color
                 ),
                 child: const Text(
                   'Go to Home',

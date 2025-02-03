@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/Utils/assetConstants.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen10 extends ConsumerStatefulWidget {
@@ -50,7 +51,7 @@ class _SplashScreen10State extends ConsumerState<SplashScreen10> {
           child: SizedBox(
               height: 100,
               width: 100,
-              child: SvgPicture.asset('assets/img/VO4.svg')),
+              child: SvgPicture.asset(AppAssets.ocLogo)),
         )));
   }
 }

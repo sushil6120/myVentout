@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/login/login_controller.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/login/login_controller.dart';
 
 import '../viewModel/authViewModel.dart';
 
@@ -82,7 +82,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       style: TextStyle(
                         color: Color(0xFF5B5B5B),
                         fontWeight: FontWeight.w300,
-                        fontFamily: 'Poppins',
+                        fontFamily: 'Roboto',
                         fontSize: context.deviceWidth * .042,
                       ),
                       children: <TextSpan>[
@@ -91,7 +91,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           style: TextStyle(
                             color: buttonColor,
                             fontWeight: FontWeight.w300,
-                            fontFamily: 'Poppins',
+                            fontFamily: 'Roboto',
                             fontSize: context.deviceWidth * .042,
                           ),
                         ),

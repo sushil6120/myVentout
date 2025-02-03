@@ -34,4 +34,6 @@ class AppUrl {
   static var updateSessiontimeApi = "$baseUrl/api/user/booking/timedifference/";
   static var zegoCloudeApi = "$baseUrl/api/admin/zegoCloud/all";
   static var filterTherapistApi = "$baseUrl/api/therapist/auth/all";
+  static var availableSlotsApi = "/api/therapist/auth/avalaibleSlots/";
+  static var commissionValueApi = "/api/admin/commission/all";
 }

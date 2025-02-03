@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/Utils/valueConstants.dart';
-import 'package:ventout/newFlow/prefrencesScreen/prefs_gender.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/therapistPrefernceScreen.dart';
-import 'package:ventout/newFlow/viewModel/authViewModel.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/Utils/valueConstants.dart';
+import 'package:overcooked/newFlow/prefrencesScreen/prefs_gender.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/therapistPrefernceScreen.dart';
+import 'package:overcooked/newFlow/viewModel/authViewModel.dart';
 
 import '../../Utils/colors.dart';
 import '../../Utils/utilsFunction.dart';
@@ -68,7 +68,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
       } else {
         _pageController.animateToPage(
           _currentIndex + 1,
-          duration: Duration(milliseconds: 300),
+          duration: Duration(milliseconds: 1200),
           curve: Curves.easeInOut,
         );
       }
@@ -78,7 +78,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
       } else {
         _pageController.animateToPage(
           _currentIndex + 1,
-          duration: Duration(milliseconds: 300),
+          duration: Duration(milliseconds: 1200),
           curve: Curves.easeInOut,
         );
       }
@@ -88,7 +88,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
       } else {
         _pageController.animateToPage(
           _currentIndex + 1,
-          duration: Duration(milliseconds: 300),
+          duration: Duration(milliseconds: 1200),
           curve: Curves.easeInOut,
         );
       }
@@ -96,7 +96,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
       if (_selectedReachMeOut.isEmpty) {
         Utils.toastMessage('Select Category!');
       } else {
-        Get.to(
+        Get.off(
             TherapistPreferencesScreen(
               isRegisterScreen: widget.isRegisterScreen,
               selectedExpertise: _selectedExpertise,
@@ -114,7 +114,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
     if (_currentIndex > 0) {
       _pageController.animateToPage(
         _currentIndex - 1,
-        duration: Duration(milliseconds: 300),
+        duration: Duration(milliseconds: 1200),
         curve: Curves.easeInOut,
       );
     } else {
@@ -164,7 +164,9 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
 
               ),
               leading: IconButton(
-                  onPressed: _previousPage,
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
                   icon: Icon(Icons.arrow_back_ios_new_rounded)),
               actions: [
                 if (widget.isRegisterScreen == true)
@@ -200,69 +202,78 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                 children: <Widget>[
                   Center(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           height: verticalSpaceMedium,
                         ),
-                        Text(
-                          'Q1:-Gender of the psychologist',
-                          style:TextStyle(
-                              color: Colors.white,
-                              height: 1,
-                              fontSize: context.deviceWidth * .058,
-                              fontWeight: FontWeight.w700
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            'Q1:-Gender of the psychologist',
+                            style:TextStyle(
+                                color: Colors.white,
+                                height: 1,
+                                fontSize: context.deviceWidth * .058,
+                                fontWeight: FontWeight.w700
+                            ),
                           ),
                         ),
                         SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                                onTap: () {
-                                  if (_selectedGender.isNotEmpty ||
-                                      _selectedGender != '') {
-                                  } else {
-                                    Utils.toastMessage('Select Gender');
-                                  }
-                                },
-                                child: _buildGenderOption('Male', Icons.male)),
-                            SizedBox(width: 16),
-                            GestureDetector(
-                                onTap: () {
-                                  if (_selectedGender.isNotEmpty ||
-                                      _selectedGender != '') {
-                                  } else {
-                                    Utils.toastMessage('Select Gender');
-                                  }
-                                },
-                                child:
-                                    _buildGenderOption('Female', Icons.female)),
-                          ],
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    if (_selectedGender.isNotEmpty ||
+                                        _selectedGender != '') {
+                                    } else {
+                                      Utils.toastMessage('Select Gender');
+                                    }
+                                  },
+                                  child: _buildGenderOption('Male', Icons.male)),
+                              SizedBox(width: 16),
+                              GestureDetector(
+                                  onTap: () {
+                                    if (_selectedGender.isNotEmpty ||
+                                        _selectedGender != '') {
+                                    } else {
+                                      Utils.toastMessage('Select Gender');
+                                    }
+                                  },
+                                  child:
+                                      _buildGenderOption('Female', Icons.female)),
+                            ],
+                          ),
                         ),
                         SizedBox(height: 30),
                       ],
                     ),
                   ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         height: verticalSpaceMedium,
                       ),
-                      Text(
-                        'Q2:- Language you prefer',
-                        style: GoogleFonts.openSans(
-                            color: Colors.white,
-                            height: 1,
-                            fontSize: context.deviceWidth * .058,
-                            fontWeight: FontWeight.w700),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          'Q2:- Language you prefer',
+                          style: GoogleFonts.openSans(
+                              color: Colors.white,
+                              height: 1,
+                              fontSize: context.deviceWidth * .058,
+                              fontWeight: FontWeight.w700),
+                        ),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 15),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Wrap(
                           spacing: 8.0,
                           runSpacing: 4.0,
@@ -277,7 +288,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                                               : Colors.white),
                                     ),
                                     side: BorderSide.none,
-                                    backgroundColor: const Color(0xff202020),
+                                    backgroundColor: (_selectedLanguages == language) ? Color(0xff003D2A) : backgroundColor2,
                                     selectedColor: Color(0xff003D2A),
                                     showCheckmark: false,
                                     shape: RoundedRectangleBorder(
@@ -364,13 +375,13 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                     ],
                   ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         height: verticalSpaceMedium,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 26, right: 16),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           'Q4:- Select the category you belong to:',
                           style: GoogleFonts.openSans(
@@ -384,7 +395,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                         height: 20,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 15),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Wrap(
                           spacing: 8.0,
                           runSpacing: 4.0,
@@ -482,7 +493,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                 //       },
                 //       style: ElevatedButton.styleFrom(
                 //         elevation: 0,
-                //         backgroundColor: Color(0xffA2D9A0),
+                //         backgroundColor: primaryColor,
                 //         shape: RoundedRectangleBorder(
                 //             borderRadius: BorderRadius.circular(30)),
                 //         padding: const EdgeInsets.symmetric(

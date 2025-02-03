@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:ventout/Utils/utilsFunction.dart';
+import 'package:overcooked/Utils/utilsFunction.dart';
 
 class QuestionProvider with ChangeNotifier {
   List<Map<String, dynamic>> questions = [
@@ -148,7 +148,7 @@ class QuestionProvider with ChangeNotifier {
     questions[currentIndex]['answers'] = option;
     notifyListeners();
     Timer(
-      Duration(milliseconds: 400),
+      Duration(milliseconds: 1200),
       () {
         nextQuestion();
       },

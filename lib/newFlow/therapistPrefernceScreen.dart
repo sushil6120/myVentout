@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/bottomNaveBar.dart';
-import 'package:ventout/newFlow/prefrencesScreen/prefs_gender.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/viewModel/authViewModel.dart';
-import 'package:ventout/newFlow/viewModel/homeViewModel.dart';
-import 'package:ventout/newFlow/viewModel/questionsProvider.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/bottomNaveBar.dart';
+import 'package:overcooked/newFlow/prefrencesScreen/prefs_gender.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/viewModel/authViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/homeViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/questionsProvider.dart';
+import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
 
 import 'widgets/therapistDialog.dart';
 
@@ -117,7 +117,7 @@ class _TherapistPreferencesScreenState
                               ),
                               decoration: BoxDecoration(
                                 color:
-                                    isSelected ? Color(0xff003D2A) : popupColor,
+                                isSelected ? Color(0xff003D2A) : backgroundColor2,
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: Row(

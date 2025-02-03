@@ -3,17 +3,20 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/components.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/viewModel/authViewModel.dart';
+import 'package:overcooked/Utils/components.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/viewModel/authViewModel.dart';
 
 import '../../Utils/colors.dart';
 
 // ignore: must_be_immutable
 class RegistrationScreen extends StatefulWidget {
+  Map<String, dynamic>? arguments;
+
   RegistrationScreen({
     super.key,
+    this.arguments,
   });
 
   @override
@@ -24,6 +27,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController textController = TextEditingController();
 
   bool autoValidate = false;
+  String? title = "";
+
+  @override
+  void initState() {
+    if(widget.arguments!['gender'] == "Male"){
+      title = "smarty";
+    }else{
+      title = "cutie";
+    }
+    // TODO: implement initState
+    super.initState();
+  }
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
@@ -145,7 +160,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       //   ),
                       SizedBox(height: height * 0.02),
                       Text(
-                        "We know you're amazing",
+                        "Hello $title,\nWhat do we call you?",
                         style: GoogleFonts.inter(
                             color: Colors.white,
                             height: 1,
@@ -239,8 +254,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 FocusScope.of(context).unfocus();
 
                 if (formKey.currentState!.validate()) {
-                  Navigator.pushNamed(context, RoutesName.genderSelectionScreen,
-                      arguments: {'name': textController.text});
+                      Navigator.pushNamed(context, RoutesName.dOBScreen,
+                          arguments: {
+                            'name': textController.text,
+                            "gender": widget.arguments!['gender']
+                          });
                 }
               }, width * 0.9, height * 0.057, 'Continue', value.isLoading);
             },

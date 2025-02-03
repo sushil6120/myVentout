@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ventout/main.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
+import 'package:overcooked/main.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesViewModel with ChangeNotifier {

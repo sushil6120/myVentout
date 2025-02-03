@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
+import 'package:overcooked/newFlow/widgets/color.dart';
 import 'package:stroke_text/stroke_text.dart';
 
 class AmountButton extends StatelessWidget {

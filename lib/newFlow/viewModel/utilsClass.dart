@@ -8,16 +8,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/homeScreen.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/widgets/alertDialogTimer.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
-import 'package:ventout/newFlow/widgets/ratingBottomSheetWidget.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/homeScreen.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/widgets/alertDialogTimer.dart';
+import 'package:overcooked/newFlow/widgets/color.dart';
+import 'package:overcooked/newFlow/widgets/ratingBottomSheetWidget.dart';
 
-import 'package:ventout/newFlow/login/login.dart';
-import 'package:ventout/newFlow/widgets/successFullWidget.dart';
+import 'package:overcooked/newFlow/login/login.dart';
+import 'package:overcooked/newFlow/widgets/successFullWidget.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
@@ -26,7 +26,7 @@ import '../widgets/alertDialogWithouttimer.dart';
 
 class UtilsClass {
   void showRatingBottomSheet(
-      BuildContext context, int amount, String token, sessionTime) {
+      BuildContext context, amount, String token, sessionTime, [commissionValue, id, isInstant, slotId]) {
     showModalBottomSheet(
       context: context,
       backgroundColor: popupColor,
@@ -37,9 +37,13 @@ class UtilsClass {
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
           child: AmountAddSheet(
-            sessionTime: sessionTime,
             token: token,
-            amount: amount,
+              amount: amount,
+              sessionTime: sessionTime,
+            commissionValue: commissionValue,
+            isInstant: isInstant,
+            id: id,
+            slotId: slotId
           ),
         );
       },

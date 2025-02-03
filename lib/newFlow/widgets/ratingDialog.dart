@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/route_manager.dart';
-import 'package:ventout/Utils/components.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/viewModel/sessionViewModel.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/components.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/viewModel/sessionViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -73,9 +73,9 @@ class _RatingDialogState extends State<RatingDialog> {
               allowHalfRating: true,
               itemCount: 5,
               itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-              itemBuilder: (context, _) => const Icon(
+              itemBuilder: (context, _) => Icon(
                 Icons.star,
-                color: Color(0xffA2D9A0),
+                color: primaryColor,
               ),
               onRatingUpdate: (rating) {
                 setState(() {

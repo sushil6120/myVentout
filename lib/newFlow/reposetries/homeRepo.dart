@@ -3,9 +3,9 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ventout/newFlow/model/reaminTimeModel.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/model/reaminTimeModel.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 
 import '../model/allTherapistModel.dart';
 import '../model/availbiltyModel.dart';

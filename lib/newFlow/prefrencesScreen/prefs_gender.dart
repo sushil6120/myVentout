@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/Utils/utilsFunction.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/Utils/utilsFunction.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
 
 import '../../Utils/colors.dart';
 

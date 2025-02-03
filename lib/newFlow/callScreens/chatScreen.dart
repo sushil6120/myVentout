@@ -7,7 +7,7 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:ventout/Utils/responsive.dart';
+import 'package:overcooked/Utils/responsive.dart';
 import '../../Utils/colors.dart';
 import '../model/reaminTimeModel.dart';
 import '../services/sharedPrefs.dart';
@@ -267,6 +267,7 @@ class _ChatPageState extends State<ChatPage>
           return Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
+              centerTitle: false,
               iconTheme: const IconThemeData(color: Colors.white),
               backgroundColor: Colors.transparent,
               title: Column(
@@ -326,6 +327,7 @@ class _ChatPageState extends State<ChatPage>
                             primaryColor: semiDark,
                             secondaryColor: Colors.white,
                             inputBackgroundColor: colorDark1,
+                            inputBorderRadius: BorderRadius.circular(30),
                             receivedMessageBodyTextStyle: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ventout/newFlow/login/assessmentScreen.dart';
-import 'package:ventout/newFlow/model/therapistProfileModel.dart';
-import 'package:ventout/newFlow/prefrencesScreen/prefrencesScreen.dart';
-import 'package:ventout/newFlow/reposetries/authRepo.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/login/assessmentScreen.dart';
+import 'package:overcooked/newFlow/login/consentScreen.dart';
+import 'package:overcooked/newFlow/model/therapistProfileModel.dart';
+import 'package:overcooked/newFlow/prefrencesScreen/prefrencesScreen.dart';
+import 'package:overcooked/newFlow/reposetries/authRepo.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
 
 import '../../Utils/utilsFunction.dart';
 import '../services/sharedPrefs.dart';
@@ -74,7 +75,8 @@ class AuthViewModel with ChangeNotifier {
 
       setLoading(false);
       if (newData.message == 'User registered successfully!') {
-        Get.to(AssessmentScreen(),
+
+        Get.to(ConsentScreen(name : "$name"),
             transition: Transition.rightToLeft);
       }
 

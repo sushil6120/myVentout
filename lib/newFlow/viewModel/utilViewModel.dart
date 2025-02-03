@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ventout/newFlow/model/categoryModel.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/model/categoryModel.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 
 import '../model/reviewModel.dart';
 import '../reposetries/utilsRepo.dart';

@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 
 import '../model/availbiltyModel.dart';
 import '../model/loginModel.dart';
@@ -46,10 +46,8 @@ class AuthRepo {
         sharedPreferencesViewModel
             .saveUserName(newData.name == null ? 'Name' : newData.name);
         sharedPreferencesViewModel.saveFreeStatus(newData.freeStatus);
-        Navigator.pushNamed(
-          context,
-          RoutesName.registrationScreen,
-        );
+        Navigator.pushNamed(context, RoutesName.genderSelectionScreen,
+            arguments: {'name': ""});
       } else {
         sharedPreferencesViewModel.saveToken(newData.token);
         sharedPreferencesViewModel.saveUserId(newData.userId);

@@ -26,9 +26,47 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:708740508280:android:cffc7046fa74bf98d35b8d",
+        "android_client_info": {
+          "package_name": "com.overcookedapp.www"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq_uLWUjwlskPlHjXGRAAO5KRsykHdRm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:708740508280:android:8dd8752c39f71c2bd35b8d",
         "android_client_info": {
           "package_name": "com.ventout.gossip_mark"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq_uLWUjwlskPlHjXGRAAO5KRsykHdRm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708740508280:android:949069b90a894e28d35b8d",
+        "android_client_info": {
+          "package_name": "in.overcooked.www"
         }
       },
       "oauth_client": [],

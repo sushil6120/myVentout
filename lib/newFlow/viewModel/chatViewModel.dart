@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ventout/newFlow/reposetries/homeRepo.dart';
+import 'package:overcooked/newFlow/reposetries/homeRepo.dart';
 
 class ChatViewModel with ChangeNotifier {
   HomeRepo homeRepo;

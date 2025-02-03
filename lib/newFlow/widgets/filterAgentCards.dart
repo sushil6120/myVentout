@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/homeScreen.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/assetConstants.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/homeScreen.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
+import 'package:overcooked/newFlow/widgets/color.dart';
 
 class FilterAgentCardWidget extends StatefulWidget {
   final VoidCallback? onTap, onCardTap, onCallTap;
@@ -290,6 +291,7 @@ class _FilterAgentCardWidgetState extends State<FilterAgentCardWidget> {
                                 child: Center(
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       widget.isHomeScreen == true
                                           ? Icon(
@@ -302,7 +304,7 @@ class _FilterAgentCardWidgetState extends State<FilterAgentCardWidget> {
                                                   : primaryColor,
                                             )
                                           : SvgPicture.asset(
-                                              'assets/img/session.svg',
+                                              AppAssets.clock,
                                               width: widget.isHomeScreen == true
                                                   ? 18
                                                   : 16,

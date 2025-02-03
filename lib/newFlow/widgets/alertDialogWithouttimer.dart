@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/Utils/utilsFunction.dart';
-import 'package:ventout/newFlow/callScreens/callScreen.dart';
-import 'package:ventout/newFlow/callScreens/videoCallScreen.dart';
-import 'package:ventout/newFlow/callScreens/chatScreen.dart';
-import 'package:ventout/newFlow/viewModel/homeViewModel.dart';
-import 'package:ventout/newFlow/viewModel/sessionViewModel.dart';
-import 'package:ventout/newFlow/viewModel/utilViewModel.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/utilsFunction.dart';
+import 'package:overcooked/newFlow/callScreens/callScreen.dart';
+import 'package:overcooked/newFlow/callScreens/videoCallScreen.dart';
+import 'package:overcooked/newFlow/callScreens/chatScreen.dart';
+import 'package:overcooked/newFlow/viewModel/homeViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/sessionViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -60,7 +60,7 @@ class _AlertDialogWithoutTimerState extends State<AlertDialogWithoutTimer> {
       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: popupColor,
+        color: backgroundColor2,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -221,8 +221,8 @@ class _AlertDialogWithoutTimerState extends State<AlertDialogWithoutTimer> {
                     margin: EdgeInsets.only(right: 40, left: 40),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
-                      border: Border.all(color: Color(0xffA2D9A0)),
-                      color: Color(0xffA2D9A0),
+                      border: Border.all(color: primaryColor),
+                      color: primaryColor,
                     ),
                     child: Center(
                       child: value.isLoading == true

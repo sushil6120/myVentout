@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ventout/Utils/config.dart';
-import 'package:ventout/newFlow/viewModel/walletViewModel.dart';
+import 'package:overcooked/Utils/config.dart';
+import 'package:overcooked/newFlow/viewModel/walletViewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 

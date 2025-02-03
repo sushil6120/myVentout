@@ -4,15 +4,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/config.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/viewModel/razorPayviewModel.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
-import 'package:ventout/newFlow/viewModel/walletViewModel.dart';
-import 'package:ventout/newFlow/widgets/amountWidget.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/config.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/viewModel/razorPayviewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
+import 'package:overcooked/newFlow/viewModel/walletViewModel.dart';
+import 'package:overcooked/newFlow/widgets/amountWidget.dart';
+import 'package:overcooked/newFlow/widgets/color.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -295,7 +295,7 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          color: Color(0xffA2D9A0)),
+                                          color: primaryColor),
                                       child: Center(
                                           child: Text(
                                         'Proceed',

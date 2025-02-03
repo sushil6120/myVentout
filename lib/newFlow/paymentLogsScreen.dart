@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/newFlow/widgets/color.dart';
 
 class PaymentLogsScreen extends StatelessWidget {
   String time, price;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ventout/Utils/utilsFunction.dart';
-import 'package:ventout/newFlow/model/allTherapistModel.dart';
-import 'package:ventout/newFlow/model/singleSessionModel.dart';
-import 'package:ventout/newFlow/model/singleStoryModel.dart';
-import 'package:ventout/newFlow/model/storyModel.dart';
-import 'package:ventout/newFlow/model/therapistByCateModel.dart';
-import 'package:ventout/newFlow/reposetries/homeRepo.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
+import 'package:overcooked/Utils/utilsFunction.dart';
+import 'package:overcooked/newFlow/model/allTherapistModel.dart';
+import 'package:overcooked/newFlow/model/singleSessionModel.dart';
+import 'package:overcooked/newFlow/model/singleStoryModel.dart';
+import 'package:overcooked/newFlow/model/storyModel.dart';
+import 'package:overcooked/newFlow/model/therapistByCateModel.dart';
+import 'package:overcooked/newFlow/reposetries/homeRepo.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
 
 import '../model/walletModel.dart';
 import '../reposetries/walletRepo.dart';
@@ -31,6 +31,7 @@ class HomeViewModel with ChangeNotifier {
   List<StoryModel> get storyList => _storyList;
 
   bool isLoading = false;
+  bool storyLoading = false;
 
   bool isCate = false;
   bool statusLoading = false;
@@ -47,6 +48,11 @@ class HomeViewModel with ChangeNotifier {
 
   setLoading(bool value) {
     isLoading = value;
+    // notifyListeners();
+  }
+
+  setStoryLoading(bool value) {
+    storyLoading = value;
     // notifyListeners();
   }
 
@@ -171,14 +177,14 @@ class HomeViewModel with ChangeNotifier {
 
   Future<void> fetchStoryAPi() async {
     try {
-      setLoading(true);
+      setStoryLoading(true);
       _storyList = await homeRepo.fetchStory();
 
       notifyListeners();
-      setLoading(false);
+      setStoryLoading(false);
       print(_storyList);
     } catch (error) {
-      setLoading(false);
+      setStoryLoading(false);
       print(error);
     }
   }

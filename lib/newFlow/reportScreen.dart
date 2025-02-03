@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/Utils/valueConstants.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/viewModel/authViewModel.dart';
-import 'package:ventout/newFlow/viewModel/utilViewModel.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/Utils/valueConstants.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/viewModel/authViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
 
 import '../Utils/colors.dart';
 

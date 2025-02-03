@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBq_uLWUjwlskPlHjXGRAAO5KRsykHdRm0',
-    appId: '1:708740508280:android:8dd8752c39f71c2bd35b8d',
+    appId: '1:708740508280:android:cffc7046fa74bf98d35b8d',
     messagingSenderId: '708740508280',
     projectId: 'ventout-new',
     storageBucket: 'ventout-new.appspot.com',
@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCXU2UV2VfBwgd2kyGDz3RsCq7GYzhN7n8',
-    appId: '1:708740508280:ios:b14421c9203b1e35d35b8d',
+    appId: '1:708740508280:ios:796a2eeb55f38613d35b8d',
     messagingSenderId: '708740508280',
     projectId: 'ventout-new',
     storageBucket: 'ventout-new.appspot.com',
-    iosBundleId: 'io.ventout',
+    iosBundleId: 'in.overcooked.www',
   );
 
 }

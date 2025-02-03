@@ -4,9 +4,9 @@
 // import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 // import 'package:flutter/material.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:ventout/main.dart';
-// import 'package:ventout/newFlow/services/sharedPrefs.dart';
-// import 'package:ventout/newFlow/widgets/ratingDialog.dart';
+// import 'package:overcooked/main.dart';
+// import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+// import 'package:overcooked/newFlow/widgets/ratingDialog.dart';
 // import 'package:loading_animation_widget/loading_animation_widget.dart';
 // import 'package:permission_handler/permission_handler.dart';
 

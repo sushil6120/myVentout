@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/valueConstants.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/shimmer/singleStoryShimmer.dart';
-import 'package:ventout/newFlow/viewModel/homeViewModel.dart';
-import 'package:ventout/newFlow/widgets/agentCardWidget.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/valueConstants.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/shimmer/singleStoryShimmer.dart';
+import 'package:overcooked/newFlow/viewModel/homeViewModel.dart';
+import 'package:overcooked/newFlow/widgets/agentCardWidget.dart';
+import 'package:overcooked/newFlow/widgets/color.dart';
 import 'package:provider/provider.dart';
 
 import 'model/allTherapistModel.dart';
@@ -151,9 +151,11 @@ class _StoryScreenState extends State<StoryScreen> {
                                       value.singleStoryModel!.categoryId![0] ==
                                               null
                                           ? ''
-                                          : value.singleStoryModel!
-                                              .categoryId![0].categoryName
-                                              .toString(),
+                                          : "${value.singleStoryModel!
+                                          .categoryId![0].emoji
+                                          .toString()}${value.singleStoryModel!
+                                          .categoryId![0].categoryName
+                                          .toString()}",
                                       style:
                                           const TextStyle(color: Colors.white),
                                     ),

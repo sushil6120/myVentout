@@ -9,9 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/login/login_controller.dart';
-import 'package:ventout/newFlow/viewModel/authViewModel.dart';
+import 'package:overcooked/Utils/assetConstants.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/login/login_controller.dart';
+import 'package:overcooked/newFlow/viewModel/authViewModel.dart';
 
 import '../../Utils/colors.dart';
 import '../../Utils/logintextfieldWidget.dart';
@@ -145,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                          height: 100,
                         width: 100,
-                        child: SvgPicture.asset('assets/img/VO4.svg')),
+                        child: SvgPicture.asset(AppAssets.ocLogo)),
                     SizedBox(
                       height: 4,
                     ),
@@ -323,7 +324,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textAlign: TextAlign.center,
                 text: TextSpan(
                   text: 'By continuing you agree to our\n',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.roboto(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
                     fontSize: context.deviceWidth * .035,
@@ -331,7 +332,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: <TextSpan>[
                     TextSpan(
                         text: ' Privacy Policy ',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.roboto(
                           color: buttonColor,
                           fontWeight: FontWeight.w400,
                           fontSize: context.deviceWidth * .033,
@@ -339,7 +340,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         recognizer: TapGestureRecognizer()..onTap = () {}),
                     TextSpan(
                       text: 'and ',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.roboto(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
                         fontSize: context.deviceWidth * .035,
@@ -347,7 +348,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextSpan(
                         text: 'Terms of Services',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.roboto(
                           color: buttonColor,
                           fontWeight: FontWeight.w400,
                           fontSize: context.deviceWidth * .033,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ventout/Utils/colors.dart';
+import 'package:overcooked/Utils/colors.dart';
 
 import '../prefrencesScreen/prefrencesScreen.dart';
 import '../routes/routeName.dart';

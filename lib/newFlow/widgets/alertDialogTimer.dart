@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/newFlow/viewModel/sessionViewModel.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/newFlow/viewModel/sessionViewModel.dart';
 // Import the intl package
-import 'package:ventout/newFlow/widgets/color.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -125,6 +125,7 @@ class _AlertDialogTimerState extends State<AlertDialogTimer> {
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30), color: popupColor),
+      color: backgroundColor2,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -336,8 +337,8 @@ class _AlertDialogTimerState extends State<AlertDialogTimer> {
                     margin: EdgeInsets.only(right: 16, left: 16),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
-                        border: Border.all(color: Color(0xffA2D9A0)),
-                        color: Color(0xffA2D9A0)),
+                        border: Border.all(color: primaryColor),
+                        color: primaryColor),
                     child: Center(
                       child: value.isLoading == true
                           ? LoadingAnimationWidget.waveDots(

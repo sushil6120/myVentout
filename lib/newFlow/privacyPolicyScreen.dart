@@ -36,17 +36,17 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
               SizedBox(height: 30),
               HtmlWidget(
                 '''
-                <h1>VO Privacy Policy</h1>
-<p>Last Updated: [25/01/2025]</p>
-<p>Welcome to the VO Privacy Policy. This document explains how we collect, handle, protect, and share your information, along with the rights and choices you have regarding your data. We recommend reviewing this Privacy Policy in conjunction with our Terms of Use.</p>
+                <h1>Overcooked app Privacy Policy</h1>
+<p>Last Updated: 11/02/2025</p>
+<p>Welcome to the Overcooked app Privacy Policy. This document explains how we collect, handle, protect, and share your information, along with the rights and choices you have regarding your data. We recommend reviewing this Privacy Policy in conjunction with our Terms of Use.</p>
 <p>Your privacy matters greatly to us. This Privacy Policy is designed to clearly explain how we manage your information in a straightforward manner.</p>
-<p>This Privacy Policy is effective from [Date].</p>
+<p>This Privacy Policy is effective from 11/02/2025.</p>
 
 <h2>1. About Us</h2>
-<p>VO is a digital platform aimed at connecting users with licensed psychologists and therapists. If you have questions about our data practices, feel free to contact us at ventoutright@gmail.com.</p>
+<p>Overcooked app is a digital platform aimed at connecting users with licensed psychologists and therapists. If you have questions about our data practices, feel free to contact us at overcookedapp@gmail.com.</p>
 
 <h2>2. Scope of This Policy</h2>
-<p>This Privacy Policy applies to all services provided by VO, including our website, mobile app, and related offerings. In certain cases, specific services may have their own privacy policies, which will take precedence over this document.</p>
+<p>This Privacy Policy applies to all services provided by Overcooked app, including our website, mobile app, and related offerings. In certain cases, specific services may have their own privacy policies, which will take precedence over this document.</p>
 
 <h2>3. Information We Collect</h2>
 
@@ -156,7 +156,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
 <p>We may revise this policy occasionally and will notify you of significant changes.</p>
 
 <h2>10. Contact Us</h2>
-<p>Questions? Reach us at ventoutright@gmail.com.</p> 
+<p>Questions? Reach us at overcookedapp@gmail.com.</p>
                 ''',
                 textStyle: TextStyle(fontSize: 10.0, color: Colors.white),
               ),
