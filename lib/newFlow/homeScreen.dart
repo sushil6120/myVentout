@@ -2,12 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/login/assessmentScreen.dart';
 import 'package:ventout/newFlow/model/allTherapistModel.dart';
-import 'package:ventout/newFlow/prefrencesScreen/prefrencesScreen.dart';
 import 'package:ventout/newFlow/routes/routeName.dart';
 import 'package:ventout/newFlow/services/sharedPrefs.dart';
 import 'package:ventout/newFlow/shimmer/walletHistoryShimmer.dart';
@@ -107,7 +104,6 @@ class _HomePageState extends State<HomePage> {
     print("SelectedId : $selectedCategoryId");
 
     setState(() {
-      // Force the StreamBuilder to rebuild by setting a new key
       _theraPistStream = null;
 
       if (selectedCategoryId == null) {
@@ -482,7 +478,8 @@ class _HomePageState extends State<HomePage> {
                                           SizedBox(
                                               height: 14,
                                               width: 14,
-                                              child: LoadingAnimationWidget.staggeredDotsWave(
+                                              child: LoadingAnimationWidget
+                                                  .staggeredDotsWave(
                                                 size: 20,
                                                 color: Colors.white,
                                               )),

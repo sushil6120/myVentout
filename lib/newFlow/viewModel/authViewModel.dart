@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ventout/newFlow/login/assessmentScreen.dart';
 import 'package:ventout/newFlow/model/therapistProfileModel.dart';
-import 'package:ventout/newFlow/prefrencesScreen/prefrencesScreen.dart';
 import 'package:ventout/newFlow/reposetries/authRepo.dart';
 import 'package:ventout/newFlow/routes/routeName.dart';
 

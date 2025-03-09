@@ -62,5 +62,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSContactsUsageDescription</key>
+    <string>We need access to your contacts to help you connect with trained professional.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>We need access to your microphone to record audio for voice messages and calls.</string>
 </dict>
 </plist>
