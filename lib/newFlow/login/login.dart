@@ -3,17 +3,22 @@ import 'dart:io';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:overcooked/newFlow/privacyPolicyScreen.dart';
+import 'package:overcooked/newFlow/term&conditionScreen.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/login/login_controller.dart';
-import 'package:ventout/newFlow/viewModel/authViewModel.dart';
+import 'package:overcooked/Utils/assetConstants.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/login/login_controller.dart';
+import 'package:overcooked/newFlow/viewModel/authViewModel.dart';
 
 import '../../Utils/colors.dart';
 import '../../Utils/logintextfieldWidget.dart';
+import '../desclaimerScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -130,17 +135,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 14),
-                      child: Text(
-                        'VentOut.',
-                        style: TextStyle(
-                            height: 1,
-                            color: colorLightWhite,
-                            fontWeight: FontWeight.w900,
-                            fontSize: context.deviceWidth * .1),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(left: 14),
+                    //   child: Text(
+                    //     'VentOut.',
+                    //     style: TextStyle(
+                    //         height: 1,
+                    //         color: colorLightWhite,
+                    //         fontWeight: FontWeight.w900,
+                    //         fontSize: context.deviceWidth * .1),
+                    //   ),
+                    // ),
+                    SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: SvgPicture.asset(AppAssets.ocLogo)),
                     SizedBox(
                       height: 4,
                     ),
@@ -149,19 +158,26 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: RichText(
                             text: TextSpan(children: [
                           TextSpan(
-                            text: 'Taste therapy with the\n help of',
+                            text: 'Am I',
                             style: GoogleFonts.inter(
                                 color: Colors.white,
                                 fontSize: context.deviceWidth * .056,
                                 fontWeight: FontWeight.w400),
                           ),
                           TextSpan(
-                            text: ' Mini Session.',
+                            text: ' depressed ',
                             style: GoogleFonts.inter(
                                 color: buttonColor,
                                 fontSize: context.deviceWidth * .056,
                                 fontWeight: FontWeight.w400),
-                          )
+                          ),
+                          TextSpan(
+                            text: 'or just overthinking?',
+                            style: GoogleFonts.inter(
+                                color: Colors.white,
+                                fontSize: context.deviceWidth * .056,
+                                fontWeight: FontWeight.w400),
+                          ),
                         ]))),
                     SizedBox(height: height * 0.03),
                     FormField<String?>(
@@ -311,48 +327,91 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           bottomNavigationBar: BottomAppBar(
-            color: Colors.black,
-            height: context.deviceHeight * .1,
-            child: Center(
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: 'By continuing you agree to our\n',
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: context.deviceWidth * .035,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: ' Privacy Policy ',
-                        style: GoogleFonts.poppins(
-                          color: buttonColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: context.deviceWidth * .033,
-                        ),
-                        recognizer: TapGestureRecognizer()..onTap = () {}),
-                    TextSpan(
-                      text: 'and ',
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: context.deviceWidth * .035,
-                      ),
-                    ),
-                    TextSpan(
-                        text: 'Terms of Services',
-                        style: GoogleFonts.poppins(
-                          color: buttonColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: context.deviceWidth * .033,
-                        ),
-                        recognizer: TapGestureRecognizer()..onTap = () {}),
-                  ],
-                ),
+  color: Colors.black,
+  height: context.deviceHeight * .13,
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      // Text(
+      //   'You are agreeing to the terms by continuing',
+      //   style: GoogleFonts.roboto(
+      //     color: Colors.green,
+      //     fontWeight: FontWeight.w500,
+      //     fontSize: context.deviceWidth * .035,
+      //   ),
+      //   textAlign: TextAlign.center,
+      // ),
+      // SizedBox(height: 5),
+      RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          text: 'By continuing you agree to our\n',
+          style: GoogleFonts.roboto(
+            color: Colors.white,
+            fontWeight: FontWeight.w400,
+            fontSize: context.deviceWidth * .035,
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: 'Privacy Policy',
+              style: GoogleFonts.roboto(
+                color: buttonColor,
+                fontWeight: FontWeight.w400,
+                fontSize: context.deviceWidth * .033,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Get.to(PrivacyPolicyScreen(), transition: Transition.rightToLeft);
+                },
+            ),
+            TextSpan(
+              text: ', ',
+              style: GoogleFonts.roboto(
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+                fontSize: context.deviceWidth * .035,
               ),
             ),
-          )),
+            TextSpan(
+              text: 'Terms of Services',
+              style: GoogleFonts.roboto(
+                color: buttonColor,
+                fontWeight: FontWeight.w400,
+                fontSize: context.deviceWidth * .033,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Get.to(TermAndConditionScreen(), transition: Transition.rightToLeft);
+                },
+            ),
+            TextSpan(
+              text: ', and ',
+              style: GoogleFonts.roboto(
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+                fontSize: context.deviceWidth * .035,
+              ),
+            ),
+            TextSpan(
+              text: 'Disclaimer',
+              style: GoogleFonts.roboto(
+                color: buttonColor,
+                fontWeight: FontWeight.w400,
+                fontSize: context.deviceWidth * .033,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Get.to(DisclaimerScreen(), transition: Transition.rightToLeft);
+                },
+            ),
+          ],
+        ),
+      ),
+    ],
+  ),
+)
+
+          ),
     );
   }
 }

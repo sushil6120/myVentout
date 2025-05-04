@@ -1,25 +1,27 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:overcooked/newFlow/completeYourSessionScreen.dart';
+import 'package:overcooked/newFlow/screens/questionsScreen/questionsTestScreen.dart';
+import 'package:overcooked/newFlow/therapistChatscreens/chatBuddyScreen.dart';
+import 'package:overcooked/newFlow/widgets/cancelConfirmationDialog.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/callScreen.dart';
-import 'package:ventout/newFlow/callScreens/chatScreen.dart';
-import 'package:ventout/newFlow/homeScreen.dart';
-import 'package:ventout/newFlow/model/singleSessionModel.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/viewModel/homeViewModel.dart';
-import 'package:ventout/newFlow/viewModel/sessionViewModel.dart';
-import 'package:ventout/newFlow/viewModel/utilViewModel.dart';
-import 'package:ventout/newFlow/widgets/bookingBottomBar.dart';
-import 'package:ventout/newFlow/widgets/ratingDialog.dart';
+import 'package:overcooked/Utils/assetConstants.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/callScreens/chatScreen.dart';
+import 'package:overcooked/newFlow/homeScreen.dart';
+import 'package:overcooked/newFlow/model/singleSessionModel.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/viewModel/homeViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/sessionViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilViewModel.dart';
+import 'package:overcooked/newFlow/widgets/bookingBottomBar.dart';
+import 'package:overcooked/newFlow/widgets/ratingDialog.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class BottomNavBarView extends StatefulWidget {
   bool? isFilter;
@@ -63,6 +65,38 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
     print('Duration: $duration');
   }
 
+  int selectedIndex = 0;
+
+  final screens = [
+    Text("Home"),
+    Text("Schedule"),
+    //Text("Story")
+  ];
+
+  final List<Map<String, dynamic>> bottomNavigationList = [
+    {
+      "name": "Home",
+      "icons": AppAssets.homeOutline,
+      "selectedIcon": AppAssets.homeFilled
+    },
+    {
+      "name": "Chat",
+      "icons": AppAssets.chatIcon,
+      "selectedIcon": AppAssets.chatfillIcon
+    },
+    {
+      "name": "Screening",
+      "icons": AppAssets.outtestIcon,
+      "selectedIcon": AppAssets.testIcon
+    },
+
+    // {
+    //   "name": "Session",
+    //   "icons": AppAssets.sessionOutline,
+    //   "selectedIcon": AppAssets.sessionFilled
+    // },
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -73,6 +107,7 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
     if (widget.index != null) {
       currentIndex = widget.index!;
     }
+
     final getSessionData =
         Provider.of<SessionViewModel>(context, listen: false);
 
@@ -99,6 +134,9 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
         print('Parsed AppId: $appId');
       }
       print("############## ${appId} ${value[5]}");
+
+      _singleSessionStream =
+          getSessionData.singleSessionStream(value[1].toString());
       ZegoUIKitPrebuiltCallInvitationService().init(
           appID: appId!,
           appSign: value[6].toString(),
@@ -180,12 +218,17 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
                   Provider.of<HomeViewModel>(context, listen: false);
               getHomeData.fetchWalletBalanceAPi(
                   token == null ? value[4].toString() : token.toString());
-              if (freeStatus == true) {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  RoutesName.bottomNavBarView,
-                  (route) => false,
-                );
+              // if (freeStatus == true) {
+              //   Navigator.pushNamedAndRemoveUntil(
+              //     context,
+              //     RoutesName.bottomNavBarView,
+              //     (route) => false,
+              //   );
+              // } else
+              if (getsessionData.isFreeSession == true) {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CompleteYourSessionScreen(
+                        therapist: getsessionData.freeSessionTherapist)));
               } else {
                 Future.delayed(const Duration(milliseconds: 100), () {
                   showDialog(
@@ -313,123 +356,141 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: WillPopScope(
-          onWillPop: () async {
-            final didPop = await showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text(
-                  'Are you sure?',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Inter'),
-                ),
-                content: Text(
-                  'Do You Want To Exit The App',
-                  style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Inter'),
-                ),
-                actions: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop(false);
-                          },
-                          child: Container(
-                            width: width * 0.25,
-                            height: height * 0.05,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.white,
-                            ),
-                            child: const Center(
-                                child: Text(
-                              'No',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            )),
+      backgroundColor: Colors.transparent,
+      body: WillPopScope(
+        onWillPop: () async {
+          final didPop = await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text(
+                'Are you sure?',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Inter'),
+              ),
+              content: Text(
+                'Do You Want To Exit The App',
+                style: TextStyle(
+                    color: Colors.white.withOpacity(0.8),
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Inter'),
+              ),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop(false);
+                        },
+                        child: Container(
+                          width: width * 0.25,
+                          height: height * 0.05,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
                           ),
-                        ),
-                        const Spacer(),
-                        InkWell(
-                          onTap: () {
-                            exit(0);
-                          },
-                          child: Container(
-                            width: width * 0.25,
-                            height: height * 0.05,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.white,
+                          child: const Center(
+                              child: Text(
+                            'No',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
                             ),
-                            child: const Center(
-                                child: Text(
-                              'Yes',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            )),
-                          ),
+                          )),
                         ),
-                      ],
-                    ),
+                      ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () {
+                          exit(0);
+                        },
+                        child: Container(
+                          width: width * 0.25,
+                          height: height * 0.05,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                          ),
+                          child: const Center(
+                              child: Text(
+                            'Yes',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+              ],
+            ),
+          );
+          return didPop ?? false;
+        },
+        child: Column(
+          children: [
+            Expanded(
+              child: PageView(
+                physics: NeverScrollableScrollPhysics(),
+                controller: _controller,
+                onPageChanged: (value) {
+                  FocusScope.of(context).unfocus();
+                  setState(() {
+                    currentIndex = value;
+                    print(currentIndex);
+                  });
+                },
+                children: [
+                  HomePage(
+                    isFilter: widget.isFilter,
+                    categories: widget.categories,
+                    language: widget.language,
+                    sortByFee: widget.sortByFee,
+                  ),
+
+                  QuestionsTestScreen()
+
+                  // CallScreenPage(
+                  //   isFilter: widget.isFilter,
+                  //   categories: widget.categories,
+                  //   language: widget.language,
+                  //   sortByFee: widget.sortByFee,
+                  // ),
                 ],
               ),
-            );
-            return didPop ?? false;
-          },
-          child: Column(
-            children: [
-              Expanded(
-                child: PageView(
-                  controller: _controller,
-                  onPageChanged: (value) {
-                    FocusScope.of(context).unfocus();
-                    setState(() {
-                      currentIndex = value;
-                      print(currentIndex);
-                    });
-                  },
-                  children: [
-                    HomePage(
-                      isFilter: widget.isFilter,
-                      categories: widget.categories,
-                      language: widget.language,
-                      sortByFee: widget.sortByFee,
-                    ),
-                    CallScreenPage(
-                      isFilter: widget.isFilter,
-                      categories: widget.categories,
-                      language: widget.language,
-                      sortByFee: widget.sortByFee,
-                    ),
-                  ],
-                ),
-              ),
-              StreamBuilder<List<SingleSessionModel>>(
-                stream: _singleSessionStream,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting ||
-                      snapshot.data == null ||
-                      snapshot.data!.isEmpty ||
-                      snapshot.data == null) {
-                    return const SizedBox.shrink();
-                  } else if (snapshot.hasData) {
-                    List<SingleSessionModel> items = snapshot.data!.toList();
+            ),
+            StreamBuilder<List<SingleSessionModel>>(
+              stream: _singleSessionStream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return SizedBox.shrink();
+                }
 
+                return ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    var items = snapshot.data!.toList();
+                    String capitalizeName(String name) {
+                      return name
+                          .split(' ')
+                          .where((word) =>
+                              word.isNotEmpty) // Filter out empty words
+                          .map((word) =>
+                              word[0].toUpperCase() + word.substring(1))
+                          .join(' ');
+                    }
+
+                    String formattedName =
+                        capitalizeName(items[index].therapistId!.name!);
                     sharedPreferencesViewModel
                         .savePatientId(items.first.bookedBy!.sId);
                     sharedPreferencesViewModel
@@ -437,218 +498,162 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
                     sharedPreferencesViewModel.saveSessionId(items.first.sId);
                     sharedPreferencesViewModel
                         .saveSessionDuration(items.first.timeDuration);
-                    print("userId : $userId ");
-                    return Column(
-                      children: [
-                        ...List.generate(
-                          items.length,
-                          (index) {
-                            return GestureDetector(onTap: () {
-                              if (snapshot.data![0].bookingStatus ==
-                                  'Confirm') {
-                                if (snapshot.data![0].bookingType == 'Chat') {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ChatPage(
-                                          bookingStatus: items[index]
-                                              .bookingStatus
-                                              .toString(),
-                                          therapistCate: items[index]
-                                              .therapistId!
-                                              .name
-                                              .toString(),
-                                          duration: items[index]
-                                              .timeDuration
-                                              .toString(),
-                                          chatId: userId.toString(),
-                                          sessionId:
-                                              items[index].sId.toString(),
-                                        ),
-                                      ));
-                                }
-                              }
-                            }, child: Consumer<HomeViewModel>(
-                              builder: (context, value, child) {
-                                String capitalizeName(String name) {
-                                  return name
-                                      .split(' ')
-                                      .map((word) =>
-                                          word[0].toUpperCase() +
-                                          word.substring(1))
-                                      .join(' ');
-                                }
-
-                                String formattedName = capitalizeName(
-                                    items[index].therapistId!.name!);
-
-                                return value.statusLoading
-                                    ? const SizedBox()
-                                    : GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => ChatPage(
-                                                  bookingStatus: items[index]
-                                                      .bookingStatus
-                                                      .toString(),
-                                                  therapistCate: items[index]
-                                                      .therapistId!
-                                                      .name
-                                                      .toString(),
-                                                  duration: items[index]
-                                                      .timeDuration
-                                                      .toString(),
-                                                  chatId: items[index]
-                                                      .sId
-                                                      .toString(),
-                                                  sessionId: items[index]
-                                                      .sId
-                                                      .toString(),
-                                                ),
-                                              ));
-                                        },
-                                        child: BookingBottomBarWidget(
-                                          bookingStatus:
-                                              items[index].bookingStatus,
-                                          status: false,
-                                          name: "$formattedName",
-                                          image: items[index]
-                                              .therapistId!
-                                              .profileImg
-                                              .toString(),
-                                          callType: items[index]
-                                              .bookingType
-                                              .toString(),
-                                          fee:
-                                              "${items[index].fees!.toStringAsFixed(2)}",
-                                          onCancelTap: () {
-                                            value
-                                                .bookingStatusApis(
-                                                    token.toString(),
-                                                    'Cancel',
-                                                    snapshot.data![0].sId,
-                                                    context)
-                                                .then((values) {
-                                              value.sessionCompleteApis(
-                                                  snapshot.data![0].sId
-                                                      .toString(),
-                                                  true,
-                                                  context);
-                                            });
-                                          },
-                                        ),
-                                      );
-                              },
-                            ));
-                          },
-                        )
-                      ],
-                    );
-                  }
-
-                  return const SizedBox();
-                },
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: Consumer<SessionViewModel>(
-          builder: (context, value, child) => value.sessionDatas.isEmpty
-              ? SizedBox.shrink()
-              : Padding(
-                  padding: EdgeInsets.only(bottom: context.deviceHeight * .11),
-                  child: FloatingActionButton(
-                    backgroundColor: colorLightWhite,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChatPage(
-                              bookingStatus: value
-                                  .sessionDatas.first.bookingStatus
-                                  .toString(),
-                              therapistCate: value
-                                  .sessionDatas.first.therapistId!.name
-                                  .toString(),
-                              duration: value.sessionDatas.first.timeDuration
-                                  .toString(),
-                              chatId: value.sessionDatas.first.sId.toString(),
-                              sessionId:
-                                  value.sessionDatas.first.sId.toString(),
+                    return GestureDetector(
+                        onTap: () {
+                          // if (items[index].bookingStatus ==
+                          //         'Confirm' &&
+                          //     items[index].bookingType ==
+                          //         'Chat') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatPage(
+                                bookingStatus:
+                                    items[index].bookingStatus.toString(),
+                                therapistCate:
+                                    items[index].therapistId!.name.toString(),
+                                duration: items[index].timeDuration.toString(),
+                                chatId: items[index].sId.toString(),
+                                sessionId: items[index].sId.toString(),
+                              ),
                             ),
-                          ));
-                    },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)),
-                    child: Icon(
-                      CupertinoIcons.chat_bubble_fill,
-                      size: 34,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-        ),
-        bottomNavigationBar: CurvedNavigationBar(
-          animationDuration: const Duration(milliseconds: 700),
-          backgroundColor: const Color(0xff001E15),
-          height: 72,
-          buttonBackgroundColor: Colors.white,
-          animationCurve: Curves.decelerate,
-          index: currentIndex,
-          color: const Color(0xff181818),
-          items: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Container(
-                margin: EdgeInsets.only(top: currentIndex == 0 ? 0 : 14),
-                padding: EdgeInsets.all(currentIndex == 0 ? 0 : 12),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: currentIndex == 0
-                        ? Colors.transparent
-                        : Colors.grey.withOpacity(.5)),
-                child: SvgPicture.asset(
-                  'assets/img/homes.svg',
-                  width: 26,
-                  color: currentIndex == 0 ? Colors.black : Colors.white,
-                ),
-              ),
+                          );
+                          // }
+                        },
+                        child: Consumer<HomeViewModel>(
+                          builder: (context, value, child) =>
+                              BookingBottomBarWidget(
+                            bookingStatus: items[index].bookingStatus,
+                            status: false,
+                            name: "$formattedName",
+                            image:
+                                items[index].therapistId!.profileImg.toString(),
+                            callType: items[index].bookingType.toString(),
+                            fee: "${items[index].fees.toStringAsFixed(2)}",
+                            slot: items[index].slot.slot.isEmpty
+                                ? "Therapist Will Contact you"
+                                : "${items[index].slot.slot}",
+                            day: items[index].slot.day.isEmpty
+                                ? "Free Session"
+                                : "${items[index].slot!.day}",
+                            onCancelTap: () {
+                              showConfirmationDialog(
+                                context: context,
+                                onConfirm: () {
+                                  value
+                                      .bookingStatusApis(token.toString(),
+                                          'Cancel', items[index].sId, context)
+                                      .then((values) {
+                                    value.sessionCompleteApis(
+                                        items[index].sId.toString(),
+                                        true,
+                                        context);
+                                    final getSessionData =
+                                        Provider.of<SessionViewModel>(context,
+                                            listen: false);
+
+                                    getSessionData
+                                        .refreshSessionData(userId.toString());
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ));
+                  },
+                );
+              },
             ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Container(
-                margin: EdgeInsets.only(top: currentIndex == 1 ? 0 : 14),
-                padding: EdgeInsets.all(currentIndex == 1 ? 0 : 12),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: currentIndex == 1
-                        ? Colors.transparent
-                        : Colors.grey.withOpacity(.5)),
+          ],
+        ),
+      ),
+      // floatingActionButton: Consumer<SessionViewModel> (
+      //   builder: (context, value, child) => value.sessionDatas.isEmpty
+      //       ? SizedBox.shrink()
+      //       : Padding(
+      //           padding: EdgeInsets.only(bottom: context.deviceHeight * .11),
+      //           child: FloatingActionButton(
+      //             backgroundColor: colorLightWhite,
+      //             onPressed: () {
+      //               Navigator.push(
+      //                   context,
+      //                   MaterialPageRoute(
+      //                     builder: (context) => ChatPage(
+      //                       bookingStatus: value
+      //                           .sessionDatas.first.bookingStatus
+      //                           .toString(),
+      //                       therapistCate: value
+      //                           .sessionDatas.first.therapistId!.name
+      //                           .toString(),
+      //                       duration: value.sessionDatas.first.timeDuration
+      //                           .toString(),
+      //                       chatId: value.sessionDatas.first.sId.toString(),
+      //                       sessionId:
+      //                           value.sessionDatas.first.sId.toString(),
+      //                     ),
+      //                   ));
+      //             },
+      //             shape: RoundedRectangleBorder(
+      //                 borderRadius: BorderRadius.circular(50)),
+      //             child: Icon(
+      //               CupertinoIcons.chat_bubble_fill,
+      //               size: 34,
+      //               color: Colors.black,
+      //             ),
+      //           ),
+      //         ),
+      // ),
+
+      bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.black,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: darkModeTextLight2,
+          onTap: (index) => setState(() {
+                selectedIndex = index;
+                if (selectedIndex == 0) {
+                  _controller.animateToPage(
+                    0,
+                    duration: const Duration(milliseconds: 20),
+                    curve: Curves.easeIn,
+                  );
+                } else if (selectedIndex == 1) {
+                  Get.to(
+                      ChatScreen(
+                        chatId: userId.toString(),
+                      ),
+                      transition: Transition.rightToLeft);
+                } else if (selectedIndex == 2) {
+                  _controller.animateToPage(
+                    2,
+                    duration: const Duration(milliseconds: 20),
+                    curve: Curves.easeIn,
+                  );
+                }
+              }),
+          currentIndex: selectedIndex,
+          elevation: 10,
+          items: List.generate(bottomNavigationList.length, (index) {
+            return BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(bottom: 4, top: 10),
                 child: SvgPicture.asset(
-                  'assets/img/session.svg',
-                  width: 26,
-                  color: currentIndex == 1 ? Colors.black : Colors.white,
+                  height: 26,
+                  (selectedIndex == index)
+                      ? bottomNavigationList[index]["selectedIcon"]!
+                      : bottomNavigationList[index]["icons"]!,
+                  color:
+                      (selectedIndex == index) ? colorLightWhite : colorDark3,
                 ),
               ),
-            )
-          ],
-          onTap: (value) {
-            if (currentIndex == 0) {
-              _controller.animateToPage(
-                1,
-                duration: const Duration(milliseconds: 20),
-                curve: Curves.easeIn,
-              );
-            } else if (currentIndex == 1) {
-              _controller.animateToPage(
-                0,
-                duration: const Duration(milliseconds: 20),
-                curve: Curves.easeIn,
-              );
-            }
-          },
-        ));
+              label: bottomNavigationList[index]["name"].toString(),
+              backgroundColor: colorLightWhite,
+            );
+          })),
+    );
   }
 }

@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/model/storyModel.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/model/storyModel.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
 
 class BannerWidget extends StatelessWidget {
   List<StoryModel> storyList;
@@ -30,7 +30,7 @@ class BannerWidget extends StatelessWidget {
               onTap: () {
                 Navigator.pushNamed(context, RoutesName.StoryScreen,
                     arguments: {
-                      'cateid': data.categoryId![0].toString(),
+                      'cateid': data.categoryId!.first.sId,
                       'id': data.sId
                     });
               },

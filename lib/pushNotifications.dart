@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:overcooked/newFlow/services/app_url.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-import 'package:ventout/newFlow/services/app_url.dart';
 
 class PushNotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -56,6 +57,13 @@ class PushNotificationService {
           'Incoming call from $callerName',
           payload,
         );
+      } else if (notification != null) {
+        await showModernNotification(
+          id: 1,
+          title: notification.title ?? 'Notification',
+          body: notification.body ?? '',
+          payload: jsonEncode(message.data),
+        );
       }
     });
 
@@ -76,21 +84,7 @@ class PushNotificationService {
     final notification = message.notification;
     if (notification != null && notification.title == 'Accept Call') {
       final data = jsonDecode(notification.body.toString());
-      // if (data['bookingType'] == 'Call') {
-      //   Get.to(CallScreen(
-      //       channelName: data['channelName'],
-      //       name: data['callerName'],
-      //       agoraToken: data['agoraToken'],
-      //       therapistId: data['therapistId'],
-      //       image: data['callerImg']));
-      // } else if (data['bookingType'] == 'Video') {
-      //   Get.to(VideoCallScreen(
-      //       channelName: data['channelName'],
-      //       name: data['callerName'],
-      //       agoraToken: data['agoraToken'],
-      //       therapistId: data['therapistId'],
-      //       image: data['callerImg']));
-      // }
+      // Handle call navigation - same as your existing code
     }
   }
 
@@ -116,22 +110,65 @@ class PushNotificationService {
     if (payload != null) {
       final data = jsonDecode(payload);
       print("************* $data");
-      // if (data['bookingType'] == 'Call') {
-      //   Get.to(CallScreen(
-      //       channelName: data['channelName'],
-      //       name: data['callerName'],
-      //       agoraToken: data['agoraToken'],
-      //       therapistId: data['therapistId'],
-      //       image: data['callerImg']));
-      // } else if (data['bookingType'] == 'Video') {
-      //   Get.to(VideoCallScreen(
-      //       channelName: data['channelName'],
-      //       name: data['callerName'],
-      //       agoraToken: data['agoraToken'],
-      //       therapistId: data['therapistId'],
-      //       image: data['callerImg']));
-      // }
     }
+  }
+
+  static Future<void> showModernNotification({
+    required int id,
+    required String title,
+    required String body,
+    String? payload,
+    String? imageUrl,
+  }) async {
+    StyleInformation? styleInformation;
+    
+    if (imageUrl != null && imageUrl.isNotEmpty) {
+      styleInformation = BigPictureStyleInformation(
+        FilePathAndroidBitmap(imageUrl),
+        contentTitle: '<b>$title</b>',
+        htmlFormatContentTitle: true,
+        summaryText: body,
+        htmlFormatSummaryText: true,
+        largeIcon: FilePathAndroidBitmap(imageUrl),
+      );
+    } else {
+      styleInformation = BigTextStyleInformation(
+        body,
+        htmlFormatBigText: true,
+        contentTitle: '<b>$title</b>',
+        htmlFormatContentTitle: true,
+        summaryText: 'Summary',
+        htmlFormatSummaryText: true,
+      );
+    }
+
+    await _localNotification.show(
+      id,
+      title,
+      body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          'modern_notification_channel',
+          'Modern Notifications',
+          channelDescription: 'Channel for modern styled notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+          styleInformation: styleInformation,
+          color: const Color(0xFF6A11CB),
+          colorized: true, 
+          icon: '@drawable/ic_launcher',
+          channelShowBadge: true,
+          playSound: true,
+          enableVibration: true,
+        ),
+        iOS: const DarwinNotificationDetails(
+          presentSound: true,
+          presentAlert: true,
+          presentBadge: true,
+        ),
+      ),
+      payload: payload,
+    );
   }
 
   static Future<void> showCallNotification(
@@ -185,6 +222,37 @@ class PushNotificationService {
     );
   }
 
+  static Future<void> showWithoutImageNotification(
+      String title, String body, String payload) async {
+    await _localNotification.show(
+      0,
+      title,
+      body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          'high_importance_channel',
+          'High Importance Notification',
+          channelDescription:
+              'Notification channel for high importance messages',
+          importance: Importance.max,
+          priority: Priority.high,
+          color: const Color(0xFF4FACFE), 
+          colorized: true,
+          playSound: true,
+          enableVibration: true,
+          styleInformation: BigTextStyleInformation(
+            body,
+            htmlFormatBigText: true,
+            contentTitle: '<b>$title</b>',
+            htmlFormatContentTitle: true,
+          ),
+        ),
+        iOS: const DarwinNotificationDetails(presentSound: true),
+      ),
+      payload: payload,
+    );
+  }
+
   Future<void> initLocalNotification() async {
     const android = AndroidInitializationSettings('@drawable/ic_launcher');
     final DarwinInitializationSettings iOS = const DarwinInitializationSettings(
@@ -205,7 +273,15 @@ class PushNotificationService {
 
     final platform = _localNotification.resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>();
+    
     await platform?.createNotificationChannel(_androidChannel);
+    
+    await platform?.createNotificationChannel(const AndroidNotificationChannel(
+      'modern_notification_channel', 
+      'Modern Notifications',
+      description: 'Channel for modern styled notifications',
+      importance: Importance.max
+    ));
   }
 
   Future<void> requestNotificationPermission(
@@ -242,7 +318,7 @@ class PushNotificationService {
 
   Future<void> addDeviceToken(String deviceToken, String token) async {
     final response = await http.patch(
-      Uri.parse(AppUrl.baseUrl + AppUrl.fcmTokenUrl),
+      Uri.parse(AppUrl.baseUrl+AppUrl.fcmTokenUrl), 
       body: jsonEncode({"fcmToken": deviceToken}),
       headers: {
         'Content-Type': 'application/json',
@@ -259,17 +335,30 @@ class PushNotificationService {
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  final callData = jsonDecode(message.notification?.body ?? '{}');
-
-  String callerName = callData['callerName'] ?? 'Unknown Caller';
-  String callerImg = callData['callerImg'] ?? 'defaultImage';
-  String payload = jsonEncode(callData);
-
-  await PushNotificationService.showCallNotification(
-    callerName,
-    'Incoming call from $callerName',
-    payload,
-  );
+    final String title = message.notification?.title ?? '';
+    final String body = message.notification?.body ?? '';
+    final String payload = jsonEncode(message.toMap());
+    
+    if(kDebugMode){
+      print("Title : $title");
+      print("body : $body");
+      print("payload : $payload");
+    }
+    
+    if (title == 'Accept Call') {
+      await PushNotificationService.showCallNotification(
+        title,
+        body,
+        payload,
+      );
+    } else {
+      await PushNotificationService.showModernNotification(
+        id: 1,
+        title: title,
+        body: body,
+        payload: payload,
+      );
+    }
 }
 
 Future<void> backgroundNotificationHandler(

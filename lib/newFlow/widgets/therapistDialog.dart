@@ -1,39 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:overcooked/Utils/components.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/resultScreen.dart';
+import 'package:overcooked/newFlow/viewModel/sessionViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/slotsViewModel.dart';
+import 'package:overcooked/newFlow/widgets/selectSlotBottomSheet.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/model/allTherapistModel.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/viewModel/homeViewModel.dart';
-import 'package:ventout/newFlow/widgets/agentCardWidget.dart';
-import 'package:ventout/newFlow/widgets/filterAgentCards.dart';
+import 'package:overcooked/newFlow/model/allTherapistModel.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/viewModel/homeViewModel.dart';
+import 'package:overcooked/newFlow/widgets/filterAgentCards.dart';
 
-import '../viewModel/utilsClass.dart';
+import '../../Utils/colors.dart';
+import '../screens/questionsScreen/widget/testButtonWidget.dart';
+import '../therapistChatscreens/widgets/chatHomeCardWidget.dart';
 
-class TherapistListDialog extends StatefulWidget {
-  List<AllTherapistModel> therapists; // List of therapists to display
+class TherapistListScreen extends StatefulWidget {
+  final List<AllTherapistModel> therapists;
+  int totalPonts;
+  bool isRegistered;
 
-  TherapistListDialog({required this.therapists});
+  TherapistListScreen(
+      {Key? key,
+      required this.therapists,
+      required this.isRegistered,
+      required this.totalPonts})
+      : super(key: key);
 
   @override
-  State<TherapistListDialog> createState() => _TherapistListDialogState();
+  State<TherapistListScreen> createState() => _TherapistListScreenState();
 }
 
-class _TherapistListDialogState extends State<TherapistListDialog> {
+class _TherapistListScreenState extends State<TherapistListScreen> {
   SharedPreferencesViewModel sharedPreferencesViewModel =
       SharedPreferencesViewModel();
-
-  bool? freeStatus;
-  String? token, userId, signUpToken;
+  final scrollController = ScrollController();
+  bool freeStatus = false;
+  String token = '', userId = '', signUpToken = '';
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.wait([sharedPreferencesViewModel.getFreeStatus()]).then((value) {
-      freeStatus = value[0];
+      freeStatus = value[0] ?? false;
+      print("sl ${freeStatus}");
+    });
 
+    Future.wait([
+      sharedPreferencesViewModel.getFreeStatus(),
+      sharedPreferencesViewModel.getUserId()
+    ]).then((value) {
+      userId = value[1]?.toString() ?? '';
       print("sl ${freeStatus}");
     });
 
@@ -43,233 +62,296 @@ class _TherapistListDialogState extends State<TherapistListDialog> {
       sharedPreferencesViewModel.getUserId(),
     ]).then(
       (value) {
-        token = value[1];
-        userId = value[2];
-        signUpToken = value[0];
+        signUpToken = value[0] ?? '';
+        token = value[1] ?? '';
+        userId = value[2] ?? '';
+
+        if (token.isEmpty) {
+          token = signUpToken;
+        }
       },
     );
   }
 
+  String capitalizeName(String name) {
+    if (name.isEmpty) return '';
+
+    return name
+        .trim()
+        .split(' ')
+        .where((word) => word.isNotEmpty)
+        .map((word) =>
+            word.isNotEmpty ? word[0].toUpperCase() + word.substring(1) : '')
+        .join(' ');
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      insetPadding: EdgeInsets.only(left: 0, right: 0, top: 50, bottom: 10),
-      contentPadding: EdgeInsets.only(top: 20),
+    final sessionData = Provider.of<SessionViewModel>(context, listen: false);
+
+    return Scaffold(
       backgroundColor: Colors.black,
-      title: Row(
-        children: [
-          GestureDetector(
-              onTap: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, RoutesName.bottomNavBarView, (route) => false);
-              },
-              child: Icon(Icons.arrow_back_ios_new_rounded)),
-          SizedBox(
-            width: 8,
-          ),
-          Text(
-            'My Psychologist',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
-      content: SizedBox(
-          width: double.maxFinite,
-          height: context.deviceHeight,
-          child: Consumer<HomeViewModel>(
-            builder: (context, value, child) {
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24.0, vertical: 0),
-                    child: RichText(
-                      textAlign: TextAlign.start,
-                      text: TextSpan(
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                        children: [
-                          TextSpan(
-                            text:
-                                "Based on your recent evaluation, these are the ",
-                          ),
-                          TextSpan(
-                            text:
-                                "top ${widget.therapists.length} psychologist",
-                            style: TextStyle(
-                              color: Color(0xff00ECCA),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " we recommend you to interact with:",
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: widget.therapists.length,
-                      itemBuilder: (context, index) {
-                        var item = widget.therapists[index];
-                        String capitalizeName(String name) {
-                          return name
-                              .trim()
-                              .split(' ')
-                              .where((word) =>
-                                  word.isNotEmpty) // Filter out empty words
-                              .map((word) =>
-                                  word[0].toUpperCase() + word.substring(1))
-                              .join(' ');
-                        }
-
-                        String formattedName =
-                            capitalizeName(item.name!.trimLeft().trimRight());
-
-                        if (widget.therapists.isEmpty == false) {
-                          return FilterAgentCardWidget(
-                            normalPrice: item.feesPerMinuteOfTenMinute!
-                                .toStringAsFixed(0),
-                            rating: item.avgRating!.toInt(),
-                            isRisingStar: item.risingStar,
-                            onCallTap: () {
-                              int? balances =
-                                  item.discountedFeesForTenMinute != 0
-                                      ? item.discountedFeesForTenMinute
-                                      : item.feesForTenMinute!;
-
-                              if (value.walletModel!.balance! < balances! &&
-                                  freeStatus == false) {
-                                UtilsClass().showRatingBottomSheet(
-                                  context,
-                                  item.discountedFeesForTenMinute != 0
-                                      ? item.discountedFeesForTenMinute!.toInt()
-                                      : item.feesForTenMinute!.toInt(),
-                                  token.toString(),
-                                  '10',
-                                );
-                              } else if (item.isAvailable == false) {
-                                UtilsClass().showCustomDialog(
-                                  context,
-                                  item.isFree == true && freeStatus == true
-                                      ? '0'
-                                      : item.feesForTenMinute == null
-                                          ? '0'
-                                          : item.discountedFeesForTenMinute == 0
-                                              ? item.feesForTenMinute.toString()
-                                              : item.discountedFeesForTenMinute
-                                                  .toString(),
-                                  token,
-                                  item.sId,
-                                  item.name,
-                                  item.profileImg,
-                                  item.name,
-                                  item.discountedFeesPerMinuteOfTenMinute != 0
-                                      ? item.feesPerMinuteOfTenMinute
-                                      : item.feesPerMinuteOfTenMinute,
-                                  '10',
-                                  userId,
-                                  item.sId,
-                                  item.name,
-                                  true,
-                                );
-                              } else {
-                                UtilsClass().showDialogWithoutTimer(
-                                  context,
-                                  item.isFree == true && freeStatus == true
-                                      ? '0'
-                                      : item.feesForTenMinute == 0
-                                          ? '0'
-                                          : item.discountedFeesForTenMinute == 0
-                                              ? item.feesForTenMinute.toString()
-                                              : item.discountedFeesForTenMinute
-                                                  .toString(),
-                                  token,
-                                  item.sId,
-                                  item.name,
-                                  item.profileImg,
-                                  item.name,
-                                  item.discountedFeesPerMinuteOfTenMinute != 0
-                                      ? item.discountedFeesPerMinuteOfTenMinute
-                                      : item.feesPerMinuteOfTenMinute,
-                                  '10',
-                                  userId,
-                                  item.sId,
-                                  item.name,
-                                  () {},
-                                  false,
-                                );
-                              }
-                            },
-                            isHomeScreen: true,
-                            isAvailble: item.isAvailable,
-                            isFree: item.isFree == true && freeStatus == true
-                                ? true
-                                : false,
-                            name: formattedName,
-                            language: item.language!.reversed.toList(),
-                            price: item.discountedFeesForTenMinute == 0
-                                ? item.feesForTenMinute!.toStringAsFixed(2)
-                                : item.discountedFeesForTenMinute!
-                                    .toStringAsFixed(2),
-                            oneMintPrice:
-                                item.discountedFeesPerMinuteOfTenMinute != 0
-                                    ? item.discountedFeesPerMinuteOfTenMinute!
-                                        .toStringAsFixed(0)
-                                    : item.feesPerMinuteOfTenMinute != 0
-                                        ? item.feesPerMinuteOfTenMinute!
-                                            .toStringAsFixed(0)
-                                        : '',
-                            discountPrice:
-                                item.isFree == true && freeStatus == true
-                                    ? '0'
-                                    : item.discountedFeesForTenMinute == 0
-                                        ? ''
-                                        : item.discountedFeesForTenMinute!
-                                            .toStringAsFixed(0),
-                            theraPistCate: item.psychologistCategory,
-                            theraPistSubCate: item.qualification,
-                            image: item.profileImg,
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            onCardTap: () {
-                              Navigator.pushNamed(
-                                  context, RoutesName.expertScreen, arguments: {
-                                'id': item.sId,
-                                "balance": value.walletModel!.balance
-                              });
-                            },
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              );
-            },
-          )),
-      actions: [
-        Container(
-          padding: EdgeInsets.only(left: 30, right: 30),
-          decoration: BoxDecoration(
-              color: colorLightWhite, borderRadius: BorderRadius.circular(10)),
-          child: TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Close the dialog
-            },
-            child: Text(
-              'Close',
-              style: TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.w600, color: colorDark1),
-            ),
-          ),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, RoutesName.bottomNavBarView, (route) => false);
+          },
         ),
-      ],
+        title: Text(
+          'My Psychologist',
+          style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+        ),
+      ),
+      body: Consumer<HomeViewModel>(
+        builder: (context, value, child) {
+          return Column(
+            children: [
+              widget.totalPonts > 7
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24.0, vertical: 20),
+                      child: RichText(
+                        textAlign: TextAlign.start,
+                        text: TextSpan(
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                          children: [
+                            TextSpan(
+                              text: "With your given scores,",
+                            ),
+                            TextSpan(
+                              text:
+                                  " we strongly recommend you to try therapy.",
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            TextSpan(
+                              text:
+                                  " We've shared your Overcooked Depression Screening results with our psychologists:",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink(),
+              Consumer<HomeViewModel>(
+                builder: (context, value, child) {
+                  return widget.totalPonts > 7
+                      ? Padding(
+                          padding: const EdgeInsets.only(bottom: 14),
+                          child: TestResultButton(
+                            testName: "Depression Screening Result",
+                            resultStatus: getDepressionLevel(
+                                value.userProfileModel?.totalValue ?? 0),
+                            onTap: () {
+                              Get.to(UserResultNameScreen(
+                                  totalScroe: widget.totalPonts.toString()));
+                            },
+                          ),
+                        )
+                      : SizedBox.shrink();
+                },
+              ),
+              ChatHomeCardWidget(
+                userId: userId,
+                iconColor: colorLightWhite,
+              ),
+              Expanded(
+                child: widget.therapists.isEmpty
+                    ? Center(
+                        child: Text(
+                        "No therapists available",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ))
+                    : widget.totalPonts < 7
+                        ? Center(
+                            child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              "No significant need of therapy. You're absolutely alright. Enjoy your day.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ))
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: widget.therapists.length,
+                            itemBuilder: (context, index) {
+                              var item = widget.therapists[index];
+                              String formattedName = capitalizeName(
+                                  item.name?.trimLeft().trimRight() ?? '');
+                              return Consumer<SlotsViewModel>(
+                                builder: (context, value2, child) {
+                                  return FilterAgentCardWidget(
+                                    normalPrice:
+                                        item.feesPerMinuteOfTenMinute != null
+                                            ? item.feesPerMinuteOfTenMinute!
+                                                .toStringAsFixed(0)
+                                            : '0',
+                                    rating: item.avgRating?.toInt() ?? 0,
+                                    isRisingStar: item.risingStar ?? false,
+                                    onCallTap: () {
+                                      value2.updateSlotId("");
+                                      DateTime now = DateTime.now();
+                                      List<String> days = [
+                                        'Sunday',
+                                        'Monday',
+                                        'Tuesday',
+                                        'Wednesday',
+                                        'Thursday',
+                                        'Friday',
+                                        'Saturday'
+                                      ];
+                                      String day = days[now.weekday % 7];
+                                      value2.updateIndex(now.weekday % 7);
+
+                                      var discountedFees =
+                                          item.discountedFees ?? 0;
+                                      var fees = item.fees ?? 0;
+
+                                      var selectedFee =
+                                          discountedFees.toString().isNotEmpty
+                                              ? discountedFees
+                                              : fees;
+
+                                      double feesValue = selectedFee is String
+                                          ? double.tryParse(
+                                                  selectedFee.toString()) ??
+                                              0.0
+                                          : selectedFee.toDouble();
+
+                                      double balanceValue = double.tryParse(
+                                              value.walletModel?.balance
+                                                      ?.toString() ??
+                                                  '0') ??
+                                          0.0;
+
+                                      double finalAmount =
+                                          feesValue > balanceValue
+                                              ? feesValue - balanceValue
+                                              : 0.0;
+
+                                      value2.fetchAvailableSlotsAPi(
+                                          item.sId ?? '', day);
+
+                                      SelectSlotBottomSheet(
+                                          finalAmount.toString(),
+                                          userId: userId,
+                                          item.sId ?? '',
+                                          finalAmount,
+                                          token,
+                                          scrollController,
+                                          context);
+                                    },
+                                    isHomeScreen: true,
+                                    isAvailble: item.isAvailable ?? false,
+                                    isFree: (item.isFree == true &&
+                                        freeStatus == true),
+                                    name: formattedName,
+                                    language:
+                                        item.language?.reversed.toList() ?? [],
+                                    price: item.discountedFees != null &&
+                                            item.discountedFees
+                                                .toString()
+                                                .isNotEmpty
+                                        ? item.discountedFees.toString()
+                                        : item.fees?.toString() ?? '0',
+                                    oneMintPrice: item
+                                                    .discountedFeesPerMinuteOfTenMinute !=
+                                                null &&
+                                            item.discountedFeesPerMinuteOfTenMinute !=
+                                                0
+                                        ? item
+                                            .discountedFeesPerMinuteOfTenMinute!
+                                            .toStringAsFixed(0)
+                                        : item.feesPerMinuteOfTenMinute !=
+                                                    null &&
+                                                item.feesPerMinuteOfTenMinute !=
+                                                    0
+                                            ? item.feesPerMinuteOfTenMinute!
+                                                .toStringAsFixed(0)
+                                            : '0',
+                                    discountPrice: item.discountedFees ==
+                                                null ||
+                                            item.discountedFees == 0
+                                        ? ''
+                                        : item.fees == null || item.fees == 0
+                                            ? ''
+                                            : item.fees!.toStringAsFixed(0),
+                                    theraPistCate:
+                                        item.psychologistCategory ?? '',
+                                    theraPistSubCate: item.qualification ?? '',
+                                    image: item.profileImg ?? '',
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    onCardTap: () {
+                                      Navigator.pushNamed(
+                                          context, RoutesName.expertScreen,
+                                          arguments: {
+                                            'id': item.sId ?? '',
+                                            "balance":
+                                                value.walletModel?.balance ?? 0
+                                          });
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 14),
+                child: customButton(() {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, RoutesName.bottomNavBarView, (route) => false);
+                }, context.deviceWidth, 50, 'Return to home screen', false),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Center(
+                  child: Text(
+                "Check your Results instantly above.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12, color: colorLight2),
+              )),
+              SizedBox(
+                height: 28,
+              )
+            ],
+          );
+        },
+      ),
     );
+  }
+
+  String getDepressionLevel(int score) {
+    if (score <= 7) {
+      return 'Normal\n(No significant signs of depression)';
+    } else if (score <= 13) {
+      return 'Mild Depression';
+    } else if (score <= 18) {
+      return 'Moderate Depression';
+    } else if (score <= 22) {
+      return 'Severe Depression';
+    } else {
+      return 'Very Severe Depression';
+    }
   }
 }

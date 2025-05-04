@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ventout/Utils/colors.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/therapistPrefernceScreen.dart';
+import 'package:overcooked/newFlow/viewModel/questionsProvider.dart';
+import 'package:provider/provider.dart';
 
-import '../prefrencesScreen/prefrencesScreen.dart';
-import '../routes/routeName.dart';
+import '../../Utils/components.dart';
 
 class AssessmentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<QuestionProvider>(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -21,20 +26,8 @@ class AssessmentScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Text(
-                'Not sure where to begin?',
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 36,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ),
-            Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 14),
+                  const EdgeInsets.symmetric(horizontal: 14.0, vertical: 14),
               child: RichText(
                 textAlign: TextAlign.start,
                 text: TextSpan(
@@ -44,68 +37,93 @@ class AssessmentScreen extends StatelessWidget {
                   ),
                   children: [
                     TextSpan(
-                      text:
-                          "Try our free assessment where we're going to ask you a series of ",
+                      text: "Depression ",
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     TextSpan(
-                      text: "clinically tested questions",
+                        text: "Screening Test (HAM-D Based)",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w800,
+                        )),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14.0, vertical: 14),
+              child: RichText(
+                textAlign: TextAlign.start,
+                text: TextSpan(
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Instructions :",
                       style: TextStyle(
-                        color: Color(0xff00ECCA),
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     TextSpan(
                       text:
-                          " to help us understand your needs and emotional state.",
+                          " Read each question carefully and select the option that best describes how you have been feeling in the past week. We will assess it and release the results within a week.",
                     ),
                   ],
                 ),
               ),
             ),
             Spacer(),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Get.offAll(PreferenceScreen(isRegisterScreen: true),
-                        transition: Transition.rightToLeft);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 14),
+              child: customButton(() {
+                provider.clearAnswers();
+                Get.offAll(
+                    TherapistPreferencesScreen(
+                      isRegisterScreen: true,
+                      //          selectedExpertise: '',
+                      // selectedGender: '',
+                      // selectedLanguages: '',
+                      // selectedReachMeOut: '',
+                      token: '',
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 14, horizontal: 84),
-                  ),
-                  child: Text(
-                    'Free Assessment',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
+                    transition: Transition.rightToLeft);
+              }, context.deviceWidth, 50, 'Take Assessment', false),
             ),
-            SizedBox(height: 26),
+            SizedBox(
+              height: 10,
+            ),
             Center(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, RoutesName.bottomNavBarView, (route) => false);
-                },
                 child: Text(
-                  'Skip',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white.withOpacity(0.6),
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ),
+              "Your data on Overcooked is encrypted and Confidential.",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 12, color: colorLight2),
+            )),
+            SizedBox(height: 26),
+            // Center(
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       Navigator.pushNamedAndRemoveUntil(
+            //           context, RoutesName.bottomNavBarView, (route) => false);
+            //     },
+            //     child: Text(
+            //       'Skip',
+            //       style: TextStyle(
+            //         fontWeight: FontWeight.w600,
+            //         color: Colors.white.withOpacity(0.6),
+            //         fontSize: 18,
+            //       ),
+            //     ),
+            //   ),
+            // ),
             SizedBox(height: 56),
           ],
         ),

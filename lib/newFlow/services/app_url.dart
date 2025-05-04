@@ -17,16 +17,17 @@ class AppUrl {
   static var paymentLogUrl = "/api/user/wallet/walletHistory?isDeducted=false";
   static var addMoneyUrl = "/api/user/wallet/add";
   static var createSessionUrl = "/api/user/booking/create/";
+  static var createFreeSessionUrl = "/api/user/booking/createFreeSession";
   static var sendMsgUrl = "/api/chat/send";
   static var reviewUrl = "/api/therapist/review/create/";
   static var fcmTokenUrl = "/api/user/auth/sendFcmToken";
   static var singleSessionUrlUrl = "/api/user/booking/single/";
   static var cancelSessionUrl = "/api/user/booking/status/";
-  static var sendNotificationUrl = "/api/user/auth/notification/";
+  static var sendNotificationUrl = "/api/user/notification/create";
   static var remaingTimeUrl = "/api/user/booking/time";
   static var reviewgetUrl = "/api/therapist/review/get/";
   static var deleteUrl = "/api/user/auth/delete";
-  static var prefrencesUrl = "/api/user/auth/update";
+  static var prefrencesUrl = "/api/user/auth/qna";
   static var reportUrl = "/api/therapist/report/user/create";
   static var moneyDeductUrl = "/api/user/wallet/withdraw/";
   static var createPaymentApi = "$baseUrl/api/user/auth/payment";
@@ -34,4 +35,10 @@ class AppUrl {
   static var updateSessiontimeApi = "$baseUrl/api/user/booking/timedifference/";
   static var zegoCloudeApi = "$baseUrl/api/admin/zegoCloud/all";
   static var filterTherapistApi = "$baseUrl/api/therapist/auth/all";
+  static var availableSlotsApi = "/api/therapist/auth/avalaibleSlots/";
+  static var commissionValueApi = "/api/admin/commission/all";
+  static var userProfileApi = "/api/user/auth/getUserProfile/";
+  static var resultApi = "/api/admin/result/all";
+  static var sendPostChatApi =
+      "$baseUrl/api/therapist/chatView/createChatView/";
 }

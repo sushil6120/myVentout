@@ -2,135 +2,138 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:ventout/Utils/utilsFunction.dart';
+import 'package:overcooked/Utils/utilsFunction.dart';
 
 class QuestionProvider with ChangeNotifier {
+  double progressBar = 0.1;
+  int totalPoints = 0;
+
+  void updateProgressBar(double value) {
+    progressBar = value;
+    notifyListeners();
+  }
+
   List<Map<String, dynamic>> questions = [
     {
-      "question": "Before we get started, how are you feeling today?",
+      "question": "Depressed Mood (Sadness, Hopelessness)",
       "options": [
-        "Happy",
-        "Worried",
-        "Stressed",
-        "Relaxed",
-        "Sad",
-        "Angry",
-        "Not sure"
+        "No sadness.",
+        "Occasional sadness or feeling low.",
+        "Frequent sadness; some difficulty cheering up.",
+        "Persistent sadness; unable to shake off low mood.",
+        "Extreme sadness; feeling hopeless or worthless."
       ],
-      "answers": ""
+      "answers": "",
+      "points": 0
     },
     {
-      "question":
-          "Think about the past couple weeks. Have you felt any of these?",
+      "question": "Feelings of Guilt",
       "options": [
-        "Stressed or burned out",
-        "Problems with sleep",
-        "Nervous, anxious, or on edge",
-        "Lonely",
-        "Little interest or pleasure in doing things",
-        "Down, depressed or hopeless"
+        "No feelings of guilt.",
+        "Occasionally feel guilty about past actions.",
+        "Frequently feel guilty and dwell on past mistakes.",
+        "Strong feelings of guilt, feeling responsible for most things.",
+        "Overwhelming guilt, believing self deserves punishment."
       ],
-      "answers": ""
+      "answers": "",
+      "points": 0
     },
     {
-      "question":
-          "In the last 2 weeks, how often have you been bothered by little interest or pleasure in doing things?",
+      "question": "Suicidal Thoughts",
       "options": [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly everyday"
+        "No thoughts of self-harm or suicide.",
+        "Occasional thoughts but would not act on them.",
+        "Frequent thoughts but no plan.",
+        "Considered acting on thoughts but no definite plan.",
+        "Definite plan or past attempt."
       ],
-      "answers": ""
+      "answers": "",
+      "points": 0
     },
     {
-      "question":
-          "In the last 2 weeks, how often have you been bothered by feeling down, depressed, or hopeless?",
+      "question": "Insomnia (Sleep Issues)",
       "options": [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly everyday"
+        "Normal sleep patterns.",
+        "Slight difficulty falling asleep or waking up early.",
+        "Frequent sleep disturbance.",
+        "Severe difficulty staying asleep most nights.",
+        "Barely sleeping or no sleep at all."
       ],
-      "answers": ""
+      "answers": "",
+      "points": 0
     },
     {
-      "question":
-          "In the last 2 weeks, how often have you been bothered by feeling tired or having little energy?",
+      "question": "Work and Interests (Loss of Enjoyment, Motivation)",
       "options": [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly everyday"
+        "Normal interest in work, hobbies, and relationships.",
+        "Occasionally struggles with motivation.",
+        "Loss of enjoyment in most activities.",
+        "Struggles to do daily tasks.",
+        "Completely unable to function due to lack of motivation."
       ],
-      "answers": ""
+      "answers": "",
+      "points": 0
     },
     {
-      "question":
-          "In the last 2 weeks, how often have you been bothered by poor appetite or overeating?",
+      "question": "Physical Symptoms (Fatigue, Body Aches, Loss of Appetite)",
       "options": [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly everyday"
+        "No physical complaints.",
+        "Occasional fatigue or mild discomfort.",
+        "Frequent fatigue or body aches.",
+        "Persistent fatigue or physical distress.",
+        "Extreme exhaustion, unable to perform daily tasks."
       ],
-      "answers": ""
+      "answers": "",
+      "points": 0
     },
     {
-      "question":
-          "In the last 2 weeks, how often have you been bothered by feeling bad about yourself — or that you are a failure or have let yourself or your family down?",
+      "question": "Anxiety (Worry, Nervousness, Restlessness)",
       "options": [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly everyday"
+        "No anxiety.",
+        "Occasional worry.",
+        "Frequent nervousness or restlessness.",
+        "Severe anxiety, difficult to relax.",
+        "Constant anxiety, panic attacks."
       ],
-      "answers": ""
+      "answers": "",
+      "points": 0
     },
     {
-      "question":
-          "In the last 2 weeks, how often have you been bothered by trouble concentrating on things, such as reading the newspaper or watching television?",
+      "question": "Psychomotor Changes (Slowed or Agitated Movements)",
       "options": [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly everyday"
+        "No changes in movement or speech.",
+        "Slight sluggishness or occasional restlessness.",
+        "Noticeable slowing or agitation.",
+        "Severe slowing or restlessness interfering with activities.",
+        "Extreme difficulty in movement or severe agitation."
       ],
-      "answers": ""
+      "answers": "",
+      "points": 0
     },
     {
-      "question":
-          "In the last 2 weeks, how often have you been bothered by moving or speaking so slowly that other people could have noticed? Or the opposite - being so fidgety or restless that you have been moving around a lot more than usual?",
+      "question": "Weight and Appetite Changes",
       "options": [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly everyday"
+        "No change in appetite or weight.",
+        "Occasional appetite change.",
+        "Noticeable weight loss/gain or persistent appetite change.",
+        "Significant weight change affecting health.",
+        "Extreme weight change, inability to eat properly."
       ],
-      "answers": ""
+      "answers": "",
+      "points": 0
     },
     {
-      "question":
-          "In the last 2 weeks, how often have you been bothered by thoughts that you would be better off dead or hurting yourself in some way?",
+      "question": "Concentration and Decision Making",
       "options": [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly everyday"
+        "No difficulty concentrating or making decisions.",
+        "Slight difficulty focusing.",
+        "Frequent struggles with concentration.",
+        "Severe trouble focusing, difficulty making decisions.",
+        "Completely unable to focus or make any decisions."
       ],
-      "answers": ""
-    },
-    {
-      "question":
-          "How difficult have these feelings made it for you to do your work, take care of things at home, or get along with others?",
-      "options": [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly everyday"
-      ],
-      "answers": ""
-    },
+      "answers": "",
+      "points": 0
+    }
   ];
 
   int currentIndex = 0;
@@ -145,7 +148,11 @@ class QuestionProvider with ChangeNotifier {
   }
 
   void saveAnswer(String option) {
+    int selectedIndex = questions[currentIndex]['options'].indexOf(option);
     questions[currentIndex]['answers'] = option;
+    questions[currentIndex]['points'] = selectedIndex;
+    updateTotalPoints();
+
     notifyListeners();
     Timer(
       Duration(milliseconds: 400),
@@ -163,7 +170,10 @@ class QuestionProvider with ChangeNotifier {
     if (questions[currentIndex]['answers'] != "") {
       if (currentIndex < questions.length - 1) {
         currentIndex++;
+        updateProgressBar(currentIndex / 10);
         notifyListeners();
+      } else if (currentIndex == 9) {
+        updateProgressBar(1.0);
       }
     } else {
       Utils.toastMessage('Answer is required for the current question.');
@@ -173,15 +183,30 @@ class QuestionProvider with ChangeNotifier {
   void previousQuestion() {
     if (currentIndex > 0) {
       currentIndex--;
+      updateProgressBar(currentIndex / 10);
       notifyListeners();
+    } else if (currentIndex == 1) {
+      updateProgressBar(0.1);
     }
   }
 
   void clearAnswers() {
     for (var question in questions) {
       question['answers'] = "";
+      question['points'] = 0;
     }
     currentIndex = 0;
+    notifyListeners();
+  }
+
+  void updateIndex() {
+    currentIndex = 0;
+    progressBar = 0.1;
+    notifyListeners();
+  }
+
+  void updateTotalPoints() {
+    totalPoints = questions.fold(0, (sum, q) => sum + (q['points'] as int));
     notifyListeners();
   }
 
@@ -195,10 +220,12 @@ class QuestionProvider with ChangeNotifier {
     }
 
     return {
-      'questions': questions.map((q) {
+      'defaultQnA': questions.map((q) {
+        int value = q['options'].indexOf(q['answers']);
         return {
           'question': q['question'],
-          'answers': q['answers'],
+          'answer': q['answers'],
+          'value': value,
         };
       }).toList(),
     };

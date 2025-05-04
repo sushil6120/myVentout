@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/newFlow/reportScreen.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/reportScreen.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 
 import '../Utils/colors.dart';
 import '../newFlow/viewModel/utilViewModel.dart';

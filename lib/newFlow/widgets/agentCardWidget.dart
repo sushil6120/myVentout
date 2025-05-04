@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/homeScreen.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/assetConstants.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/homeScreen.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
 
 class AgentCardWidget extends StatefulWidget {
   final VoidCallback? onTap, onCardTap, onCallTap;
@@ -64,7 +64,7 @@ class _AgentCardWidgetState extends State<AgentCardWidget> {
         clipBehavior: Clip.none,
         children: [
           Container(
-            margin: const EdgeInsets.only(left: 0, right: 0, bottom: 22),
+            margin: const EdgeInsets.only(left: 8, right: 8, bottom: 22),
             padding: EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
               boxShadow: [
@@ -86,7 +86,6 @@ class _AgentCardWidgetState extends State<AgentCardWidget> {
                 children: [
                   Row(
                     children: [
-                      const SizedBox(width: 10),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -204,11 +203,11 @@ class _AgentCardWidgetState extends State<AgentCardWidget> {
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              widget.isFree == false &&
-                                      widget.discountPrice != 0 &&
+                              // widget.isFree == false &&
+                              widget.discountPrice != 0 &&
                                       widget.discountPrice!.isNotEmpty
                                   ? Text(
-                                      '₹${widget.normalPrice}',
+                                      '₹${widget.discountPrice} ',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.inter(
@@ -218,33 +217,45 @@ class _AgentCardWidgetState extends State<AgentCardWidget> {
                                       ),
                                     )
                                   : const SizedBox(),
-                              const SizedBox(width: 4),
-                              widget.isFree == true
-                                  ? Text(
-                                      'Free',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: height * 0.018,
-                                        color: const Color(0xffFF5C5C),
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    )
-                                  : Text(
-                                      widget.isHomeScreen == true
-                                          ? '₹ ${widget.oneMintPrice}/min'
-                                          : widget.discountPrice != 0
-                                              ? '₹${widget.discountPrice}'
-                                              : '₹${widget.price}',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.inter(
-                                        fontSize: height *
-                                            0.018, // Responsive font size
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
+                              // const SizedBox(width: 4),
+                              // widget.isFree == true
+                              //     ? Text(
+                              //         'Free',
+                              //         maxLines: 1,
+                              //         overflow: TextOverflow.ellipsis,
+                              //         style: TextStyle(
+                              //           fontSize: height * 0.018,
+                              //           color: const Color(0xffFF5C5C),
+                              //           fontWeight: FontWeight.w400,
+                              //         ),
+                              //       )
+                              //     :
+                              // Text(
+                              //         widget.isHomeScreen == true
+                              //             ? '₹ ${widget.oneMintPrice}/min'
+                              //             : widget.discountPrice != 0
+                              //                 ? '₹${widget.discountPrice}'
+                              //                 : '₹${widget.price}',
+                              //         maxLines: 1,
+                              //         overflow: TextOverflow.ellipsis,
+                              //         style: GoogleFonts.inter(
+                              //           fontSize: height *
+                              //               0.018, // Responsive font size
+                              //           color: primaryColor,
+                              //           fontWeight: FontWeight.w400,
+                              //         ),
+                              //       )
+                              Text(
+                                "₹${widget.price}",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.inter(
+                                  fontSize:
+                                      height * 0.018, // Responsive font size
+                                  color: primaryColor,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
                             ],
                           ),
                         ],
@@ -290,6 +301,8 @@ class _AgentCardWidgetState extends State<AgentCardWidget> {
                                 child: Center(
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       widget.isHomeScreen == true
                                           ? Icon(
@@ -302,7 +315,7 @@ class _AgentCardWidgetState extends State<AgentCardWidget> {
                                                   : primaryColor,
                                             )
                                           : SvgPicture.asset(
-                                              'assets/img/session.svg',
+                                              AppAssets.clock,
                                               width: widget.isHomeScreen == true
                                                   ? 18
                                                   : 16,
@@ -365,12 +378,12 @@ class _AgentCardWidgetState extends State<AgentCardWidget> {
           if (widget.isRisingStar == true)
             Positioned(
               top: 0,
-              left: 4,
+              left: 8,
               child: Container(
                   padding: const EdgeInsets.only(
                       left: 14, right: 14, top: 2, bottom: 2),
                   decoration: BoxDecoration(
-                      color: Color(0xff2B284C), // Badge background color
+                      color: popupColor, // Badge background color
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           bottomRight: Radius.circular(20))),

@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/components.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/viewModel/authViewModel.dart';
+import 'package:overcooked/Utils/assetConstants.dart';
+import 'package:overcooked/Utils/components.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/viewModel/authViewModel.dart';
 
 class DOBScreen extends StatefulWidget {
   Map<String, dynamic>? arguments;
@@ -23,7 +25,7 @@ class _DOBScreenState extends State<DOBScreen> {
   final TextEditingController _datecontroller = TextEditingController();
   final TextEditingController _monthcontroller = TextEditingController();
   final TextEditingController _yearcontroller = TextEditingController();
- 
+
   String? age, name, token, gender;
 
   FocusNode _dateFocusNode = FocusNode();
@@ -66,30 +68,56 @@ class _DOBScreenState extends State<DOBScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: height * 0.08),
-            Center(
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Welcome to ',
-                      style: TextStyle(
-                        fontFamily: 'LeagueSpartan',
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white.withOpacity(0.4),
-                      ),
-                    ),
-                    const TextSpan(
-                      text: 'VentOut',
-                      style: TextStyle(
-                        fontFamily: 'LeagueSpartan',
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+            // Center(
+            //   child: RichText(
+            //     text: TextSpan(
+            //       children: [
+            //         TextSpan(
+            //           text: 'Welcome to ',
+            //           style: TextStyle(
+            //             fontFamily: 'LeagueSpartan',
+            //             fontSize: 32,
+            //             fontWeight: FontWeight.w600,
+            //             color: Colors.white.withOpacity(0.4),
+            //           ),
+            //         ),
+            //         const TextSpan(
+            //           text: 'VO',
+            //           style: TextStyle(
+            //             fontFamily: 'LeagueSpartan',
+            //             fontSize: 32,
+            //             fontWeight: FontWeight.w600,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            Row(
+              children: [
+                Text(
+                  'Welcome to ',
+                  style: TextStyle(
+                    fontFamily: 'LeagueSpartan',
+                    fontSize: 32,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withOpacity(0.4),
+                  ),
                 ),
-              ),
+                Text(
+                  'our Clinic ',
+                  style: TextStyle(
+                    fontFamily: 'LeagueSpartan',
+                    fontSize: 32,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                // SizedBox(
+                //     height: 30,
+                //     width: 30,
+                //     child: SvgPicture.asset(AppAssets.ocLogo)),
+              ],
             ),
             SizedBox(height: height * 0.07),
             Text(
@@ -122,7 +150,7 @@ class _DOBScreenState extends State<DOBScreen> {
                       setState(() {
                         _datecontroller.text = value;
                       });
-      
+
                       if (value.length == 2) {
                         _dateFocusNode.nextFocus();
                       } else if (value.isEmpty) {
@@ -231,15 +259,18 @@ class _DOBScreenState extends State<DOBScreen> {
                     setState(() {
                       dob = DateTime.parse(
                           '${_yearcontroller.text}${_monthcontroller.text}${_datecontroller.text}');
-                      print('dob: $dob');
-                      age =
-                          (DateTime.now().difference(dob!).inDays / 365.2425)
-                              .round()
-                              .toString();
+                      print('dob: $dob - ${formatDate(dob.toString())}');
+                      age = (DateTime.now().difference(dob!).inDays / 365.2425)
+                          .round()
+                          .toString();
                       print(age);
                     });
                     value.registerationApis(
-                        name.toString(), age, gender, token, context);
+                        name.toString(),
+                        "$age , DOB - ${formatDate(dob.toString())}",
+                        gender,
+                        token,
+                        context);
                   }
                 }, width * 0.75, height * 0.05, 'Get Started!',
                     value.isLoading);
@@ -248,8 +279,7 @@ class _DOBScreenState extends State<DOBScreen> {
             // : const SizedBox(),
             const Spacer(),
             const Center(
-              child:
-                  Text('We use this to calculate the age on your profile.'),
+              child: Text('We use this to calculate the age on your profile.'),
             ),
           ],
         ),
@@ -257,5 +287,8 @@ class _DOBScreenState extends State<DOBScreen> {
     );
   }
 
-
+  String formatDate(String dob) {
+    DateTime parsedDate = DateTime.parse(dob);
+    return "${parsedDate.year}-${parsedDate.month.toString().padLeft(2, '0')}-${parsedDate.day.toString().padLeft(2, '0')}";
+  }
 }

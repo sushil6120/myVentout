@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/newFlow/reportScreen.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/reportScreen.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 
 import '../Utils/colors.dart';
 import 'viewModel/utilViewModel.dart';
@@ -100,7 +100,7 @@ class _HelpScreenState extends State<HelpScreen> {
   Future<void> _showAlertDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // Prevent dialog dismissal on outside tap
+      barrierDismissible: false, 
       builder: (BuildContext context) {
         return Consumer<UtilsViewModel>(
           builder: (context, value, child) {

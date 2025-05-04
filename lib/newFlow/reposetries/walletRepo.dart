@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:overcooked/newFlow/login/login.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 
 import '../model/availbiltyModel.dart';
 import '../model/paymentLogModel.dart';
@@ -17,11 +20,20 @@ class WalletRepo {
   WalletRepo(this.apiService);
 
   Future<WalletModel> fetchWalletBalance(String token) async {
+    SharedPreferencesViewModel sharedPreferencesViewModel =
+        SharedPreferencesViewModel();
     final response = await apiService.get(AppUrl.walletUrl, headers: {
       "Content-type": "application/json",
       "Authorization": "Bearer $token"
     });
     final Map<String, dynamic> dataJson = json.decode(response.body);
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      sharedPreferencesViewModel.logout().then(
+        (value) {
+          Get.offAll(LoginScreen());
+        },
+      );
+    }
     return WalletModel.fromJson(dataJson);
   }
 
@@ -50,7 +62,7 @@ class WalletRepo {
   }
 
   Future<AvailbiltiModel> addMoneyApi(
-      int amount, String token, bool isSuccess, BuildContext context) async {
+      int amount, String token, bool isSuccess,bool isGo,BuildContext context) async {
     final response = await apiService.patch(
       AppUrl.addMoneyUrl,
       headers: {
@@ -59,15 +71,16 @@ class WalletRepo {
       },
       body: {'addMoney': amount, "isSuccess": isSuccess},
     );
+    print("Add money Response : ${response.body}");
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = jsonDecode(response.body);
-     if(data['isSuccess'] == true){
-       Navigator.pushNamedAndRemoveUntil(
-        context,
-        RoutesName.WalletSuccessScreen,
-        (route) => false,
-      );
-     }
+      if (data['isSuccess'] == true && isGo == true) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          RoutesName.WalletSuccessScreen,
+          (route) => false,
+        );
+      }
     }
     return AvailbiltiModel.fromJson(json.decode(response.body));
   }

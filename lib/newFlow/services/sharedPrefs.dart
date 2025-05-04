@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ventout/main.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
+import 'package:overcooked/main.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesViewModel with ChangeNotifier {
@@ -18,6 +18,10 @@ class SharedPreferencesViewModel with ChangeNotifier {
   saveFreeStatus(bool? value) async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setBool('freeStatus', value!);
+  }
+  saveDialogStatus(bool? value) async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setBool('saveDialogStatus', value!);
   }
 
   saveTherapistId(String? therapistId) async {
@@ -78,6 +82,11 @@ class SharedPreferencesViewModel with ChangeNotifier {
     final bool? token = sp.getBool('freeStatus');
     return token;
   }
+  Future<bool?> getDialogStatus() async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    final bool? token = sp.getBool('saveDialogStatus');
+    return token;
+  }
 
   Future<String?> getTherapistId() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
@@ -124,6 +133,10 @@ class SharedPreferencesViewModel with ChangeNotifier {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString('name', token!);
   }
+  saveUserNumber(String? token) async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString('saveUserNumber', token!);
+  }
 
   saveSignUpToken(String? token) async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
@@ -139,6 +152,11 @@ class SharedPreferencesViewModel with ChangeNotifier {
   Future<String?> getUserName() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     final String? token = sp.getString('name');
+    return token;
+  }
+  Future<String?> getUserNumber() async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    final String? token = sp.getString('saveUserNumber');
     return token;
   }
 

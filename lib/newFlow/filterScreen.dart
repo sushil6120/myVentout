@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/newFlow/bottomNaveBar.dart';
-import 'package:ventout/newFlow/homeScreen.dart';
-import 'package:ventout/newFlow/model/allTherapistModel.dart';
-import 'package:ventout/newFlow/viewModel/homeViewModel.dart';
-import 'package:ventout/newFlow/viewModel/utilViewModel.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/newFlow/bottomNaveBar.dart';
+import 'package:overcooked/newFlow/homeScreen.dart';
+import 'package:overcooked/newFlow/model/allTherapistModel.dart';
+import 'package:overcooked/newFlow/viewModel/homeViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilViewModel.dart';
+import 'package:overcooked/newFlow/widgets/color.dart';
 
 class SortFilterScreen extends StatefulWidget {
   Map<String, dynamic>? arguments;
@@ -128,7 +129,7 @@ class _SortFilterScreenState extends State<SortFilterScreen> {
                                 groupValue: isHome == true
                                     ? value.selectedSort
                                     : value.selectedSessionSort,
-                                activeColor: greenColor,
+                                activeColor: primaryColor,
                                 onChanged: (values) {
                                   if (isHome == true) {
                                     value.setSort(values.toString());
@@ -175,10 +176,10 @@ class _SortFilterScreenState extends State<SortFilterScreen> {
                                     style: TextStyle(
                                       color: isHome == true
                                           ? isSelected
-                                              ? greenColor
+                                              ? primaryColor
                                               : Colors.white
                                           : isSelected
-                                              ? greenColor
+                                              ? primaryColor
                                               : Colors.white,
                                     ),
                                   ),
@@ -227,10 +228,10 @@ class _SortFilterScreenState extends State<SortFilterScreen> {
                               style: TextStyle(
                                 color: isHome == true
                                     ? isSelected
-                                        ? greenColor
+                                        ? primaryColor
                                         : Colors.white
                                     : isSelected
-                                        ? greenColor
+                                        ? primaryColor
                                         : Colors.white,
                               ),
                             ),
@@ -341,7 +342,7 @@ class _SortFilterScreenState extends State<SortFilterScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: const Color(0xffA2D9A0),
+                    backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)),
                     padding: const EdgeInsets.symmetric(

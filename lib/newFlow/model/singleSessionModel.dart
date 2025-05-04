@@ -1,134 +1,146 @@
 class SingleSessionModel {
-  String? sId;
-  BookedBy? bookedBy;
-  TherapistId? therapistId;
-  double? fees;
-  String? timeDuration;
-  String? startTime;
-  bool? isInstant;
-  String? bookingStatus;
-  String? agoraToken;
-  String? channelName;
-  String? bookingType;
-  bool? isCompleted;
-  String? createdAt;
-  String? updatedAt;
-  int? iV;
+  String sId;
+  BookedBy bookedBy;
+  TherapistId therapistId;
+  int fees;
+  String timeDuration;
+  String startTime;
+  bool isInstant;
+  String bookingStatus;
+  String bookingType;
+  bool isCompleted;
+  Slot slot;
+  String createdAt;
+  String updatedAt;
+  int iV;
 
-  SingleSessionModel(
-      {this.sId,
-      this.bookedBy,
-      this.therapistId,
-      this.fees,
-      this.timeDuration,
-      this.startTime,
-      this.isInstant,
-      this.bookingStatus,
-      this.agoraToken,
-      this.channelName,
-      this.bookingType,
-      this.isCompleted,
-      this.createdAt,
-      this.updatedAt,
-      this.iV});
+  SingleSessionModel({
+    this.sId = '',
+    BookedBy? bookedBy,
+    TherapistId? therapistId,
+    this.fees = 0,
+    this.timeDuration = '',
+    this.startTime = '',
+    this.isInstant = false,
+    this.bookingStatus = '',
+    this.bookingType = '',
+    this.isCompleted = false,
+    Slot? slot,
+    this.createdAt = '',
+    this.updatedAt = '',
+    this.iV = 0,
+  })  : bookedBy = bookedBy ?? BookedBy(),
+        therapistId = therapistId ?? TherapistId(),
+        slot = slot ?? Slot();
 
-  SingleSessionModel.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    bookedBy = json['bookedBy'] != null
-        ? new BookedBy.fromJson(json['bookedBy'])
-        : null;
-    therapistId = json['therapistId'] != null
-        ? new TherapistId.fromJson(json['therapistId'])
-        : null;
-    fees = json['fees'] != null
-        ? (json['fees'] is int
-            ? (json['fees'] as int).toDouble()
-            : json['fees'])
-        : null;
-    timeDuration = json['timeDuration'];
-    startTime = json['startTime'];
-    isInstant = json['isInstant'];
-    bookingStatus = json['bookingStatus'];
-    agoraToken = json['agoraToken'];
-    channelName = json['channelName'];
-    bookingType = json['bookingType'];
-    isCompleted = json['isCompleted'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    iV = json['__v'];
-  }
+  SingleSessionModel.fromJson(Map<String, dynamic> json)
+      : sId = json['_id'] ?? '',
+        bookedBy = json['bookedBy'] != null ? BookedBy.fromJson(json['bookedBy']) : BookedBy(),
+        therapistId = json['therapistId'] != null ? TherapistId.fromJson(json['therapistId']) : TherapistId(),
+        fees = json['fees'] ?? 0,
+        timeDuration = json['timeDuration'] ?? '',
+        startTime = json['startTime'] ?? '',
+        isInstant = json['isInstant'] ?? false,
+        bookingStatus = json['bookingStatus'] ?? '',
+        bookingType = json['bookingType'] ?? '',
+        isCompleted = json['isCompleted'] ?? false,
+        slot = json['slot'] != null ? Slot.fromJson(json['slot']) : Slot(),
+        createdAt = json['createdAt'] ?? '',
+        updatedAt = json['updatedAt'] ?? '',
+        iV = json['__v'] ?? 0;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    if (this.bookedBy != null) {
-      data['bookedBy'] = this.bookedBy!.toJson();
-    }
-    if (this.therapistId != null) {
-      data['therapistId'] = this.therapistId!.toJson();
-    }
-    data['fees'] = this.fees;
-    data['timeDuration'] = this.timeDuration;
-    data['startTime'] = this.startTime;
-    data['isInstant'] = this.isInstant;
-    data['bookingStatus'] = this.bookingStatus;
-    data['agoraToken'] = this.agoraToken;
-    data['channelName'] = this.channelName;
-    data['bookingType'] = this.bookingType;
-    data['isCompleted'] = this.isCompleted;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['__v'] = this.iV;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        '_id': sId,
+        'bookedBy': bookedBy.toJson(),
+        'therapistId': therapistId.toJson(),
+        'fees': fees,
+        'timeDuration': timeDuration,
+        'startTime': startTime,
+        'isInstant': isInstant,
+        'bookingStatus': bookingStatus,
+        'bookingType': bookingType,
+        'isCompleted': isCompleted,
+        'slot': slot.toJson(),
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
+        '__v': iV,
+      };
 }
 
 class BookedBy {
-  String? sId;
-  String? phone;
-  String? age;
-  String? name;
+  String sId;
+  String phone;
+  String age;
+  String gender;
+  String name;
 
-  BookedBy({this.sId, this.phone, this.age, this.name});
+  BookedBy({this.sId = '', this.phone = '', this.age = '', this.gender = '', this.name = ''});
 
-  BookedBy.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    phone = json['phone'];
-    age = json['age'];
-    name = json['name'];
-  }
+  BookedBy.fromJson(Map<String, dynamic> json)
+      : sId = json['_id'] ?? '',
+        phone = json['phone'] ?? '',
+        age = json['age'] ?? '',
+        gender = json['gender'] ?? '',
+        name = json['name'] ?? '';
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['phone'] = this.phone;
-    data['age'] = this.age;
-    data['name'] = this.name;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        '_id': sId,
+        'phone': phone,
+        'age': age,
+        'gender': gender,
+        'name': name,
+      };
 }
 
 class TherapistId {
-  String? sId;
-  String? phone;
-  String? name;
-  String? profileImg;
+  String sId;
+  String phone;
+  String gender;
+  String name;
+  String profileImg;
 
-  TherapistId({this.sId, this.phone, this.name, this.profileImg});
+  TherapistId({this.sId = '', this.phone = '', this.gender = '', this.name = '', this.profileImg = ''});
 
-  TherapistId.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    phone = json['phone'];
-    name = json['name'];
-    profileImg = json['profileImg'];
-  }
+  TherapistId.fromJson(Map<String, dynamic> json)
+      : sId = json['_id'] ?? '',
+        phone = json['phone'] ?? '',
+        gender = json['gender'] ?? '',
+        name = json['name'] ?? '',
+        profileImg = json['profileImg'] ?? '';
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['phone'] = this.phone;
-    data['name'] = this.name;
-    data['profileImg'] = this.profileImg;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        '_id': sId,
+        'phone': phone,
+        'gender': gender,
+        'name': name,
+        'profileImg': profileImg,
+      };
+}
+
+class Slot {
+  String sId;
+  String day;
+  String slot;
+  String createdAt;
+  String updatedAt;
+  int iV;
+
+  Slot({this.sId = '', this.day = '', this.slot = '', this.createdAt = '', this.updatedAt = '', this.iV = 0});
+
+  Slot.fromJson(Map<String, dynamic> json)
+      : sId = json['_id'] ?? '',
+        day = json['day'] ?? '',
+        slot = json['slot'] ?? '',
+        createdAt = json['createdAt'] ?? '',
+        updatedAt = json['updatedAt'] ?? '',
+        iV = json['__v'] ?? 0;
+
+  Map<String, dynamic> toJson() => {
+        '_id': sId,
+        'day': day,
+        'slot': slot,
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
+        '__v': iV,
+      };
 }

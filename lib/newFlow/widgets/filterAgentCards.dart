@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/homeScreen.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/assetConstants.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/responsive.dart';
 
 class FilterAgentCardWidget extends StatefulWidget {
   final VoidCallback? onTap, onCardTap, onCallTap;
@@ -104,7 +101,7 @@ class _FilterAgentCardWidgetState extends State<FilterAgentCardWidget> {
                                   ? CircleAvatar(
                                       backgroundColor: Colors.grey,
                                       radius:
-                                          height * 0.044, // Responsive radius
+                                          height * 0.044, 
                                       backgroundImage: const AssetImage(
                                           'assets/img/acc.png'),
                                     )
@@ -204,11 +201,11 @@ class _FilterAgentCardWidgetState extends State<FilterAgentCardWidget> {
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              widget.isFree == false &&
+                           
                                       widget.discountPrice != 0 &&
                                       widget.discountPrice!.isNotEmpty
                                   ? Text(
-                                      '₹${widget.normalPrice}',
+                                      '₹${widget.discountPrice}',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.inter(
@@ -231,11 +228,7 @@ class _FilterAgentCardWidgetState extends State<FilterAgentCardWidget> {
                                       ),
                                     )
                                   : Text(
-                                      widget.isHomeScreen == true
-                                          ? '₹ ${widget.oneMintPrice}/min'
-                                          : widget.discountPrice != 0
-                                              ? '₹${widget.discountPrice}'
-                                              : '₹${widget.price}',
+                                     "₹${widget.price.toString()}",
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.inter(
@@ -290,6 +283,7 @@ class _FilterAgentCardWidgetState extends State<FilterAgentCardWidget> {
                                 child: Center(
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       widget.isHomeScreen == true
                                           ? Icon(
@@ -302,7 +296,7 @@ class _FilterAgentCardWidgetState extends State<FilterAgentCardWidget> {
                                                   : primaryColor,
                                             )
                                           : SvgPicture.asset(
-                                              'assets/img/session.svg',
+                                              AppAssets.clock,
                                               width: widget.isHomeScreen == true
                                                   ? 18
                                                   : 16,

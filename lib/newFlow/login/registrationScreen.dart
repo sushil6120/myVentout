@@ -3,17 +3,20 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:ventout/Utils/components.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/viewModel/authViewModel.dart';
+import 'package:overcooked/Utils/components.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/viewModel/authViewModel.dart';
 
 import '../../Utils/colors.dart';
 
 // ignore: must_be_immutable
 class RegistrationScreen extends StatefulWidget {
+  Map<String, dynamic>? arguments;
+
   RegistrationScreen({
     super.key,
+    this.arguments,
   });
 
   @override
@@ -24,6 +27,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController textController = TextEditingController();
 
   bool autoValidate = false;
+  String? title = "";
+
+  @override
+  void initState() {
+    if (widget.arguments!['gender'] == "Male") {
+      title = "Mr. Self Aware";
+    } else if (widget.arguments!['gender'] == "Female") {
+      title = "Sweetheart";
+    } else {
+      title = "Cutie";
+    }
+    // TODO: implement initState
+    super.initState();
+  }
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
@@ -117,7 +134,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   Navigator.pop(context);
                 },
                 icon: Icon(Icons.arrow_back_ios_new_rounded)),
-   
             elevation: 0.0,
             toolbarHeight: height * 0.08,
             backgroundColor: Colors.transparent,
@@ -144,15 +160,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       //         fontWeight: FontWeight.w600),
                       //   ),
                       SizedBox(height: height * 0.02),
-                      Text(
-                        'What do we call you?',
-                        style: GoogleFonts.inter(
-                            color: Colors.white,
-                            height: 1,
-                            fontSize: context.deviceWidth * .094,
-                            fontWeight: FontWeight.w800),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          "Hello $title,\nWhat do we call you?",
+                          style: GoogleFonts.inter(
+                              color: Colors.white,
+                              height: 1,
+                              fontSize: context.deviceWidth * .084,
+                              fontWeight: FontWeight.w800),
+                        ),
                       ),
-                      SizedBox(height: height * 0.06),
+                      SizedBox(height: height * 0.04),
                       FormField<String?>(
                         validator: (value) {
                           var valueText = textController.text;
@@ -160,69 +179,73 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           return null;
                         },
                         builder: (state) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: width * .6,
-                                child: TextFormField(
-                                  controller: textController,
-                                  cursorColor: buttonColor,
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Enter name';
-                                    }
-                                    return null;
-                                  },
-                                  style: const TextStyle(
-                                      color: colorLightWhite,
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w600),
-                                  decoration: InputDecoration(
-                                    errorStyle: TextStyle(
-                                        color: errorColor,
-                                        fontSize: context.deviceWidth * .028),
-                                    hintText: 'Name',
-                                    hintStyle: GoogleFonts.inter(
-                                      color: colorDark3.withOpacity(.4),
-                                      fontSize: context.deviceWidth * .07,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: errorColor),
-                                    ),
-                                    focusedErrorBorder: UnderlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: colorLightWhite),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: colorLightWhite),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: colorLightWhite),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              if (state.hasError)
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: width * 0.2, bottom: 10),
-                                  child: Text(
-                                    state.errorText!,
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: width * .6,
+                                  child: TextFormField(
+                                    controller: textController,
+                                    cursorColor: buttonColor,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Enter name';
+                                      }
+                                      return null;
+                                    },
                                     style: const TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w300,
-                                        fontFamily: 'Inter'),
+                                        color: colorLightWhite,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w600),
+                                    decoration: InputDecoration(
+                                      errorStyle: TextStyle(
+                                          color: errorColor,
+                                          fontSize: context.deviceWidth * .028),
+                                      hintText: 'Name',
+                                      hintStyle: GoogleFonts.inter(
+                                        color: colorDark3.withOpacity(.4),
+                                        fontSize: context.deviceWidth * .07,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                      errorBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            const BorderSide(color: errorColor),
+                                      ),
+                                      focusedErrorBorder: UnderlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: colorLightWhite),
+                                      ),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: colorLightWhite),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: colorLightWhite),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                            ],
+                                if (state.hasError)
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: width * 0.2, bottom: 10),
+                                    child: Text(
+                                      state.errorText!,
+                                      style: const TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w300,
+                                          fontFamily: 'Inter'),
+                                    ),
+                                  ),
+                              ],
+                            ),
                           );
                         },
                       ),
@@ -239,8 +262,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 FocusScope.of(context).unfocus();
 
                 if (formKey.currentState!.validate()) {
-                  Navigator.pushNamed(context, RoutesName.genderSelectionScreen,
-                      arguments: {'name': textController.text});
+                  Navigator.pushNamed(context, RoutesName.dOBScreen,
+                      arguments: {
+                        'name': textController.text,
+                        "gender": widget.arguments!['gender']
+                      });
                 }
               }, width * 0.9, height * 0.057, 'Continue', value.isLoading);
             },

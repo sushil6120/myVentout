@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ventout/Utils/responsive.dart';
+import 'package:overcooked/Utils/responsive.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerWalletTransactionItem extends StatelessWidget {

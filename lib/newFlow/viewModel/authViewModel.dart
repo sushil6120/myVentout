@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ventout/newFlow/login/assessmentScreen.dart';
-import 'package:ventout/newFlow/model/therapistProfileModel.dart';
-import 'package:ventout/newFlow/reposetries/authRepo.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
+
+import 'package:overcooked/newFlow/login/consentScreen.dart';
+import 'package:overcooked/newFlow/model/therapistProfileModel.dart';
+import 'package:overcooked/newFlow/reposetries/authRepo.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
 
 import '../../Utils/utilsFunction.dart';
 import '../services/sharedPrefs.dart';
@@ -53,7 +54,25 @@ class AuthViewModel with ChangeNotifier {
     try {
       setLoading(true);
       final newData = await authRepo.otpVerifyApi(phone, otp, context);
-
+      if (newData.isRegistered == false) {
+        sharedPreferencesViewModel.saveSignUpToken(newData.token);
+        sharedPreferencesViewModel.saveUserId(newData.userId);
+        sharedPreferencesViewModel
+            .saveUserName(newData.name == null ? 'Name' : newData.name);
+        sharedPreferencesViewModel.saveFreeStatus(newData.freeStatus);
+        Navigator.pushNamed(context, RoutesName.genderSelectionScreen,
+            arguments: {'name': ""});
+      } else {
+        sharedPreferencesViewModel.saveToken(newData.token);
+        sharedPreferencesViewModel.saveUserId(newData.userId);
+        sharedPreferencesViewModel.saveUserName(newData.name);
+        sharedPreferencesViewModel.saveFreeStatus(newData.freeStatus);
+        print(newData.token);
+        Navigator.pushNamed(
+          context,
+          RoutesName.bottomNavBarView,
+        );
+      }
       setLoading(false);
 
       Utils.toastMessage(newData.message.toString());
@@ -73,7 +92,7 @@ class AuthViewModel with ChangeNotifier {
 
       setLoading(false);
       if (newData.message == 'User registered successfully!') {
-        Get.to(AssessmentScreen(),
+        Get.to(ConsentScreen(name: "$name"),
             transition: Transition.rightToLeft);
       }
 
@@ -85,15 +104,12 @@ class AuthViewModel with ChangeNotifier {
     }
   }
 
-  Future<void> prefrencesApis(String psychologistGender, language, category,
-      userType, token, List defaultQnA, BuildContext context) async {
+  Future<void> prefrencesApis(
+      String token, var defaultQnA, BuildContext context) async {
     try {
       setLoading(true);
-      final newData = await authRepo.prefrencesApi(psychologistGender, language,
-          category, userType, token, defaultQnA, context);
-
+      final newData = await authRepo.prefrencesApi(token, defaultQnA, context);
       setLoading(false);
-
       Utils.toastMessage(newData.message.toString());
       print(newData.message);
     } catch (error) {

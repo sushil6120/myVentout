@@ -3,9 +3,11 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ventout/newFlow/model/reaminTimeModel.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/model/reaminTimeModel.dart';
+import 'package:overcooked/newFlow/model/resultModel.dart';
+import 'package:overcooked/newFlow/model/userProfileModel.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 
 import '../model/allTherapistModel.dart';
 import '../model/availbiltyModel.dart';
@@ -29,7 +31,7 @@ class HomeRepo {
           "Authorization": "Bearer $token"
         },
       );
-
+        print('Response body: ${response.body}'); // Debug line
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('Response body: ${response.body}'); // Debug line
         var data = jsonDecode(response.body);
@@ -57,7 +59,8 @@ class HomeRepo {
   ) async {
     try {
       final response = await http.get(
-        Uri.parse('${AppUrl.filterTherapistApi}?sortByFees=&sortByRating=&experience=&language=&category=&gender=&page=1&limit=3'),
+        Uri.parse(
+            '${AppUrl.filterTherapistApi}?sortByFees=&sortByRating=&experience=&language=&category=&gender=&page=1&limit=3'),
         headers: {
           "Content-type": "application/json",
           "Authorization": "Bearer $token"
@@ -71,7 +74,7 @@ class HomeRepo {
           List<AllTherapistModel> therapist = data.map((item) {
             return AllTherapistModel.fromJson(item);
           }).toList();
-          
+
           return therapist;
         } else {
           throw Exception('Unexpected response format: ${data.runtimeType}');
@@ -253,4 +256,37 @@ class HomeRepo {
     print("Sushsil" + response.body);
     return remainTimeModel.fromJson(json.decode(response.body));
   }
+
+  Future<UserProfileModel> userProfilApi({
+    required String userId,
+      required String  token,
+  }) async {
+    final response = await apiService.get(
+      AppUrl.userProfileApi + userId,
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer $token"
+      },
+    );
+
+    print("UserProfileModel" + response.body);
+    return UserProfileModel.fromJson(json.decode(response.body));
+  }
+
+  Future<ResultModel> userResultApi({
+  
+      required String  token,
+  }) async {
+    final response = await apiService.get(
+      AppUrl.resultApi,
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer $token"
+      },
+    );
+
+    print("ResultModel" + response.body);
+    return ResultModel.fromJson(json.decode(response.body));
+  }
+
 }

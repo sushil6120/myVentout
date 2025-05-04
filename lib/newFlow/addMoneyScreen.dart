@@ -4,15 +4,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/Utils/colors.dart';
-import 'package:ventout/Utils/config.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/viewModel/razorPayviewModel.dart';
-import 'package:ventout/newFlow/viewModel/utilsClass.dart';
-import 'package:ventout/newFlow/viewModel/walletViewModel.dart';
-import 'package:ventout/newFlow/widgets/amountWidget.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/config.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/viewModel/razorPayviewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
+import 'package:overcooked/newFlow/viewModel/walletViewModel.dart';
+import 'package:overcooked/newFlow/widgets/amountWidget.dart';
+import 'package:overcooked/newFlow/widgets/color.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -87,7 +87,7 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
     //         amountToAdd.toString(), paymentSuccessResponse.paymentId, context)
     //     .then((value) {
     walletData.addMoneyApis(
-        amountToAdd.toInt(), token.toString(), true, context);
+        amountToAdd.toInt(), token.toString(), true, true,context);
     razorData.setLoading(false);
     // });
   }
@@ -107,13 +107,16 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
     }
 
     walletData.addMoneyApis(
-        amountToAdd.toInt(), token.toString(), false, context);
+        amountToAdd.toInt(), token.toString(), false,false, context);
     razorData.setLoading(false);
   }
 
   void _openRazorpayCheckout(double totalPrice) async {
     final razorApi = Provider.of<RazorPayViewzModel>(context, listen: false);
-
+SharedPreferencesViewModel sharedPreferencesViewModel =
+        SharedPreferencesViewModel();
+    String? name = await sharedPreferencesViewModel.getUserName();
+    String? number = await sharedPreferencesViewModel.getUserNumber();
     razorApi.setLoading(true);
 
     final response = await http.post(
@@ -125,19 +128,19 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = jsonDecode(response.body);
-      if (kDebugMode) {
+       if (kDebugMode) {
         print('hhhkkk' + response.body);
-        print('OrderId : ${data['orderId']}');
+            print('OrderId : ${data['orderId']}');
       }
       final options = {
         'key': razorKey,
         'amount': (totalPrice * 100).toString(),
-        'name': 'VentOut',
+        'name': 'Overcooked',
         'order_id': data['orderId'],
-        'image': 'https://i.ibb.co/WBTySmF/AppIcon.png',
+        'image': 'https://i.ibb.co/prjMQV15/IMG-9789-1.png',
         'theme': {'color': '#000000'},
-        'description': 'Ventout Payment',
-        'prefill': {'contact': '9810417636', 'email': 'sharma@swayye.club'},
+        'description': 'Overcooked Payment',
+          'prefill': {'contact': number, 'email': name},
         'external': {
           'wallets': ['paytm', 'phonepe'],
         }
@@ -295,7 +298,7 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          color: Color(0xffA2D9A0)),
+                                          color: primaryColor),
                                       child: Center(
                                           child: Text(
                                         'Proceed',

@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ventout/newFlow/model/categoryModel.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
+import 'package:get/get.dart';
+import 'package:in_app_update/in_app_update.dart';
+import 'package:overcooked/newFlow/model/categoryModel.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 
 import '../model/reviewModel.dart';
 import '../reposetries/utilsRepo.dart';
@@ -22,6 +25,51 @@ class UtilsViewModel with ChangeNotifier {
 
   List<CategoryModel> get dataList => _dataList;
   bool isLoading = false;
+
+  Future<void> checkForUpdates() async {
+    AppUpdateInfo? updateInfo = await InAppUpdate.checkForUpdate();
+    if (kDebugMode) {
+      print("Update Info : $updateInfo");
+    }
+    if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+      _showUpdateDialog();
+    }
+  }
+
+  void _showUpdateDialog() {
+    Get.dialog(AlertDialog(
+      backgroundColor: Colors.black,
+      title: const Text(
+        'Update Available',
+        style: TextStyle(color: Colors.white),
+      ),
+      content: const Text(
+        'A new update is available. Do you want to update?',
+        style: TextStyle(color: Colors.white),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () async {
+            Get.back();
+            InAppUpdate.performImmediateUpdate();
+          },
+          child: const Text(
+            'Update',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Get.back();
+          },
+          child: const Text(
+            'Later',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    ));
+  }
 
   setResetvalue() {
     selectedLanguage = '';
@@ -94,17 +142,13 @@ class UtilsViewModel with ChangeNotifier {
     }
   }
 
-  Future<void> sendNotificationApis(
-      String sessionid, BuildContext context) async {
+  Future<void> sendNotificationApis(String userId, BuildContext context) async {
     try {
-      setLoading(true);
-      final newData = await utilsRepo.sendNotificationApi(
-        sessionid,
+      await utilsRepo.sendNotificationApi(
+        userId,
       );
 
-      setLoading(false);
-
-      print("${newData.callerName}==========");
+   
     } catch (error) {
       setLoading(false);
 
@@ -140,8 +184,9 @@ class UtilsViewModel with ChangeNotifier {
         SharedPreferencesViewModel();
     try {
       final newData = await utilsRepo.fetchZegoCloudeApi();
-     
-      sharedPreferencesViewModel.saveAppId(newData.zegoCloud!.first.appId.toString());
+
+      sharedPreferencesViewModel
+          .saveAppId(newData.zegoCloud!.first.appId.toString());
       sharedPreferencesViewModel
           .saveSecreytKey(newData.zegoCloud!.first.secretKey);
     } catch (error) {

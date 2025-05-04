@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ventout/Utils/valueConstants.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-import 'package:ventout/newFlow/services/sharedPrefs.dart';
-import 'package:ventout/newFlow/shimmer/singleStoryShimmer.dart';
-import 'package:ventout/newFlow/viewModel/homeViewModel.dart';
-import 'package:ventout/newFlow/widgets/agentCardWidget.dart';
-import 'package:ventout/newFlow/widgets/color.dart';
+import 'package:overcooked/Utils/colors.dart';
+import 'package:overcooked/Utils/valueConstants.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:overcooked/newFlow/shimmer/singleStoryShimmer.dart';
+import 'package:overcooked/newFlow/viewModel/homeViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/slotsViewModel.dart';
+import 'package:overcooked/newFlow/widgets/agentCardWidget.dart';
+import 'package:overcooked/newFlow/widgets/selectSlotBottomSheet.dart';
 import 'package:provider/provider.dart';
 
 import 'model/allTherapistModel.dart';
-import 'viewModel/utilsClass.dart';
+import 'viewModel/walletViewModel.dart';
 
 class StoryScreen extends StatefulWidget {
   Map<String, dynamic>? arguments;
@@ -24,11 +26,14 @@ class StoryScreen extends StatefulWidget {
 class _StoryScreenState extends State<StoryScreen> {
   String? id, cateId;
   Stream<List<AllTherapistModel>>? _theraPistStream;
+  final scrollController = ScrollController();
 
   SharedPreferencesViewModel sharedPreferencesViewModel =
       SharedPreferencesViewModel();
   String? token, userId;
   bool? freeStatus;
+  String? balance;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -39,6 +44,8 @@ class _StoryScreenState extends State<StoryScreen> {
     if (kDebugMode) {
       print(id);
     }
+    final walletData = Provider.of<WalletViewModel>(context, listen: false);
+
     final getHomeData = Provider.of<HomeViewModel>(context, listen: false);
     Future.wait([sharedPreferencesViewModel.getFreeStatus()]).then((value) {
       freeStatus = value[0];
@@ -54,6 +61,8 @@ class _StoryScreenState extends State<StoryScreen> {
       setState(() {
         _theraPistStream = getHomeData.therapistByCateStream(cateId.toString());
       });
+      walletData.fetchWalletBalanceAPi(token == null ? value[0]! : token!);
+
       print(value[2]);
     });
   }
@@ -89,6 +98,7 @@ class _StoryScreenState extends State<StoryScreen> {
               } else if (value.singleStoryModel == null) {
                 return SingleStoryShimmer();
               } else {
+                balance = value.walletModel!.balance.toString();
                 return SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,9 +160,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                       value.singleStoryModel!.categoryId![0] ==
                                               null
                                           ? ''
-                                          : value.singleStoryModel!
-                                              .categoryId![0].categoryName
-                                              .toString(),
+                                          : "${value.singleStoryModel!.categoryId![0].emoji.toString()}${value.singleStoryModel!.categoryId![0].categoryName.toString()}",
                                       style:
                                           const TextStyle(color: Colors.white),
                                     ),
@@ -198,7 +206,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                     children: [
                                       Icon(
                                         CupertinoIcons.checkmark_seal_fill,
-                                        color: greenColor,
+                                        color: primaryColor,
                                       ),
                                       const SizedBox(
                                         width: 5,
@@ -222,6 +230,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                 ListView.builder(
                                   itemCount: snapshot.data!.length,
                                   shrinkWrap: true,
+                                  controller: scrollController,
                                   physics: const ScrollPhysics(),
                                   itemBuilder: (context, index) {
                                     var item = snapshot.data!.toList();
@@ -236,137 +245,136 @@ class _StoryScreenState extends State<StoryScreen> {
 
                                     String formattedName =
                                         capitalizeName(item[index].name!);
-                                    return AgentCardWidget(
-                                      normalPrice:
-                                          item[index].fees!.toStringAsFixed(0),
-                                      rating: item[index].avgRating!.toInt(),
-                                      onCallTap: () {
-                                        int? balancess =
-                                            item[index].discountedFees != null
-                                                ? item[index].discountedFees
-                                                : item[index].fees!;
-                                        if (value.walletModel!.balance! <
-                                                balancess! &&
-                                            freeStatus == false) {
-                                          UtilsClass().showRatingBottomSheet(
-                                              context,
-                                              item[index].discountedFees != 0
-                                                  ? item[index]
-                                                      .discountedFees!
-                                                      .toInt()
-                                                  : item[index].fees!.toInt(),
-                                              token.toString(),
-                                              '45');
-                                        } else if (item[index].isAvailable ==
-                                            false) {
-                                          UtilsClass().showCustomDialog(
-                                              context,
-                                              item[index].isFree == true &&
-                                                      freeStatus == true
-                                                  ? '0'
-                                                  : item[index].fees == null
-                                                      ? '0'
+                                    return Consumer<SlotsViewModel>(
+                                      builder: (context, value2, child) =>
+                                          AgentCardWidget(
+                                        normalPrice: item[index]
+                                            .fees!
+                                            .toStringAsFixed(0),
+                                        rating: item[index].avgRating!.toInt(),
+                                        onCallTap: () {
+                                          value2.updateSlotId("");
+                                          DateTime now = DateTime.now();
+                                          List<String> days = [
+                                            'Sunday',
+                                            'Monday',
+                                            'Tuesday',
+                                            'Wednesday',
+                                            'Thursday',
+                                            'Friday',
+                                            'Saturday'
+                                          ];
+                                          String? day = days[now.weekday - 1];
+                                          value2.updateIndex(now.weekday - 1);
+                                          double feesValue = (item[index]
+                                                      .discountedFees
+                                                      .toString()
+                                                      .isNotEmpty
+                                                  ? item[index].discountedFees
+                                                  : item[index].fees) is String
+                                              ? double.tryParse(item[index]
+                                                          .discountedFees
+                                                          .toString()
+                                                          .isNotEmpty
+                                                      ? item[index]
+                                                          .discountedFees
+                                                          .toString()
                                                       : item[index]
-                                                                  .discountedFees ==
-                                                              0
-                                                          ? item[index]
-                                                              .fees
-                                                              .toString()
-                                                          : item[index]
-                                                              .discountedFees
-                                                              .toString(),
-                                              token,
-                                              item[index].sId,
-                                              item[index].name,
-                                              item[index].profileImg,
-                                              item[index].name,
-                                              item[index].feesPerMinute,
-                                              '45',
-                                              userId,
-                                              item[index].sId,
-                                              item[index].name,
-                                              true);
-                                        } else {
-                                          UtilsClass().showDialogWithoutTimer(
-                                              context,
-                                              item[index].isFree == true &&
-                                                      freeStatus == true
-                                                  ? '0'
-                                                  : item[index].fees == null
-                                                      ? '0'
-                                                      : item[index]
-                                                                  .discountedFees ==
-                                                              0
-                                                          ? item[index]
-                                                              .fees
-                                                              .toString()
-                                                          : item[index]
-                                                              .discountedFees
-                                                              .toString(),
-                                              token,
-                                              item[index].sId,
-                                              item[index].name,
-                                              item[index].profileImg,
-                                              item[index].name,
-                                              item[index].feesPerMinute,
-                                              '45',
-                                              userId,
-                                              item[index].sId,
-                                              item[index].name,
-                                              () {},
-                                              true);
-                                        }
-                                      },
-                                      isRisingStar: item[index].risingStar,
-                                      isHomeScreen: false,
-                                      isAvailble: item[index].isAvailable,
-                                      isFree: false,
-                                      name: "$formattedName",
-                                      // Fixing the language access issue
-                                      language: item[index].language!,
-                                      price: item[index].fees == null
-                                          ? ''
-                                          : item[index]
-                                              .fees!
-                                              .toStringAsFixed(0),
-                                      oneMintPrice: item[index]
-                                                      .discountedFeesPerMinute !=
-                                                  null ||
-                                              item[index]
-                                                      .discountedFeesPerMinute !=
-                                                  0
-                                          ? item[index]
-                                              .discountedFeesPerMinute!
-                                              .toStringAsFixed(0)
-                                          : item[index].feesPerMinute != 0
-                                              ? item[index]
-                                                  .feesPerMinute!
-                                                  .toStringAsFixed(0)
-                                              : '',
-                                      discountPrice:
-                                          item[index].discountedFees == null
-                                              ? ''
-                                              : item[index]
-                                                  .discountedFees!
-                                                  .toStringAsFixed(0),
-                                      theraPistCate:
-                                          item[index].psychologistCategory,
-                                      theraPistSubCate:
-                                          item[index].qualification,
-                                      image: item[index].profileImg,
-                                      onTap: () {
-                                        setState(() {});
-                                        Navigator.pop(context);
-                                      },
-                                      onCardTap: () {
-                                        Navigator.pushNamed(
-                                            context, RoutesName.expertScreen,
-                                            arguments: {
-                                              'id': item[index].sId,
-                                              "balance":
-                                                  value.walletModel!.balance
-                                            });
-                                      },
+                                                          .fees
+                                                          .toString()) ??
+                                                  0.0
+                                              : (item[index]
+                                                          .discountedFees
+                                                          .toString()
+                                                          .isNotEmpty
+                                                      ? item[index]
+                                                          .discountedFees
+                                                      : item[index].fees)!
+                                                  .toDouble();
+                                          value2.fetchAvailableSlotsAPi(
+                                              item[index].sId, "$day");
+
+                                          double walletBalance =
+                                              double.tryParse(
+                                                      balance.toString()) ??
+                                                  0.0;
+                                          double remainingFees = 0.0;
+                                          if (feesValue > walletBalance) {
+                                            remainingFees =
+                                                feesValue - walletBalance;
+                                          } else {
+                                            remainingFees = 0.0;
+                                          }
+                                          SelectSlotBottomSheet(
+                                            feesValue.toString(),
+                                            userId: userId.toString(),
+                                            item[index].sId,
+                                            remainingFees,
+                                            token,
+                                            scrollController,
+                                            context,
+                                          );
+                                        },
+                                        isRisingStar: item[index].risingStar,
+                                        isHomeScreen: false,
+                                        isAvailble: item[index].isAvailable,
+                                        isFree: false,
+                                        name: "$formattedName",
+                                        // Fixing the language access issue
+                                        language: item[index].language!,
+                                        price: item[index]
+                                                .discountedFees
+                                                .toString()
+                                                .isNotEmpty
+                                            ? item[index]
+                                                .discountedFees
+                                                .toString()
+                                            : item[index].fees.toString(),
+                                        oneMintPrice: item[index]
+                                                        .discountedFeesPerMinute !=
+                                                    null ||
+                                                item[index]
+                                                        .discountedFeesPerMinute !=
+                                                    0
+                                            ? item[index]
+                                                .discountedFeesPerMinute!
+                                                .toStringAsFixed(0)
+                                            : item[index].feesPerMinute != 0
+                                                ? item[index]
+                                                    .feesPerMinute!
+                                                    .toStringAsFixed(0)
+                                                : '',
+                                        discountPrice: item[index]
+                                                    .discountedFees ==
+                                                0
+                                            ? ''
+                                            : item[index]
+                                                        .fees!
+                                                        .toStringAsFixed(0) ==
+                                                    0
+                                                ? ''
+                                                : item[index]
+                                                    .fees!
+                                                    .toStringAsFixed(0),
+                                        theraPistCate:
+                                            item[index].psychologistCategory,
+                                        theraPistSubCate:
+                                            item[index].qualification,
+                                        image: item[index].profileImg,
+                                        onTap: () {
+                                          setState(() {});
+                                          Navigator.pop(context);
+                                        },
+                                        onCardTap: () {
+                                          Navigator.pushNamed(
+                                              context, RoutesName.expertScreen,
+                                              arguments: {
+                                                'id': item[index].sId,
+                                                "balance":
+                                                    value.walletModel!.balance
+                                              });
+                                        },
+                                      ),
                                     );
                                   },
                                 ),

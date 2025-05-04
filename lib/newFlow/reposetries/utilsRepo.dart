@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
 
 import '../../Utils/utilsFunction.dart';
 import '../model/categoryModel.dart';
@@ -32,18 +32,23 @@ class UtilsRepo {
     return dataJson.map((json) => ReviewModel.fromJson(json)).toList();
   }
 
-  Future<SendNotificationModel> sendNotificationApi(String sessionid) async {
-    final response = await http.patch(
-      Uri.parse(AppUrl.baseUrl + AppUrl.sendNotificationUrl + sessionid),
-      headers: {
-        "Content-type": "application/json",
-      },
-    );
+  Future<void> sendNotificationApi(String userId) async {
+    final response =
+        await http.post(Uri.parse(AppUrl.baseUrl + AppUrl.sendNotificationUrl),
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: jsonEncode({
+              {
+                "title": "Overcooked",
+                "description": "New message..",
+                "userId": userId
+              }
+            }));
 
-    print(response.body);
+    print("Goooddd" + response.body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return SendNotificationModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to send notification');
     }
@@ -86,21 +91,20 @@ class UtilsRepo {
       throw Exception('Failed to send notification');
     }
   }
-    // =----
+  // =----
 
-    Future<ZegoCloudeModel> fetchZegoCloudeApi() async {
-      final response = await http.get(Uri.parse(AppUrl.zegoCloudeApi),
-          headers: {"Content-type": "application/json"});
-      final dataJson = json.decode(response.body);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        if (kDebugMode) {
-          print("ZegoCloude Data : ${response.body}");
-        }
-      }
+  Future<ZegoCloudeModel> fetchZegoCloudeApi() async {
+    final response = await http.get(Uri.parse(AppUrl.zegoCloudeApi),
+        headers: {"Content-type": "application/json"});
+    final dataJson = json.decode(response.body);
+    if (response.statusCode == 200 || response.statusCode == 201) {
       if (kDebugMode) {
         print("ZegoCloude Data : ${response.body}");
       }
-      return ZegoCloudeModel.fromJson(dataJson);
     }
-  
+    if (kDebugMode) {
+      print("ZegoCloude Data : ${response.body}");
+    }
+    return ZegoCloudeModel.fromJson(dataJson);
+  }
 }

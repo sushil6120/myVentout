@@ -1,13 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ventout/Utils/utilsFunction.dart';
-import 'package:ventout/newFlow/model/allTherapistModel.dart';
-import 'package:ventout/newFlow/model/singleSessionModel.dart';
-import 'package:ventout/newFlow/model/singleStoryModel.dart';
-import 'package:ventout/newFlow/model/storyModel.dart';
-import 'package:ventout/newFlow/model/therapistByCateModel.dart';
-import 'package:ventout/newFlow/reposetries/homeRepo.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
+import 'package:overcooked/newFlow/model/allTherapistModel.dart';
+import 'package:overcooked/newFlow/model/resultModel.dart';
+import 'package:overcooked/newFlow/model/singleStoryModel.dart';
+import 'package:overcooked/newFlow/model/storyModel.dart';
+import 'package:overcooked/newFlow/model/userProfileModel.dart';
+import 'package:overcooked/newFlow/reposetries/homeRepo.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 
 import '../model/walletModel.dart';
 import '../reposetries/walletRepo.dart';
@@ -21,19 +21,38 @@ class HomeViewModel with ChangeNotifier {
   List<StoryModel> _storyList = [];
   List<AllTherapistModel> therapistData = [];
   List<AllTherapistModel> filterTherapistData = [];
+  List<Data> userResultData = [];
 
   SingleStoryModel? singleStoryModel;
+  UserProfileModel? userProfileModel;
   WalletModel? walletModel;
-  bool isEmpty = false;
 
-  String? cateId;
-
-  List<StoryModel> get storyList => _storyList;
-
+  bool isFirstLoad = true;
   bool isLoading = false;
+  List<AllTherapistModel> cachedTherapists = [];
 
+  SharedPreferencesViewModel sharedPreferencesViewModel =
+      SharedPreferencesViewModel();
+  bool isFirstFilterLoad = true;
+  bool isEmpty = false;
+  String? cateId;
+  List<StoryModel> get storyList => _storyList;
+  bool storyLoading = false;
   bool isCate = false;
   bool statusLoading = false;
+
+  List<AllTherapistModel> cachedFilterData = []; // Cache for filter data
+
+
+  void setFirstLoadComplete() {
+    isFirstLoad = false;
+    notifyListeners();
+  }
+
+  void setFirstFilterLoadComplete() {
+    isFirstFilterLoad = false;
+    notifyListeners();
+  }
 
   setIsEmpty(bool value) {
     isEmpty = value;
@@ -47,6 +66,11 @@ class HomeViewModel with ChangeNotifier {
 
   setLoading(bool value) {
     isLoading = value;
+    notifyListeners();
+  }
+
+  setStoryLoading(bool value) {
+    storyLoading = value;
     // notifyListeners();
   }
 
@@ -60,19 +84,29 @@ class HomeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-   Stream<List<AllTherapistModel>> therapistStream(
-    String sortByFees, category, language, sortByRating, experience, token) async* {
+  Stream<List<AllTherapistModel>> therapistStream(
+      String sortByFees, category, language, sortByRating, experience, token,
+      {bool? isrefresh}) async* {
     int currentPage = 1;
     bool hasMoreData = true;
     List<AllTherapistModel> therapistList = [];
     Set<String> therapistIds = {};
+
+    if (isrefresh == true) {
+      isFirstLoad == true;
+      // cachedTherapists.clear();
+      notifyListeners();
+    } else if (!isFirstLoad && cachedTherapists.isNotEmpty) {
+      yield cachedTherapists;
+    }
 
     try {
       while (hasMoreData) {
         isLoading = true;
         notifyListeners();
 
-        List<AllTherapistModel> fetchedTherapists = await homeRepo.fetchTherapistApi(
+        List<AllTherapistModel> fetchedTherapists =
+            await homeRepo.fetchTherapistApi(
           sortByFees,
           category,
           language,
@@ -81,24 +115,31 @@ class HomeViewModel with ChangeNotifier {
           token,
           currentPage.toString(),
         );
-        fetchedTherapists.removeWhere((therapist) => therapistIds.contains(therapist.sId));
+        fetchedTherapists
+            .removeWhere((therapist) => therapistIds.contains(therapist.sId));
 
         therapistList.addAll(fetchedTherapists);
-        therapistIds.addAll(fetchedTherapists.map((therapist) => therapist.sId.toString()));
+        therapistIds.addAll(
+            fetchedTherapists.map((therapist) => therapist.sId.toString()));
 
         if (fetchedTherapists.isEmpty) {
           hasMoreData = false;
         } else {
+          cachedTherapists = List.from(therapistList);
+
           yield therapistList;
           currentPage++;
         }
-
         isLoading = false;
         notifyListeners();
         await Future.delayed(Duration(seconds: 3));
       }
     } catch (e) {
       print("Error in stream: $e");
+
+      if (cachedTherapists.isNotEmpty) {
+        yield cachedTherapists;
+      }
     }
   }
 
@@ -158,6 +199,7 @@ class HomeViewModel with ChangeNotifier {
     try {
       setStatus(true);
       final newData = await homeRepo.bookingStatusApi(token, status, id);
+
       Future.delayed(Duration(seconds: 4), () {
         setStatus(false);
       });
@@ -171,28 +213,49 @@ class HomeViewModel with ChangeNotifier {
 
   Future<void> fetchStoryAPi() async {
     try {
-      setLoading(true);
+      setStoryLoading(true);
       _storyList = await homeRepo.fetchStory();
 
       notifyListeners();
-      setLoading(false);
+      setStoryLoading(false);
       print(_storyList);
     } catch (error) {
-      setLoading(false);
+      setStoryLoading(false);
       print(error);
     }
   }
-  Future<void> fetchFilterTherapistAPi(String token) async {
-    try {
-      setLoading(true);
-      filterTherapistData = await homeRepo.filterTherapistApi(token);
 
+  Future<void> fetchFilterTherapistAPi(String token, {bool? isRefresh}) async {
+    if (isRefresh == true) {
+      isFirstFilterLoad == true;
+      setLoading(true);
+      filterTherapistData.clear();
+      cachedFilterData.clear();
       notifyListeners();
+    } else if (!isFirstFilterLoad &&
+        cachedFilterData.isNotEmpty &&
+        isRefresh != true) {
+      filterTherapistData = List.from(cachedFilterData);
+      notifyListeners();
+      return;
+    } else {
+      setLoading(true);
+      notifyListeners();
+    }
+    try {
+      var filterTherapistDatas = await homeRepo.filterTherapistApi(token);
+      filterTherapistData = filterTherapistDatas;
+          
+      cachedFilterData = List.from(filterTherapistData);
+      if (isFirstFilterLoad) {
+        setFirstFilterLoadComplete();
+      }
       setLoading(false);
-      print(_storyList);
+      notifyListeners();
     } catch (error) {
       setLoading(false);
-      print(error);
+      notifyListeners();
+      print("Error in fetchFilterTherapistAPi: $error");
     }
   }
 
@@ -239,8 +302,55 @@ class HomeViewModel with ChangeNotifier {
     }
   }
 
+  Future<void> userProfileApis({
+    required String userId,
+    required String token,
+  }) async {
+    SharedPreferencesViewModel sharedPreferencesViewModel =
+        SharedPreferencesViewModel();
+    setStatus(true);
+    try {
+      final newData =
+          await homeRepo.userProfilApi(userId: userId, token: token);
+      userProfileModel = newData;
+      if (userProfileModel != null) {
+        sharedPreferencesViewModel.saveUserNumber(newData.phone);
+        sharedPreferencesViewModel.saveUserName(newData.name.capitalizeFirst);
+      }
+      notifyListeners();
+    } catch (error) {
+      setStatus(false);
+    }
+  }
+
+  Future<void> userResultApis({
+    required String totalScore,
+    required String token,
+  }) async {
+    userResultData.clear();
+    setStatus(true);
+    try {
+      final newData = await homeRepo.userResultApi(token: token);
+
+      final int score = int.tryParse(totalScore) ?? 0;
+
+      final filteredData = newData.data!.where((element) {
+        final rangeParts = element.score?.split('-');
+        if (rangeParts != null && rangeParts.length == 2) {
+          final int min = int.tryParse(rangeParts[0].trim()) ?? 0;
+          final int max = int.tryParse(rangeParts[1].trim()) ?? 0;
+          return score >= min && score <= max;
+        }
+        return false;
+      }).toList();
+
+      userResultData.addAll(filteredData);
+      setStatus(false);
+      notifyListeners();
+    } catch (error) {
+      setStatus(false);
+    }
+  }
 
   // ---------------
-
-  
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:ventout/newFlow/model/paymentLogModel.dart';
+import 'package:overcooked/newFlow/model/paymentLogModel.dart';
 import '../../Utils/utilsFunction.dart';
 import '../model/walletHistoryModel.dart';
 import '../model/walletModel.dart';
@@ -74,7 +74,7 @@ class WalletViewModel with ChangeNotifier {
   }
 
   Future<void> addMoneyApis(
-      int amount, String token, bool isSuccess, BuildContext context) async {
+      int amount, String token, bool isSuccess, bool isGo,BuildContext context) async {
     if (amount <= 0 || amount.isNaN || amount.isInfinite) {
       Utils.toastMessage('Invalid amount');
       return;
@@ -83,7 +83,7 @@ class WalletViewModel with ChangeNotifier {
     try {
       setLoading(true);
       final newData =
-          await walletRepo.addMoneyApi(amount, token, isSuccess, context);
+          await walletRepo.addMoneyApi(amount, token, isSuccess, isGo,context);
 
       setLoading(false);
 

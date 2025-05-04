@@ -2,24 +2,27 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:overcooked/firebase_options.dart';
+import 'package:overcooked/newFlow/reposetries/authRepo.dart';
+import 'package:overcooked/newFlow/reposetries/homeRepo.dart';
+import 'package:overcooked/newFlow/reposetries/slotsRepo.dart';
+import 'package:overcooked/newFlow/therapistChatscreens/viewmodels/chatProvider.dart';
+import 'package:overcooked/newFlow/viewModel/slotsViewModel.dart';
+import 'package:overcooked/pushNotifications.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ventout/Utils/scrollBehavior.dart';
-import 'package:ventout/firebase_options.dart';
-import 'package:ventout/newFlow/reposetries/authRepo.dart';
-import 'package:ventout/newFlow/reposetries/homeRepo.dart';
-import 'package:ventout/newFlow/reposetries/razorPayRepo.dart';
-import 'package:ventout/newFlow/reposetries/sessionRepo.dart';
-import 'package:ventout/newFlow/reposetries/walletRepo.dart';
-import 'package:ventout/newFlow/routes/route.dart';
-import 'package:ventout/newFlow/splashScreens/splash_screen1.dart';
-import 'package:ventout/newFlow/viewModel/chatViewModel.dart';
-import 'package:ventout/newFlow/viewModel/homeViewModel.dart';
-import 'package:ventout/newFlow/viewModel/razorPayviewModel.dart';
-import 'package:ventout/newFlow/viewModel/sessionViewModel.dart';
-import 'package:ventout/newFlow/viewModel/utilViewModel.dart';
-import 'package:ventout/newFlow/viewModel/walletViewModel.dart';
-import 'package:ventout/pushNotifications.dart';
+import 'package:overcooked/Utils/scrollBehavior.dart';
+import 'package:overcooked/newFlow/reposetries/razorPayRepo.dart';
+import 'package:overcooked/newFlow/reposetries/sessionRepo.dart';
+import 'package:overcooked/newFlow/reposetries/walletRepo.dart';
+import 'package:overcooked/newFlow/routes/route.dart';
+import 'package:overcooked/newFlow/splashScreens/splash_screen1.dart';
+import 'package:overcooked/newFlow/viewModel/chatViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/homeViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/razorPayviewModel.dart';
+import 'package:overcooked/newFlow/viewModel/sessionViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/walletViewModel.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'newFlow/reposetries/utilsRepo.dart';
@@ -43,9 +46,8 @@ void main() async {
       ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(
         [ZegoUIKitSignalingPlugin()],
       );
-
       runApp(ProviderScope(
-          child: GossipMark(
+          child: OverCooked(
         navigatorKey: navigatorKey,
       )));
     });
@@ -54,23 +56,24 @@ void main() async {
   }
 }
 
-class GossipMark extends StatefulWidget {
+class OverCooked extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
 
-  const GossipMark({
+  const OverCooked({
     required this.navigatorKey,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<GossipMark> createState() => _GossipMarkState();
+  State<OverCooked> createState() => _OverCookedState();
 }
 
-class _GossipMarkState extends State<GossipMark> {
+class _OverCookedState extends State<OverCooked> {
   @override
   Widget build(BuildContext context) {
     final apiService = ApiService(AppUrl.baseUrl, context);
     final authrepo = AuthRepo(apiService);
+    final slotsRepo = SlotsRepo(apiService);
     final homeRepo = HomeRepo(apiService);
     final utilsRepo = UtilsRepo(apiService);
     final walletRepo = WalletRepo(apiService);
@@ -80,6 +83,8 @@ class _GossipMarkState extends State<GossipMark> {
     return provider.MultiProvider(
       providers: [
         provider.ChangeNotifierProvider(create: (_) => AuthViewModel(authrepo)),
+        provider.ChangeNotifierProvider(
+            create: (_) => SlotsViewModel(slotsRepo)),
         provider.ChangeNotifierProvider(
             create: (_) => HomeViewModel(homeRepo, walletRepo)),
         provider.ChangeNotifierProvider(
@@ -92,16 +97,17 @@ class _GossipMarkState extends State<GossipMark> {
         provider.ChangeNotifierProvider(
             create: (_) => RazorPayViewzModel(razor)),
         provider.ChangeNotifierProvider(create: (_) => QuestionProvider()),
+        provider.ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: GetMaterialApp(
         navigatorKey: widget.navigatorKey,
-        title: 'VentOut.',
+        title: 'OverCooked.',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          fontFamily: 'Poppins',
+          fontFamily: 'Roboto',
           brightness: Brightness.dark,
         ),
-        home: const SplashScreen10(),
+        home: SplashScreen10(),
         onGenerateRoute: Routes.generateRoute,
         scrollBehavior: MyBehavior(),
       ),

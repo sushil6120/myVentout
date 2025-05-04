@@ -1,5 +1,6 @@
 class AllTherapistModel {
   bool? popupBool;
+  bool? myTherapist;
   String? sId;
   String? phone;
   int? iV;
@@ -38,6 +39,7 @@ class AllTherapistModel {
 
   AllTherapistModel({
     this.popupBool,
+    this.myTherapist,
     this.sId,
     this.phone,
     this.iV,
@@ -78,6 +80,7 @@ class AllTherapistModel {
   factory AllTherapistModel.fromJson(Map<String, dynamic> json) {
     return AllTherapistModel(
       popupBool: json['popupBool'],
+      myTherapist: json['myTherapist'],
       sId: json['_id'],
       phone: json['phone'],
       iV: json['__v'],
@@ -128,6 +131,7 @@ class AllTherapistModel {
   Map<String, dynamic> toJson() {
     return {
       'popupBool': popupBool,
+      'myTherapist': myTherapist,
       '_id': sId,
       'phone': phone,
       '__v': iV,

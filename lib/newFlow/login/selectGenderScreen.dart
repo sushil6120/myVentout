@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ventout/Utils/components.dart';
-import 'package:ventout/Utils/responsive.dart';
-import 'package:ventout/newFlow/routes/routeName.dart';
-
+import 'package:overcooked/Utils/components.dart';
+import 'package:overcooked/Utils/responsive.dart';
+import 'package:overcooked/newFlow/routes/routeName.dart';
 import '../../Utils/colors.dart';
 import '../../Utils/utilsFunction.dart';
 
@@ -27,7 +26,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
     setState(() {
       _selectedGender = gender;
       if (_selectedGender.isNotEmpty || _selectedGender != '') {
-        Navigator.pushNamed(context, RoutesName.dOBScreen,
+        Navigator.pushNamed(context, RoutesName.registrationScreen,
             arguments: {'name': name, "gender": _selectedGender});
       } else {
         Utils.toastMessage('Select Gender');
@@ -43,7 +42,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
         margin: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xff003D2A) : popupColor,
+          color: isSelected ? Color(0xff003D2A) : backgroundColor2,
           borderRadius: BorderRadius.circular(10),
         ),
         width: context.deviceWidth * .4,
@@ -124,31 +123,31 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                    onTap: () {
-                      if (_selectedGender.isNotEmpty || _selectedGender != '') {
-                        Navigator.pushNamed(context, RoutesName.dOBScreen,
-                            arguments: {
-                              'name': name,
-                              "gender": _selectedGender
-                            });
-                      } else {
-                        Utils.toastMessage('Select Gender');
-                      }
-                    },
+                    // onTap: () {
+                    //   if (_selectedGender.isNotEmpty || _selectedGender != '') {
+                    //     Navigator.pushNamed(context, RoutesName.dOBScreen,
+                    //         arguments: {
+                    //           'name': name,
+                    //           "gender": _selectedGender
+                    //         });
+                    //   } else {
+                    //     Utils.toastMessage('Select Gender');
+                    //   }
+                    // },
                     child: _buildGenderOption('Male', Icons.male)),
                 SizedBox(width: 16),
                 GestureDetector(
-                    onTap: () {
-                      if (_selectedGender.isNotEmpty || _selectedGender != '') {
-                        Navigator.pushNamed(context, RoutesName.dOBScreen,
-                            arguments: {
-                              'name': name,
-                              "gender": _selectedGender
-                            });
-                      } else {
-                        Utils.toastMessage('Select Gender');
-                      }
-                    },
+                    // onTap: () {
+                    //   if (_selectedGender.isNotEmpty || _selectedGender != '') {
+                    //     Navigator.pushNamed(context, RoutesName.dOBScreen,
+                    //         arguments: {
+                    //           'name': name,
+                    //           "gender": _selectedGender
+                    //         });
+                    //   } else {
+                    //     Utils.toastMessage('Select Gender');
+                    //   }
+                    // },
                     child: _buildGenderOption('Female', Icons.female)),
               ],
             ),
@@ -157,31 +156,31 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                    onTap: () {
-                      if (_selectedGender.isNotEmpty || _selectedGender != '') {
-                        Navigator.pushNamed(context, RoutesName.dOBScreen,
-                            arguments: {
-                              'name': name,
-                              "gender": _selectedGender
-                            });
-                      } else {
-                        Utils.toastMessage('Select Gender');
-                      }
-                    },
+                    // onTap: () {
+                    //   if (_selectedGender.isNotEmpty || _selectedGender != '') {
+                    //     Navigator.pushNamed(context, RoutesName.dOBScreen,
+                    //         arguments: {
+                    //           'name': name,
+                    //           "gender": _selectedGender
+                    //         });
+                    //   } else {
+                    //     Utils.toastMessage('Select Gender');
+                    //   }
+                    // },
                     child: _buildGenderOption('Other', Icons.transgender)),
                 SizedBox(width: 16),
                 GestureDetector(
-                    onTap: () {
-                      if (_selectedGender.isNotEmpty || _selectedGender != '') {
-                        Navigator.pushNamed(context, RoutesName.dOBScreen,
-                            arguments: {
-                              'name': name,
-                              "gender": _selectedGender
-                            });
-                      } else {
-                        Utils.toastMessage('Select Gender');
-                      }
-                    },
+                    // onTap: () {
+                    //   if (_selectedGender.isNotEmpty || _selectedGender != '') {
+                    //     Navigator.pushNamed(context, RoutesName.dOBScreen,
+                    //         arguments: {
+                    //           'name': name,
+                    //           "gender": _selectedGender
+                    //         });
+                    //   } else {
+                    //     Utils.toastMessage('Select Gender');
+                    //   }
+                    // },
                     child: _buildGenderOption(
                         'Prefer Not to Say', Icons.not_interested)),
               ],
