@@ -54,9 +54,9 @@ class _QuestionsTestScreenState extends State<QuestionsTestScreen> {
         token = value[1];
         userId = value[2];
         signUpToken = value[0];
-
         getHomeData.userProfileApis(
-            userId: userId.toString(), token: token.toString());
+            userId: userId.toString(),
+            token: token == null ? value[0].toString() : token!);
         getHomeData.fetchFilterTherapistAPi(token!);
       },
     );
@@ -159,21 +159,21 @@ class _QuestionsTestScreenState extends State<QuestionsTestScreen> {
                       : SizedBox.shrink();
                 },
               ),
-              SizedBox(
-                height: verticalSpaceSmall,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 14, right: 14),
-                child: Text(
-                  "Not feeling your best?\nyou're not alone",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: colorDark3,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
+              // SizedBox(
+              //   height: verticalSpaceSmall,
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 14, right: 14),
+              //   child: Text(
+              //     "Am I depressed or just overthinking?",
+              //     textAlign: TextAlign.center,
+              //     style: const TextStyle(
+              //       fontSize: 18,
+              //       color: colorDark3,
+              //       fontWeight: FontWeight.w500,
+              //     ),
+              //   ),
+              // ),
               SizedBox(
                 height: verticalSpaceSmall,
               ),

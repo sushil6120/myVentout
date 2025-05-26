@@ -55,9 +55,9 @@ String userId;
           color: Color.fromARGB(255, 19, 19, 19),
           boxShadow: [
             BoxShadow(
-                color: colorDark1.withOpacity(.3),
-                spreadRadius: 2,
-                blurRadius: 2,
+                color: colorDark3.withOpacity(.12),
+                spreadRadius: 8,
+                blurRadius: 6,
                 offset: Offset(0, 4))
           ],
           // popupColor,
@@ -73,6 +73,7 @@ String userId;
                 width: 28,
                 AppAssets.chatIcon,
                 color: iconColor,
+              
               ),
             ),
             SizedBox(
@@ -86,7 +87,7 @@ String userId;
                   Padding(
                     padding: const EdgeInsets.only(bottom: 2),
                     child: Text(
-                      "Chat with psychologist!",
+                      "Therapy Chats",
                       style: GoogleFonts.inter(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -104,16 +105,16 @@ String userId;
                       children: [
                         TextSpan(
                           text:
-                              "We’ve matched you with a therapist who’s here to listen and support you. ",
+                              "We’ve matched you with a",
                         ),
                         TextSpan(
-                          text: "Enjoy free trial",
+                          text: " real therapist ",
                           style: TextStyle(
                               color: primaryColor, fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
                           text:
-                              " — ask up to 10 questions, whenever you need, wherever you are.",
+                              "who’s here to listen and support you — ask questions, whenever you need, wherever you are.",
                         ),
                       ],
                     ),

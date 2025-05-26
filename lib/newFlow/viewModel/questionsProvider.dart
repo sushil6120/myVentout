@@ -214,20 +214,20 @@ class QuestionProvider with ChangeNotifier {
     return questions.every((q) => q['answers'] != "");
   }
 
-  Map<String, dynamic> prepareApiData() {
-    if (!allQuestionsAnswered()) {
-      throw Exception("All questions must be answered.");
-    }
-
-    return {
-      'defaultQnA': questions.map((q) {
-        int value = q['options'].indexOf(q['answers']);
-        return {
-          'question': q['question'],
-          'answer': q['answers'],
-          'value': value,
-        };
-      }).toList(),
-    };
+Map<String, dynamic> prepareApiData() {
+  if (!allQuestionsAnswered()) {
+    throw Exception("All questions must be answered.");
   }
+  
+  return {
+    'defaultQnA': questions.map((q) {
+      int value = q['options'].indexOf(q['answers']);
+      return {
+        'question': q['question'],
+        'answer': q['answers'],
+        'value': value,
+      };
+    }).toList(),
+  };
+}
 }

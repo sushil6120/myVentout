@@ -1,5 +1,6 @@
 class AppUrl {
-  static var baseUrl = "https://ventout-backend.vercel.app";
+  static var baseUrl = "https://overcooked.space";
+  // static var baseUrl = "https://api.techazora.com";
   static var sendOtpApi = "/api/user/auth/login";
   static var otpVerifyUrl = "/api/user/auth/verify";
   static var registerUrl = "/api/user/auth/register";
@@ -23,7 +24,8 @@ class AppUrl {
   static var fcmTokenUrl = "/api/user/auth/sendFcmToken";
   static var singleSessionUrlUrl = "/api/user/booking/single/";
   static var cancelSessionUrl = "/api/user/booking/status/";
-  static var sendNotificationUrl = "/api/user/notification/create";
+  static var sendNotificationUrl =
+      "/api/user/notification/createNotificationForTherapist";
   static var remaingTimeUrl = "/api/user/booking/time";
   static var reviewgetUrl = "/api/therapist/review/get/";
   static var deleteUrl = "/api/user/auth/delete";
@@ -34,11 +36,15 @@ class AppUrl {
   static var capturePaymentApi = "$baseUrl/api/user/auth/capture";
   static var updateSessiontimeApi = "$baseUrl/api/user/booking/timedifference/";
   static var zegoCloudeApi = "$baseUrl/api/admin/zegoCloud/all";
-  static var filterTherapistApi = "$baseUrl/api/therapist/auth/all";
+  static var filterTherapistApi = "$baseUrl/api/therapist/auth/allforuser";
   static var availableSlotsApi = "/api/therapist/auth/avalaibleSlots/";
   static var commissionValueApi = "/api/admin/commission/all";
   static var userProfileApi = "/api/user/auth/getUserProfile/";
   static var resultApi = "/api/admin/result/all";
+
   static var sendPostChatApi =
       "$baseUrl/api/therapist/chatView/createChatView/";
+  // -------- Chat Apis ---------
+  static var unlockChat = "$baseUrl/api/user/auth/unlockChat/";
+  static var emergencyNumber = "$baseUrl/api/user/auth/updateUserEmergencyNumber/";
 }

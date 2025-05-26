@@ -42,7 +42,7 @@ class UtilsRepo {
               {
                 "title": "Overcooked",
                 "description": "New message..",
-                "userId": userId
+                "therapistId": userId
               }
             }));
 

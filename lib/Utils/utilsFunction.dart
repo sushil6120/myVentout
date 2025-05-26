@@ -7,9 +7,9 @@ import 'package:overcooked/Utils/valueConstants.dart';
 import 'colors.dart';
 import 'package:intl/intl.dart';
 
-
 class Utils {
-  static void toastMessage(String message, {ToastGravity gravity = ToastGravity.BOTTOM}) {
+  static void toastMessage(String message,
+      {ToastGravity gravity = ToastGravity.BOTTOM}) {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
@@ -110,7 +110,7 @@ class Utils {
       ),
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(radiusValue))),
-      backgroundColor: primaryColorDark,
+      backgroundColor: Colors.black,
     ));
   }
 
@@ -120,8 +120,6 @@ class Utils {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 }
-
-
 
 extension CustomDateFormat on DateTime {
   String get intDate {
@@ -144,7 +142,7 @@ extension CustomDateFormat on DateTime {
     return DateFormat('MMM E dd, hh:mm a').format(this);
   }
 
-String get wellDated {
+  String get wellDated {
     return DateFormat('dd MMM yyyy').format(this);
   }
 
@@ -183,4 +181,3 @@ List<String> reachMeOutList = [
   'Substance Abusers',
   'Divorcees',
 ];
-

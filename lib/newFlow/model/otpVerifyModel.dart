@@ -3,6 +3,7 @@ class OtpVerifyModel {
   String? phone;
   String? userId;
   bool? isRegistered;
+  bool? status;
   String? name;
   bool? freeStatus;
   String? token;
@@ -12,6 +13,7 @@ class OtpVerifyModel {
       this.phone,
       this.userId,
       this.isRegistered,
+      this.status,
       this.name,
       this.freeStatus,
       this.token});
@@ -21,6 +23,7 @@ class OtpVerifyModel {
     phone = json['phone'];
     userId = json['userId'];
     isRegistered = json['isRegistered'];
+    status = json['status'];
     name = json['name'];
     freeStatus = json['freeStatus'];
     token = json['token'];
@@ -32,6 +35,7 @@ class OtpVerifyModel {
     data['phone'] = this.phone;
     data['userId'] = this.userId;
     data['isRegistered'] = this.isRegistered;
+    data['status'] = this.status;
     data['name'] = this.name;
     data['freeStatus'] = this.freeStatus;
     data['token'] = this.token;

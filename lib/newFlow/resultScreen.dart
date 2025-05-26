@@ -32,11 +32,19 @@ class _UserResultNameScreenState extends State<UserResultNameScreen> {
     super.initState();
     final getHomeData = Provider.of<HomeViewModel>(context, listen: false);
 
-    Future.wait([sharedPreferencesViewModel.getToken()]).then(
+    Future.wait([
+      sharedPreferencesViewModel.getToken(),
+      sharedPreferencesViewModel.getSignUpToken(),
+      sharedPreferencesViewModel.getUserId()
+    ]).then(
       (value) {
         token = value[0] ?? '';
         getHomeData.userResultApis(
-            totalScore: widget.totalScroe, token: token!);
+            totalScore: widget.totalScroe,
+            token: token == null ? value[1]! : token!);
+        getHomeData.userProfileApis(
+            userId: value[2].toString(),
+            token: token == null ? value[1]! : token!);
       },
     );
   }
@@ -121,7 +129,9 @@ class _UserResultNameScreenState extends State<UserResultNameScreen> {
                                         fontWeight: FontWeight.w400),
                                   ),
                                   TextSpan(
-                                    text: '${value.userProfileModel!.name}',
+                                    text: value.userProfileModel == null
+                                        ? ''
+                                        : '${value.userProfileModel!.name}',
                                     style: TextStyle(
                                         fontSize: context.deviceHeight * .019,
                                         fontWeight: FontWeight.w700),

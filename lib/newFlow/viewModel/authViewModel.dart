@@ -57,6 +57,7 @@ class AuthViewModel with ChangeNotifier {
       if (newData.isRegistered == false) {
         sharedPreferencesViewModel.saveSignUpToken(newData.token);
         sharedPreferencesViewModel.saveUserId(newData.userId);
+        sharedPreferencesViewModel.saveFirstTimeUserValu(true);
         sharedPreferencesViewModel
             .saveUserName(newData.name == null ? 'Name' : newData.name);
         sharedPreferencesViewModel.saveFreeStatus(newData.freeStatus);
@@ -64,6 +65,7 @@ class AuthViewModel with ChangeNotifier {
             arguments: {'name': ""});
       } else {
         sharedPreferencesViewModel.saveToken(newData.token);
+        sharedPreferencesViewModel.saveFirstTimeUserValu(newData.status);
         sharedPreferencesViewModel.saveUserId(newData.userId);
         sharedPreferencesViewModel.saveUserName(newData.name);
         sharedPreferencesViewModel.saveFreeStatus(newData.freeStatus);
@@ -110,7 +112,7 @@ class AuthViewModel with ChangeNotifier {
       setLoading(true);
       final newData = await authRepo.prefrencesApi(token, defaultQnA, context);
       setLoading(false);
-      Utils.toastMessage(newData.message.toString());
+      // Utils.toastMessage(newData.message.toString());
       print(newData.message);
     } catch (error) {
       setLoading(false);

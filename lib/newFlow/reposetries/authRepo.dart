@@ -58,19 +58,22 @@ class AuthRepo {
   // --
   Future<AvailbiltiModel> prefrencesApi(
       token, var defaultQnA, BuildContext context) async {
+
+
     final response = await apiService.patch(
       AppUrl.prefrencesUrl,
       headers: {
         "Content-type": "application/json",
         'Authorization': 'Bearer $token'
       },
-      body:defaultQnA,
+      body: defaultQnA,
     );
     print("Default QNA : $defaultQnA");
-    print("Response  : ${response.body}");
+    print("Response  : ${response.body} sushilll");
     if (response.statusCode == 200 || response.statusCode == 201) {}
     return AvailbiltiModel.fromJson(json.decode(response.body));
   }
+
 
   // ============================== Profile Api ======
 

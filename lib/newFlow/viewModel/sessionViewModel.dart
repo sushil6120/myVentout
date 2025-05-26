@@ -10,6 +10,7 @@ import 'package:overcooked/newFlow/reposetries/sessionRepo.dart';
 import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 import 'package:overcooked/newFlow/viewModel/utilViewModel.dart';
 import 'package:overcooked/newFlow/viewModel/utilsClass.dart';
+import 'package:overcooked/newFlow/viewModel/walletViewModel.dart';
 import 'package:overcooked/newFlow/widgets/noFreeSeeionDialog.dart';
 import 'package:provider/provider.dart';
 
@@ -45,6 +46,10 @@ class SessionViewModel with ChangeNotifier {
   Future<void> BookSessionApis(String fees, timeDuration, startTime, token, id,
       String userId, bool isInstant, bookingType, BuildContext? context, slotId,
       [isFreeSession]) async {
+    final walletData =
+        Provider.of<WalletViewModel>(Get.context!, listen: false);
+    String? token = await sharedPreferencesViewModel.getToken();
+    String? signUptoken = await sharedPreferencesViewModel.getSignUpToken();
     try {
       final newData = await sessionRepo.createSessionApi(
           fees,
@@ -75,6 +80,7 @@ class SessionViewModel with ChangeNotifier {
         Utils.toastMessage(newData.message.toString());
       }
 
+      walletData.fetchWalletBalanceAPi(token == null ? signUptoken! : token!);
       print(newData.message);
     } catch (error) {
       setLoading(false);
@@ -89,7 +95,6 @@ class SessionViewModel with ChangeNotifier {
       setFreeLoading(true);
       final newData = await sessionRepo.createFreeSessionApi(
           timeDuration, startTime, token, isInstant, bookingType, context);
-    
 
       notifyListeners();
       setFreeLoading(false);
@@ -98,15 +103,15 @@ class SessionViewModel with ChangeNotifier {
         sendNoti.sendNotificationApis(sessionid.toString(), context);
       }
       if (message == "Session booked successfully!") {
-          sharedPreferencesViewModel.saveTherapistId(
-          newData.populatedSession!.therapistId!.sId.toString());
-      agoraToken = newData.populatedSession!.agoraToken.toString();
-      message = newData.message.toString();
-      sessionid = newData.populatedSession!.sId.toString();
+        sharedPreferencesViewModel.saveTherapistId(
+            newData.populatedSession!.therapistId!.sId.toString());
+        agoraToken = newData.populatedSession!.agoraToken.toString();
+        message = newData.message.toString();
+        sessionid = newData.populatedSession!.sId.toString();
         // singleSessionStream(userId);
       } else {
         setFreeLoading(false);
-    
+
         Utils.toastMessage(newData.message.toString());
       }
 
@@ -217,51 +222,50 @@ class SessionViewModel with ChangeNotifier {
     }
   }
 
-Stream<List<SingleSessionModel>> singleSessionStream(String id) {
-  final controller = StreamController<List<SingleSessionModel>>.broadcast();
-  Timer? timer;
-  bool isDisposed = false;
+  Stream<List<SingleSessionModel>> singleSessionStream(String id) {
+    final controller = StreamController<List<SingleSessionModel>>.broadcast();
+    Timer? timer;
+    bool isDisposed = false;
 
-  // Force clear existing data
-  sessionDatas = [];
-  notifyListeners();
+    // Force clear existing data
+    sessionDatas = [];
+    notifyListeners();
 
-  Future<void> fetchFreshData() async {
-    if (isDisposed) return;
-    try {
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final therapistList =
-          await sessionRepo.fetchSingleSessionHistory("$id?t=$timestamp");
-      print("Fetched API Data: $therapistList");
+    Future<void> fetchFreshData() async {
       if (isDisposed) return;
-      sessionDatas = List<SingleSessionModel>.from(therapistList);
-      if (sessionDatas.isNotEmpty) {
-        print("Session Data: ${sessionDatas.first.bookedBy?.name}");
-      } else {
-        print("Session data is empty!");
+      try {
+        final timestamp = DateTime.now().millisecondsSinceEpoch;
+        final therapistList =
+            await sessionRepo.fetchSingleSessionHistory("$id?t=$timestamp");
+        print("Fetched API Data: $therapistList");
+        if (isDisposed) return;
+        sessionDatas = List<SingleSessionModel>.from(therapistList);
+        if (sessionDatas.isNotEmpty) {
+          print("Session Data: ${sessionDatas.first.bookedBy?.name}");
+        } else {
+          print("Session data is empty!");
+        }
+        notifyListeners();
+        controller.add([...sessionDatas]);
+      } catch (e) {
+        print("Error fetching session data: $e");
+        if (isDisposed) return;
+        controller.add([]);
       }
-      notifyListeners();
-      controller.add([...sessionDatas]);
-    } catch (e) {
-      print("Error fetching session data: $e");
-      if (isDisposed) return;
-      controller.add([]);
     }
+
+    fetchFreshData();
+
+    timer = Timer.periodic(Duration(seconds: 2), (_) => fetchFreshData());
+
+    controller.onCancel = () {
+      timer?.cancel();
+      isDisposed = true;
+      print("Session stream canceled and cleaned up");
+    };
+
+    return controller.stream;
   }
-
-  fetchFreshData();
-
-  timer = Timer.periodic(Duration(seconds: 2), (_) => fetchFreshData());
-
-  controller.onCancel = () {
-    timer?.cancel();
-    isDisposed = true;
-    print("Session stream canceled and cleaned up");
-  };
-
-  return controller.stream;
-}
-
 
   StreamSubscription<List<SingleSessionModel>>? _sessionStreamSubscription;
 

@@ -142,6 +142,8 @@ class _TherapistPreferencesScreenState
                                   final authData = Provider.of<AuthViewModel>(
                                       context,
                                       listen: false);
+                                  authData.setLoading(true);
+
                                   authData
                                       .prefrencesApis(
                                     widget.isRegisterScreen == true
@@ -154,14 +156,18 @@ class _TherapistPreferencesScreenState
                                     final homeData = Provider.of<HomeViewModel>(
                                         context,
                                         listen: false);
+
                                     homeData
                                         .fetchFilterTherapistAPi(
-                                      widget.isRegisterScreen == true
-                                          ? signUpToken!
-                                          : widget.token,
-                                    )
+                                            widget.isRegisterScreen == true
+                                                ? signUpToken!
+                                                : widget.token)
                                         .then(
                                       (value) {
+                                        // Set loading state to false when done
+                                        authData.setLoading(false);
+
+                                        // Navigate to TherapistListScreen
                                         Navigator.pushReplacement(context,
                                             MaterialPageRoute(
                                           builder: (context) {

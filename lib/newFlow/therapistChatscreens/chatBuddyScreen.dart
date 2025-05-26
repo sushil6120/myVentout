@@ -1,14 +1,17 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:get/get.dart';
+import 'package:overcooked/Utils/responsive.dart';
 import 'package:overcooked/newFlow/bottomNaveBar.dart';
+import 'package:overcooked/newFlow/resultScreen.dart';
 import 'package:overcooked/newFlow/routes/routeName.dart';
 import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 import 'package:overcooked/newFlow/therapistChatscreens/widgets/dialogWidget.dart';
 import 'package:overcooked/newFlow/therapistChatscreens/widgets/messageBubbleWidget.dart';
 import 'package:overcooked/newFlow/viewModel/homeViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/utilViewModel.dart';
+import 'package:overcooked/newFlow/widgets/therapistChatDialog.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -26,7 +29,7 @@ class ChatScreen extends StatefulWidget {
     required this.chatId,
     this.therapistName = 'Anuja Sharma',
     this.therapistImageUrl =
-        'https://res.cloudinary.com/ds5ghtxy2/image/upload/v1745401611/profileImg/o1z2w5gfctafyqg88pxn.jpg',
+        'https://res.cloudinary.com/ds5ghtxy2/image/upload/v1747029332/profileImg/qxkanopu5wgyaw498qxt.jpg',
   });
 
   @override
@@ -47,6 +50,8 @@ class _ChatScreenState extends State<ChatScreen> {
   bool hasSentAutoMessage = false;
 
   String _userId = '';
+  String? token;
+  String? userId;
   String _userName = '';
 
   @override
@@ -70,11 +75,20 @@ class _ChatScreenState extends State<ChatScreen> {
       sharedPreferencesViewModel.getDialogStatus(),
       sharedPreferencesViewModel.getSignUpToken(),
       sharedPreferencesViewModel.getUserName(),
+      sharedPreferencesViewModel.getUserId(),
+      sharedPreferencesViewModel.getSignUpToken(),
     ]).then(
       (value) {
+        userId = value[4].toString();
+        token = value[0].toString();
         _userName = value[3].toString();
-        getHomeData.fetchWalletBalanceAPi(
-            value[0] == null ? value[2].toString() : value[0].toString());
+        getHomeData.userProfileApis(
+            userId: value[4].toString(), token: value[0].toString());
+        getHomeData.fetchWalletBalanceAPi(value[0] == null
+            ? value[2].toString()
+            : value[0] == null
+                ? value[5].toString()
+                : value[0].toString());
         _chatProvider.chatPostDataApi(
             value[0].toString(), '67daab1845de62a91b29caba'
             // '67ece108a55f4144a8cb5507'
@@ -82,7 +96,6 @@ class _ChatScreenState extends State<ChatScreen> {
       },
     );
 
-    _chatProvider.initFirebaseMessaging();
     _checkAndSendAutoMessages();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _chatProvider.loadMessages(widget.chatId);
@@ -147,12 +160,11 @@ class _ChatScreenState extends State<ChatScreen> {
       } else if (autoMsgCounter == 1) {
         _sendAutoMessage(
             "Hi there, I'm Anuja Sharma, your Counseling Psychologist😊 I'm here to listen and support you—no pressure, no judgment. Feel free to share what’s on your mind, whenever you’re ready.");
+      } else if (autoMsgCounter == 2) {
+        _sendAutoMessage(
+            "Please note: Chats or replies are available from 9 AM to 5 PM 🕘🕔.");
       }
-      // else if (autoMsgCounter == 2) {
-      //   _sendAutoMessage("Drop a query until we connect");
-      // }
       autoMsgCounter++;
-
       if (autoMsgCounter > 2) {
         autoMsgTimer.cancel();
         hasSentAutoMessage = true;
@@ -197,29 +209,31 @@ class _ChatScreenState extends State<ChatScreen> {
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-                elevation: .5,
-                backgroundColor: Colors.black,
-                surfaceTintColor: Colors.black,
-                shadowColor: colorDark3,
-                titleSpacing: 0,
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                  onPressed: () {
-                    Get.offAll(BottomNavBarView(),
-                        transition: Transition.leftToRight);
-                  },
-                ),
-                title: Consumer<HomeViewModel>(
-                  builder: (context, value, child) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, RoutesName.expertScreen,
-                            arguments: {
-                              'id': '67daab1845de62a91b29caba',
-                              "balance": value.walletModel!.balance ?? '0',
-                              "fees": '12',
-                            });
-                      },
+              elevation: .5,
+              backgroundColor: Colors.black,
+              surfaceTintColor: Colors.black,
+              shadowColor: colorDark3,
+              titleSpacing: 0,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                onPressed: () {
+                  Get.offAll(BottomNavBarView(),
+                      transition: Transition.leftToRight);
+                },
+              ),
+              title: Consumer<HomeViewModel>(
+                builder: (context, value, child) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, RoutesName.expertScreen,
+                          arguments: {
+                            'id': '67daab1845de62a91b29caba',
+                            "balance": value.walletModel!.balance ?? '0',
+                            "fees": '12',
+                          });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 4),
                       child: Row(
                         children: [
                           CircleAvatar(
@@ -244,11 +258,11 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                               Row(
                                 children: [
-                                  const Text(
+                                  Text(
                                     'Expected response time :',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 10,
+                                      fontSize: 12,
                                     ),
                                   ),
                                   Text(
@@ -256,7 +270,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     style: TextStyle(
                                       color: primaryColor,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 10,
+                                      fontSize: 12,
                                     ),
                                   ),
                                 ],
@@ -265,9 +279,48 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                         ],
                       ),
-                    );
-                  },
-                )),
+                    ),
+                  );
+                },
+              ),
+              bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(context.deviceHeight * .038),
+                  child: Consumer<HomeViewModel>(
+                    builder: (context, value, child) {
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(
+                              UserResultNameScreen(
+                                  totalScroe: value.userProfileModel!.totalValue
+                                      .toString()),
+                              transition: Transition.rightToLeft);
+                        },
+                        child: Container(
+                          width: context.deviceWidth,
+                          margin: EdgeInsets.only(top: 6),
+                          decoration: BoxDecoration(
+                              border:
+                                  Border(top: BorderSide(color: colorDark1))),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor:
+                                      primaryColor.withOpacity(0.1),
+                                  child: Icon(Icons.info_outline,
+                                      color: primaryColor),
+                                ),
+                                Text("View My Depression Screening Result "),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  )),
+            ),
             body: Stack(
               children: [
                 Column(
@@ -296,105 +349,204 @@ class _ChatScreenState extends State<ChatScreen> {
                               },
                             ),
                     ),
-                    Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(20)),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: const Offset(0, -2),
-                              blurRadius: 10,
-                              color: Colors.black.withOpacity(0.3),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  constraints: const BoxConstraints(
-                                    maxHeight: 120,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[800],
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: TextField(
-                                    controller: _inputController,
-                                    focusNode: _focusNode,
-                                    minLines: 1,
-                                    maxLines: 5,
-                                    cursorColor: const Color(0xFF10A37F),
-                                    style: const TextStyle(color: Colors.white),
-                                    onChanged: (value) =>
-                                        chatProvider.updateInput(value),
-                                    decoration: InputDecoration(
-                                      hintText:
-                                          'Message ${widget.therapistName}...',
-                                      hintStyle:
-                                          TextStyle(color: Colors.grey[500]),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 12,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                    Consumer<HomeViewModel>(
+                      builder: (context, value, child) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(20)),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0, -2),
+                                blurRadius: 10,
+                                color: Colors.black.withOpacity(0.3),
                               ),
-                              const SizedBox(width: 8),
-                              AnimatedContainer(
-                                duration: const Duration(milliseconds: 200),
-                                margin: const EdgeInsets.only(bottom: 4),
-                                height: 42,
-                                width: 42,
-                                decoration: BoxDecoration(
-                                  color: chatProvider.currentInput
-                                          .trim()
-                                          .isNotEmpty
-                                      ? primaryColor
-                                      : Colors.grey[800],
-                                  borderRadius: BorderRadius.circular(21),
+                            ],
+                          ),
+                          child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  child: value.userProfileModel ==
+                                          null
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  TherapyChatsDialog(
+                                                buttonLable: "Start",
+                                                title:
+                                                    'Therapy Chats claimed\nfor just ₹100',
+                                                onBackToHomePressed: () {
+                                                  final getHomeData = Provider
+                                                      .of<HomeViewModel>(
+                                                          context,
+                                                          listen: false);
+                                                  chatProvider
+                                                      .unlockChatApi(
+                                                          balance: value
+                                                                  .walletModel!
+                                                                  .balance ??
+                                                              0.0)
+                                                      .then(
+                                                    (value) {
+                                                      getHomeData
+                                                          .userProfileApis(
+                                                              userId:
+                                                                  userId ?? '',
+                                                              token:
+                                                                  token ?? '');
+                                                    },
+                                                  );
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  const Color(0xFF303030),
+                                                  Colors.grey[850]!,
+                                                ],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.2),
+                                                  blurRadius: 4,
+                                                  offset: const Offset(0, 2),
+                                                ),
+                                              ],
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const Icon(
+                                                  Icons.lock_rounded,
+                                                  color: warningColor3,
+                                                  size: 18,
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Text(
+                                                  'Messaging currently locked. Tap to unlock',
+                                                  style: TextStyle(
+                                                      color: warningColor3,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 13),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          constraints: const BoxConstraints(
+                                            maxHeight: 120,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[800],
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: TextField(
+                                            controller: _inputController,
+                                            focusNode: _focusNode,
+                                            minLines: 1,
+                                            maxLines: 5,
+                                            cursorColor:
+                                                const Color(0xFF10A37F),
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                            onChanged: (value) =>
+                                                chatProvider.updateInput(value),
+                                            decoration: InputDecoration(
+                                              hintText:
+                                                  'Message ${widget.therapistName}...',
+                                              hintStyle: TextStyle(
+                                                  color: Colors.grey[500]),
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                borderSide: BorderSide.none,
+                                              ),
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 16,
+                                                vertical: 12,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                 ),
-                                child: IconButton(
-                                  icon: const Icon(
-                                    Icons.send_rounded,
-                                    color: Colors.black,
-                                    size: 20,
+                                const SizedBox(width: 8),
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 200),
+                                  margin: const EdgeInsets.only(bottom: 4),
+                                  height: 42,
+                                  width: 42,
+                                  decoration: BoxDecoration(
+                                    color:
+                                      
+                                                chatProvider.currentInput
+                                                    .trim()
+                                                    .isNotEmpty
+                                            ? primaryColor
+                                            : Colors.grey[800],
+                                    borderRadius: BorderRadius.circular(21),
                                   ),
-                                  onPressed: chatProvider.currentInput
-                                          .trim()
-                                          .isNotEmpty
-                                      ? () {
-                                          if (_inputController.text
-                                              .trim()
-                                              .isNotEmpty) {
-                                            // final utilsProvider =
-                                            //     Provider.of<UtilsViewModel>(
-                                            //         context,
-                                            //         listen: false);
+                                  child: IconButton(
+                                    icon: Icon(
+                                       Icons.send_rounded,
+                                      color: 
+                                              chatProvider.currentInput
+                                                  .trim()
+                                                  .isNotEmpty
+                                          ? Colors.black
+                                          : Colors.grey[600],
+                                      size: 20,
+                                    ),
+                                    onPressed: 
+                                            chatProvider.currentInput
+                                                .trim()
+                                                .isNotEmpty
+                                        ? () {
+                                            if (_inputController.text
+                                                .trim()
+                                                .isNotEmpty) {
+                                              final utilsProvider =
+                                                  Provider.of<UtilsViewModel>(
+                                                      context,
+                                                      listen: false);
 
-                                            chatProvider.sendMessage(
-                                                _inputController.text,
-                                                widget.chatId,
-                                                _userName);
-                                            _inputController.clear();
-                                            // utilsProvider.sendNotificationApis(
-                                            //   '67ece108a55f4144a8cb5507', context);
+                                              chatProvider.sendMessage(
+                                                  _inputController.text,
+                                                  widget.chatId,
+                                                  _userName);
+                                              _inputController.clear();
+                                              utilsProvider.sendNotificationApis(
+                                                  '67daab1845de62a91b29caba',
+                                                  context);
+                                            }
                                           }
-                                        }
-                                      : null,
-                                ),
-                              )
-                            ])),
+                                        : null,
+                                  ),
+                                )
+                              ]),
+                        );
+                      },
+                    )
                   ],
                 ),
               ],

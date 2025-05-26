@@ -19,6 +19,10 @@ class SharedPreferencesViewModel with ChangeNotifier {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setBool('freeStatus', value!);
   }
+  saveFirstTimeUserValu(bool? value) async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setBool('saveFirstTimeUserValu', value!);
+  }
   saveDialogStatus(bool? value) async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setBool('saveDialogStatus', value!);
@@ -80,6 +84,11 @@ class SharedPreferencesViewModel with ChangeNotifier {
   Future<bool?> getFreeStatus() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     final bool? token = sp.getBool('freeStatus');
+    return token;
+  }
+  Future<bool?> getFirstTimeUserValu() async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    final bool? token = sp.getBool('saveFirstTimeUserValu');
     return token;
   }
   Future<bool?> getDialogStatus() async {

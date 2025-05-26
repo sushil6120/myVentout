@@ -1,11 +1,20 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get/get.dart';
+import 'package:overcooked/Utils/utilsFunction.dart';
+import 'package:overcooked/newFlow/addMoneyScreen.dart';
+import 'package:overcooked/newFlow/services/sharedPrefs.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import '../../services/app_url.dart';
+import '../../viewModel/walletViewModel.dart';
+import '../../widgets/addMoneyDialog.dart';
 import '../model/chatMessageModel.dart';
 
 class ChatProvider extends ChangeNotifier {
@@ -24,29 +33,31 @@ class ChatProvider extends ChangeNotifier {
   Timer? _autoMessageTimer;
   int _autoMessageCounter = 0;
   bool _hasSentAutoMessages = false;
+  SharedPreferencesViewModel sharedPreferencesViewModel =
+      SharedPreferencesViewModel();
 
   void addMessage(ChatMessage message) {
     messages.add(message);
     notifyListeners();
   }
 
-  void initFirebaseMessaging() async {
-    // Request permission for notifications
-    await _firebaseMessaging.requestPermission();
+  // void initFirebaseMessaging() async {
+  //   // Request permission for notifications
+  //   await _firebaseMessaging.requestPermission();
 
-    // Handle incoming messages when app is in foreground
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      final notification = message.notification;
-      if (notification != null) {
-        _addMessage(ChatMessage(
-          id: const Uuid().v4(),
-          content: notification.body ?? '',
-          role: MessageRole.assistant,
-          timestamp: DateTime.now(),
-        ));
-      }
-    });
-  }
+  //   // // Handle incoming messages when app is in foreground
+  //   // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //   //   final notification = message.notification;
+  //   //   if (notification != null) {
+  //   //     _addMessage(ChatMessage(
+  //   //       id: const Uuid().v4(),
+  //   //       content: notification.body ?? '',
+  //   //       role: MessageRole.assistant,
+  //   //       timestamp: DateTime.now(),
+  //   //     ));
+  //   //   }
+  //   // });
+  // }
 
   void updateInput(String input) {
     _currentInput = input;
@@ -193,6 +204,43 @@ class ChatProvider extends ChangeNotifier {
       },
     );
     print('chatPostDataApi: ${response.body}');
+  }
+
+  Future<void> unlockChatApi({required double balance}) async {
+    final walletData =
+        Provider.of<WalletViewModel>(Get.context!, listen: false);
+    String? userId = await sharedPreferencesViewModel.getUserId();
+    String? token = await sharedPreferencesViewModel.getToken();
+    String? signUptoken = await sharedPreferencesViewModel.getSignUpToken();
+    if (userId == null) {
+      throw ' User id null';
+    }
+    final response = await http.patch(Uri.parse(AppUrl.unlockChat + userId),
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: jsonEncode({"amount": 100}));
+    print('unlockChatApi: ${response.statusCode}, ${response.body}');
+    var data = jsonDecode(response.body);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      walletData.fetchWalletBalanceAPi(token == null ? signUptoken! : token!);
+    }
+    if (response.statusCode == 401) {
+      showDialog(
+        context: Get.context!,
+        builder: (context) {
+          return AddMoneyDialog(
+            onBackToHomePressed: () {
+              Get.to(
+                  AddMoneyScreen(
+                    arguments: {'balance': balance ?? 0},
+                  ),
+                  transition: Transition.rightToLeft);
+            },
+          );
+        },
+      );
+    }
   }
 
   @override

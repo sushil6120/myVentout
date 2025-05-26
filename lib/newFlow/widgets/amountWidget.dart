@@ -58,8 +58,8 @@ class AmountButton extends StatelessWidget {
         if (isMostPopular)
           Positioned(
             top: 0,
+            left: 15,
             child: Container(
-            
               padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(

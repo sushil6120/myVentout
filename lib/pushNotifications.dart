@@ -43,33 +43,33 @@ class PushNotificationService {
         .setForegroundNotificationPresentationOptions(
             alert: true, badge: true, sound: true);
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      final notification = message.notification;
-      if (notification != null && notification.title == 'Accept Call') {
-        final callData = jsonDecode(notification.body ?? '{}');
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    //   final notification = message.notification;
+    //   if (notification != null && notification.title == 'Accept Call') {
+    //     final callData = jsonDecode(notification.body ?? '{}');
 
-        String callerName = callData['callerName'] ?? 'Unknown Caller';
-        String callerImg = callData['callerImg'] ?? 'defaultImage';
-        String payload = jsonEncode(callData);
+    //     String callerName = callData['callerName'] ?? 'Unknown Caller';
+    //     String callerImg = callData['callerImg'] ?? 'defaultImage';
+    //     String payload = jsonEncode(callData);
 
-        await showCallNotification(
-          callerName,
-          'Incoming call from $callerName',
-          payload,
-        );
-      } else if (notification != null) {
-        await showModernNotification(
-          id: 1,
-          title: notification.title ?? 'Notification',
-          body: notification.body ?? '',
-          payload: jsonEncode(message.data),
-        );
-      }
-    });
+    //     await showCallNotification(
+    //       callerName,
+    //       'Incoming call from $callerName',
+    //       payload,
+    //     );
+    //   } else if (notification != null) {
+    //     await showModernNotification(
+    //       id: 1,
+    //       title: notification.title ?? 'Notification',
+    //       body: notification.body ?? '',
+    //       payload: jsonEncode(message.data),
+    //     );
+    //   }
+    // });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      handleMessage(message);
-    });
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    //   handleMessage(message);
+    // });
 
     FirebaseMessaging.instance
         .getInitialMessage()

@@ -4,6 +4,7 @@ class UserProfileModel {
   int iV;
   List<String> category;
   bool isRegistered;
+  bool isChatLocked;
   bool isSuspended;
   List<String> language;
   String otp;
@@ -22,6 +23,7 @@ class UserProfileModel {
     this.iV = 0,
     List<String>? category,
     this.isRegistered = false,
+    this.isChatLocked = false,
     this.isSuspended = false,
     List<String>? language,
     this.otp = "",
@@ -43,6 +45,7 @@ class UserProfileModel {
         iV = json['__v'] ?? 0,
         category = List<String>.from(json['category'] ?? []),
         isRegistered = json['isRegistered'] ?? false,
+        isChatLocked = json['isChatLocked'] ?? false,
         isSuspended = json['isSuspended'] ?? false,
         language = List<String>.from(json['language'] ?? []),
         otp = json['otp'] ?? "",
@@ -62,6 +65,7 @@ class UserProfileModel {
       '__v': iV,
       'category': category,
       'isRegistered': isRegistered,
+      'isChatLocked': isChatLocked,
       'isSuspended': isSuspended,
       'language': language,
       'otp': otp,

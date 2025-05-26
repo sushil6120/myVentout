@@ -108,68 +108,68 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
       ),
       body: Consumer<HomeViewModel>(
         builder: (context, value, child) {
-          return Column(
-            children: [
-              widget.totalPonts > 7
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24.0, vertical: 20),
-                      child: RichText(
-                        textAlign: TextAlign.start,
-                        text: TextSpan(
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
-                          children: [
-                            TextSpan(
-                              text: "With your given scores,",
-                            ),
-                            TextSpan(
-                              text:
-                                  " we strongly recommend you to try therapy.",
-                              style: TextStyle(
-                                  color: primaryColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            TextSpan(
-                              text:
-                                  " We've shared your Overcooked Depression Screening results with our psychologists:",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  : SizedBox.shrink(),
-              Consumer<HomeViewModel>(
-                builder: (context, value, child) {
-                  return widget.totalPonts > 7
-                      ? Padding(
-                          padding: const EdgeInsets.only(bottom: 14),
-                          child: TestResultButton(
-                            testName: "Depression Screening Result",
-                            resultStatus: getDepressionLevel(
-                                value.userProfileModel?.totalValue ?? 0),
-                            onTap: () {
-                              Get.to(UserResultNameScreen(
-                                  totalScroe: widget.totalPonts.toString()));
-                            },
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                widget.totalPonts > 7
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24.0, vertical: 20),
+                        child: RichText(
+                          textAlign: TextAlign.start,
+                          text: TextSpan(
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400),
+                            children: [
+                              TextSpan(
+                                text: "With your given scores,",
+                              ),
+                              TextSpan(
+                                text:
+                                    " we strongly recommend you to try therapy.",
+                                style: TextStyle(
+                                    color: primaryColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              TextSpan(
+                                text:
+                                    " We've shared your Overcooked Depression Screening results with our psychologists:",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            ],
                           ),
-                        )
-                      : SizedBox.shrink();
-                },
-              ),
-              ChatHomeCardWidget(
-                userId: userId,
-                iconColor: colorLightWhite,
-              ),
-              Expanded(
-                child: widget.therapists.isEmpty
+                        ),
+                      )
+                    : SizedBox.shrink(),
+                Consumer<HomeViewModel>(
+                  builder: (context, value, child) {
+                    return widget.totalPonts > 7
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 14),
+                            child: TestResultButton(
+                              testName: "Depression Screening Result",
+                              resultStatus: getDepressionLevel(
+                                  value.userProfileModel?.totalValue ?? 0),
+                              onTap: () {
+                                Get.to(UserResultNameScreen(
+                                    totalScroe: widget.totalPonts.toString()));
+                              },
+                            ),
+                          )
+                        : SizedBox.shrink();
+                  },
+                ),
+                ChatHomeCardWidget(
+                  userId: userId,
+                  iconColor: colorLightWhite,
+                ),
+                widget.therapists.isEmpty
                     ? Center(
                         child: Text(
                         "No therapists available",
@@ -191,6 +191,7 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                         : ListView.builder(
                             shrinkWrap: true,
                             itemCount: widget.therapists.length,
+                            physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               var item = widget.therapists[index];
                               String formattedName = capitalizeName(
@@ -219,36 +220,36 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                                       ];
                                       String day = days[now.weekday % 7];
                                       value2.updateIndex(now.weekday % 7);
-
+                
                                       var discountedFees =
                                           item.discountedFees ?? 0;
                                       var fees = item.fees ?? 0;
-
+                
                                       var selectedFee =
                                           discountedFees.toString().isNotEmpty
                                               ? discountedFees
                                               : fees;
-
+                
                                       double feesValue = selectedFee is String
                                           ? double.tryParse(
                                                   selectedFee.toString()) ??
                                               0.0
                                           : selectedFee.toDouble();
-
+                
                                       double balanceValue = double.tryParse(
                                               value.walletModel?.balance
                                                       ?.toString() ??
                                                   '0') ??
                                           0.0;
-
+                
                                       double finalAmount =
                                           feesValue > balanceValue
                                               ? feesValue - balanceValue
                                               : 0.0;
-
+                
                                       value2.fetchAvailableSlotsAPi(
                                           item.sId ?? '', day);
-
+                
                                       SelectSlotBottomSheet(
                                           finalAmount.toString(),
                                           userId: userId,
@@ -314,29 +315,37 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                               );
                             },
                           ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14),
-                child: customButton(() {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, RoutesName.bottomNavBarView, (route) => false);
-                }, context.deviceWidth, 50, 'Return to home screen', false),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Center(
-                  child: Text(
-                "Check your Results instantly above.",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12, color: colorLight2),
-              )),
-              SizedBox(
-                height: 28,
-              )
-            ],
+           
+              ],
+            ),
           );
         },
+      ),
+
+      bottomNavigationBar: BottomAppBar(
+        height: context.deviceHeight*.15,
+        color: Colors.black,
+        child: Column(
+          children: [
+                 Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 14),
+                  child: customButton(() {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, RoutesName.bottomNavBarView, (route) => false);
+                  }, context.deviceWidth, 50, 'Return to home screen', false),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Center(
+                    child: Text(
+                  "Check your Results instantly above.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12, color: colorLight2),
+                )),
+             
+          ],
+        ),
       ),
     );
   }

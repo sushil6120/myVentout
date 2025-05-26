@@ -16,12 +16,16 @@ import 'package:overcooked/newFlow/model/allTherapistModel.dart';
 import 'package:overcooked/newFlow/routes/routeName.dart';
 import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 import 'package:overcooked/newFlow/shimmer/bannerShimmer.dart';
+import 'package:overcooked/newFlow/therapistChatscreens/viewmodels/chatProvider.dart';
 import 'package:overcooked/newFlow/viewModel/sessionViewModel.dart';
 import 'package:overcooked/newFlow/viewModel/slotsViewModel.dart';
 import 'package:overcooked/newFlow/viewModel/utilViewModel.dart';
 import 'package:overcooked/newFlow/viewModel/walletViewModel.dart';
 import 'package:overcooked/newFlow/widgets/agentCardWidget.dart';
 import 'package:overcooked/newFlow/widgets/bannerWidget.dart';
+import 'package:overcooked/newFlow/widgets/creditDialog.dart';
+import 'package:overcooked/newFlow/widgets/emergencyNumberWidget.dart';
+import 'package:overcooked/newFlow/widgets/therapistChatDialog.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -121,12 +125,44 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _initializeData() async {
     final getHomeData = Provider.of<HomeViewModel>(context, listen: false);
+    final chatProvider = Provider.of<ChatProvider>(context, listen: false);
 
     try {
       print("Starting data initialization");
-      Future.wait([sharedPreferencesViewModel.getFreeStatus()]).then(
+      Future.wait([
+        sharedPreferencesViewModel.getFreeStatus(),
+        sharedPreferencesViewModel.getFirstTimeUserValu()
+      ]).then(
         (value) {
           freeStatus = value[0];
+          if (value[1] == true) {
+            showDialog(
+              context: context,
+              builder: (context) => CreditDialog(
+                amount: '1,000',
+                appName: 'Overcooked',
+                onNextPressed: () {
+                  // chatProvider
+                  //     .unlockChatApi(
+                  //         balance: double.tryParse(balance.toString()) ?? 0.0)
+                  //     .then(
+                  //       (value) {},
+                  //     );
+                  Navigator.of(context).pop();
+
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (context) => TherapyChatsDialog(
+                  //     onBackToHomePressed: () {
+                  //       Navigator.of(context).pop();
+                  //     },
+                  //   ),
+                  // );
+                },
+              ),
+            );
+              sharedPreferencesViewModel.saveFirstTimeUserValu(false);
+          }
         },
       );
       await Future.wait([
@@ -253,11 +289,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _retryInitialization() {
-    print("Retrying data initialization");
-    _initializeData();
-  }
-
   @override
   void dispose() {
     focusNode.dispose();
@@ -280,16 +311,6 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
           extendBodyBehindAppBar: true,
           backgroundColor: Colors.transparent,
-          // appBar: AppBar(
-          //   automaticallyImplyLeading: false,
-          //   backgroundColor: Colors.transparent,
-          //   centerTitle: true,
-          //   surfaceTintColor: Colors.transparent,
-          //   title: SizedBox(
-          //       height: 50,
-          //       width: 50,
-          //       child: SvgPicture.asset(AppAssets.ocLogo)),
-          // ),
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,
             backgroundColor: Colors.transparent,
@@ -633,7 +654,8 @@ class _HomePageState extends State<HomePage> {
 
                   Consumer<HomeViewModel>(
                     builder: (context, value, child) {
-                      return value.storyLoading == true && value.storyList.isEmpty
+                      return value.storyLoading == true &&
+                              value.storyList.isEmpty
                           ? BannerShimmer()
                           : BannerWidget(storyList: value.storyList);
                     },
@@ -985,6 +1007,8 @@ class _HomePageState extends State<HomePage> {
                                                     walletBalance = feesValue;
                                                     remainingFees = 0.0;
                                                   }
+                                                  print(
+                                                      "Fessssss : ${remainingFees} ${feesValue}");
                                                   SelectSlotBottomSheet(
                                                       item.sId,
                                                       "${remainingFees}",
@@ -1083,6 +1107,21 @@ class _HomePageState extends State<HomePage> {
           ),
         ));
   }
+
+  void _showEmergencyDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AddEmergencyNumberDialog(
+          onSave: (number) {
+            // Handle saving number (e.g., call API or update state)
+            print("Emergency number saved: $number");
+          },
+        );
+      },
+    );
+  }
+
   //hello
 
   Widget CustomeContainer(
@@ -1885,16 +1924,18 @@ class _HomePageState extends State<HomePage> {
 
                                     int finalAmount;
 
-                                    if (fee == 0) {
+                                    if (amountFees == 0) {
                                       finalAmount = 0;
                                     } else {
-                                      int tenPercent = ((double.tryParse(fee) ??
+                                      int tenPercent = ((double.tryParse(
+                                                      amountFees.toString()) ??
                                                   0.0) *
                                               (value.commissionValue! / 100))
                                           .toInt();
 
                                       finalAmount =
-                                          (double.tryParse(fee) ?? 0.0)
+                                          (double.tryParse(fee.toString()) ??
+                                                      0.0)
                                                   .toInt() +
                                               tenPercent;
                                     }

@@ -572,11 +572,11 @@ String   amountFees, id, fee, token, ScrollController scrollController, BuildCon
 
                                   int finalAmount;
 
-                                  if (fee == 0) {
+                                  if (amountFees == 0) {
                                     finalAmount = 0;
                                   } else {
                                     int tenPercent =
-                                        ((double.tryParse(fee.toString()) ??
+                                        ((double.tryParse(amountFees.toString()) ??
                                                     0.0) *
                                                 (value.commissionValue! / 100))
                                             .toInt();

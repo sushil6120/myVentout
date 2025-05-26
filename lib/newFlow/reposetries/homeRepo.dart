@@ -31,7 +31,7 @@ class HomeRepo {
           "Authorization": "Bearer $token"
         },
       );
-        print('Response body: ${response.body}'); // Debug line
+      print('Response body: ${response.body}'); // Debug line
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('Response body: ${response.body}'); // Debug line
         var data = jsonDecode(response.body);
@@ -60,7 +60,7 @@ class HomeRepo {
     try {
       final response = await http.get(
         Uri.parse(
-            '${AppUrl.filterTherapistApi}?sortByFees=&sortByRating=&experience=&language=&category=&gender=&page=1&limit=3'),
+            '${AppUrl.filterTherapistApi}?sortByFees=&sortByRating=&experience=&language=&category=&gender=&page=1&limit=200'),
         headers: {
           "Content-type": "application/json",
           "Authorization": "Bearer $token"
@@ -259,7 +259,7 @@ class HomeRepo {
 
   Future<UserProfileModel> userProfilApi({
     required String userId,
-      required String  token,
+    required String token,
   }) async {
     final response = await apiService.get(
       AppUrl.userProfileApi + userId,
@@ -274,8 +274,7 @@ class HomeRepo {
   }
 
   Future<ResultModel> userResultApi({
-  
-      required String  token,
+    required String token,
   }) async {
     final response = await apiService.get(
       AppUrl.resultApi,
@@ -288,5 +287,4 @@ class HomeRepo {
     print("ResultModel" + response.body);
     return ResultModel.fromJson(json.decode(response.body));
   }
-
 }
