@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 SelectSlotBottomSheet(
 String   amountFees, id, fee, token, ScrollController scrollController, BuildContext context,
-    {required String userId}) {
+    {required String userId,required String waletBalance}) {
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
@@ -564,40 +564,47 @@ String   amountFees, id, fee, token, ScrollController scrollController, BuildCon
                             ? const SizedBox()
                             : GestureDetector(
                                 onTap: () {
-                                  if (value.slotId == "" ||
-                                      value.slotId == null) {
-                                    return;
-                                  }
-                                  Navigator.pop(context);
+                                    if (value.slotId == "" ||
+                                        value.slotId == null) {
+                                      return;
+                                    }
 
-                                  int finalAmount;
+                                    Navigator.pop(context);
 
-                                  if (amountFees == 0) {
-                                    finalAmount = 0;
-                                  } else {
-                                    int tenPercent =
-                                        ((double.tryParse(amountFees.toString()) ??
-                                                    0.0) *
-                                                (value.commissionValue! / 100))
-                                            .toInt();
+                                    int finalAmount;
 
-                                    finalAmount =
-                                        (double.tryParse(fee.toString()) ?? 0.0)
-                                                .toInt() +
-                                            tenPercent;
-                                  }
-                                  UtilsClass().showRatingBottomSheet(
-                                    amountFees,
+                                    double feeValue = double.tryParse(
+                                            amountFees.toString()) ??
+                                        0.0;
+                                    num commission =
+                                        value.commissionValue ?? 0.0;
+                                    double tenPercent =
+                                        (feeValue * (commission / 100));
+                                    double totalAmount = feeValue + tenPercent;
+                                    double walletBalance = double.tryParse(
+                                            waletBalance.toString()) ??
+                                        0.0;
+
+                                    double remainingAmount =
+                                        totalAmount - walletBalance;
+                                    finalAmount = remainingAmount > 0
+                                        ? remainingAmount.toInt()
+                                        : 0;
+                                    print("AMount Fees :${totalAmount}");
+
+                                    UtilsClass().showRatingBottomSheet(
+                                      totalAmount.toString(),
                                       context,
                                       finalAmount,
                                       token!,
-                                      "59",
+                                      "55",
                                       userId,
                                       value.commissionValue,
                                       id,
-                                      value.isAllSlotsAvailable,
-                                      value.slotId);
-                                },
+                                      value.isAllSlotsAvailable ?? false,
+                                      value.slotId,
+                                    );
+                                  },
                                 child: Container(
                                   width: double.infinity,
                                   height: 52,

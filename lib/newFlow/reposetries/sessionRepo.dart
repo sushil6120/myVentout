@@ -58,7 +58,8 @@ class SessionRepo {
       "slot": slotId
     }}");
 
-    print("booking response :============${response.body}=====================");
+    print(
+        "booking response :============${response.body}=====================");
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = jsonDecode(response.body);
@@ -113,18 +114,18 @@ class SessionRepo {
       Utils.toastMessage(data['message']);
     } else if (response.statusCode == 400) {
       var data = jsonDecode(response.body);
-        Get.dialog(
-          NoFreeSessionDialog(),
-          barrierDismissible: true,
-        );
+      Get.dialog(
+        NoFreeSessionDialog(),
+        barrierDismissible: true,
+      );
       Get.snackbar('Booking', data['message'].toString());
-    }else{
-          Get.dialog(
-          NoFreeSessionDialog(),
-          barrierDismissible: true,
-        );
+    } else {
+      Get.dialog(
+        NoFreeSessionDialog(),
+        barrierDismissible: true,
+      );
     }
-    if(kDebugMode){
+    if (kDebugMode) {
       print("Free Session = ${response.body}");
     }
     return CreateSessionModel.fromJson(json.decode(response.body));
@@ -145,7 +146,7 @@ class SessionRepo {
       "Content-type": "application/json",
     });
     final List<dynamic> dataJson = json.decode(response.body);
-    if(kDebugMode){
+    if (kDebugMode) {
       print("Single Session History = ${response.body}");
     }
     return dataJson.map((json) => SingleSessionModel.fromJson(json)).toList();

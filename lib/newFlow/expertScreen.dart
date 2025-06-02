@@ -902,7 +902,8 @@ class _ExpertInfoScreenState extends State<ExpertInfoScreen> {
                             remainingFees = 0.0;
                           }
                           SelectSlotBottomSheet(
-                            remainingFees.toString(),
+                            waletBalance: balance.toString(),
+                            feesValue.toString(),
                             userId: userId.toString(),
                             id,
                             remainingFees,

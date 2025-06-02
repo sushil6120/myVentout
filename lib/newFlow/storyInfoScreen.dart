@@ -306,6 +306,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                             remainingFees = 0.0;
                                           }
                                           SelectSlotBottomSheet(
+                                            waletBalance: balance.toString(),
                                             feesValue.toString(),
                                             userId: userId.toString(),
                                             item[index].sId,

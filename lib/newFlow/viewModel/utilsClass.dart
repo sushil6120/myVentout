@@ -1,25 +1,17 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:overcooked/Utils/responsive.dart';
-import 'package:overcooked/newFlow/homeScreen.dart';
 import 'package:overcooked/newFlow/routes/routeName.dart';
 import 'package:overcooked/newFlow/services/sharedPrefs.dart';
 import 'package:overcooked/newFlow/widgets/alertDialogTimer.dart';
 import 'package:overcooked/newFlow/widgets/color.dart';
 import 'package:overcooked/newFlow/widgets/ratingBottomSheetWidget.dart';
 
-import 'package:overcooked/newFlow/login/login.dart';
 import 'package:overcooked/newFlow/widgets/successFullWidget.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
-import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
+
 
 import '../../Utils/components.dart';
 import '../widgets/alertDialogWithouttimer.dart';
@@ -369,7 +361,7 @@ class UtilsClass {
                       child: GestureDetector(
                         onTap: () {
                           sharedPreferencesViewModel.logout().then((value) {
-                            ZegoUIKitPrebuiltCallInvitationService().uninit();
+                            // ZegoUIKitPrebuiltCallInvitationService().uninit();
                             Navigator.pushNamedAndRemoveUntil(context,
                                 RoutesName.LoginScreen, (route) => false);
                           });

@@ -4,10 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overcooked/Utils/colors.dart';
-import 'package:overcooked/Utils/responsive.dart';
-import 'package:overcooked/newFlow/callScreens/chatScreen.dart';
-import 'package:overcooked/newFlow/viewModel/sessionViewModel.dart';
-import 'package:provider/provider.dart';
 
 class BookingBottomBarWidget extends StatefulWidget {
   final VoidCallback onCancelTap;
@@ -138,7 +134,7 @@ class _BookingBottomBarWidgetState extends State<BookingBottomBarWidget>
                       ),
                     ),
                     Text(
-                      'Tap to chat',
+                      'Tap to join',
                       style: GoogleFonts.inter(
                         fontWeight: FontWeight.w500,
                         color: Colors

@@ -98,7 +98,7 @@ class _AmountAddSheetState extends State<AmountAddSheet> {
       }
 
       await sessionData.BookSessionApis(
-        widget.amount.toString(),
+        widget.amountFees.toString(),
         "55",
         DateTime.now().toString(),
         widget.token,
@@ -238,6 +238,7 @@ class _AmountAddSheetState extends State<AmountAddSheet> {
                         return GestureDetector(
                           onTap: () {
                             if (widget.amount != 0) {
+                              print("  ➤ amount: ${widget.amount.toInt()}");
                               _openRazorpayCheckout(widget.amount);
                             } else {
                               final sessionData = Provider.of<SessionViewModel>(

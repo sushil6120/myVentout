@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
             showDialog(
               context: context,
               builder: (context) => CreditDialog(
-                amount: '1,000',
+                amount: '500',
                 appName: 'Overcooked',
                 onNextPressed: () {
                   // chatProvider
@@ -790,12 +790,12 @@ class _HomePageState extends State<HomePage> {
                     //       )
                     //     : SizedBox(),
 
-                    ChatHomeCardWidget(
-                      userId: userId.toString(),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    // ChatHomeCardWidget(
+                    //   userId: userId.toString(),
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
                     Consumer<HomeViewModel>(
                       builder: (context, value, child) {
                         return RefreshIndicator(
@@ -1038,7 +1038,8 @@ class _HomePageState extends State<HomePage> {
                                                     SelectSlotBottomSheet(
                                                         item.sId,
                                                         "${remainingFees}",
-                                                        feesValue);
+                                                        feesValue,
+                                                        balance);
 
                                                     double walletBalanceUsed =
                                                         feesValue -
@@ -1377,7 +1378,7 @@ class _HomePageState extends State<HomePage> {
   //   );
   // }
 
-  SelectSlotBottomSheet(id, fee, amountFees) {
+  SelectSlotBottomSheet(id, fee, amountFees, waletBalance) {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -1951,37 +1952,42 @@ class _HomePageState extends State<HomePage> {
                                         value.slotId == null) {
                                       return;
                                     }
+
                                     Navigator.pop(context);
 
                                     int finalAmount;
 
-                                    if (amountFees == 0) {
-                                      finalAmount = 0;
-                                    } else {
-                                      int tenPercent = ((double.tryParse(
-                                                      amountFees.toString()) ??
-                                                  0.0) *
-                                              (value.commissionValue! / 100))
-                                          .toInt();
+                                    double feeValue = double.tryParse(
+                                            amountFees.toString()) ??
+                                        0.0;
+                                    num commission =
+                                        value.commissionValue ?? 0.0;
+                                    double tenPercent =
+                                        (feeValue * (commission / 100));
+                                    double totalAmount = feeValue + tenPercent;
+                                    double walletBalance = double.tryParse(
+                                            waletBalance.toString()) ??
+                                        0.0;
 
-                                      finalAmount =
-                                          (double.tryParse(fee.toString()) ??
-                                                      0.0)
-                                                  .toInt() +
-                                              tenPercent;
-                                    }
+                                    double remainingAmount =
+                                        totalAmount - walletBalance;
+                                    finalAmount = remainingAmount > 0
+                                        ? remainingAmount.toInt()
+                                        : 0;
+                                    print("AMount Fees :${totalAmount}");
 
                                     UtilsClass().showRatingBottomSheet(
-                                        amountFees.toString(),
-                                        context,
-                                        finalAmount,
-                                        token!,
-                                        "55",
-                                        userId,
-                                        value.commissionValue,
-                                        id,
-                                        value.isAllSlotsAvailable ?? false,
-                                        value.slotId);
+                                      totalAmount.toString(),
+                                      context,
+                                      finalAmount,
+                                      token!,
+                                      "55",
+                                      userId,
+                                      value.commissionValue,
+                                      id,
+                                      value.isAllSlotsAvailable ?? false,
+                                      value.slotId,
+                                    );
                                   },
                                   child: Container(
                                     width: double.infinity,

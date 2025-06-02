@@ -165,10 +165,10 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                         : SizedBox.shrink();
                   },
                 ),
-                ChatHomeCardWidget(
-                  userId: userId,
-                  iconColor: colorLightWhite,
-                ),
+                // ChatHomeCardWidget(
+                //   userId: userId,
+                //   iconColor: colorLightWhite,
+                // ),
                 widget.therapists.isEmpty
                     ? Center(
                         child: Text(
@@ -220,38 +220,39 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                                       ];
                                       String day = days[now.weekday % 7];
                                       value2.updateIndex(now.weekday % 7);
-                
+
                                       var discountedFees =
                                           item.discountedFees ?? 0;
                                       var fees = item.fees ?? 0;
-                
+
                                       var selectedFee =
                                           discountedFees.toString().isNotEmpty
                                               ? discountedFees
                                               : fees;
-                
+
                                       double feesValue = selectedFee is String
                                           ? double.tryParse(
                                                   selectedFee.toString()) ??
                                               0.0
                                           : selectedFee.toDouble();
-                
+
                                       double balanceValue = double.tryParse(
                                               value.walletModel?.balance
                                                       ?.toString() ??
                                                   '0') ??
                                           0.0;
-                
+
                                       double finalAmount =
                                           feesValue > balanceValue
                                               ? feesValue - balanceValue
                                               : 0.0;
-                
+
                                       value2.fetchAvailableSlotsAPi(
                                           item.sId ?? '', day);
-                
+
                                       SelectSlotBottomSheet(
-                                          finalAmount.toString(),
+                                          waletBalance: balanceValue.toString(),
+                                          feesValue.toString(),
                                           userId: userId,
                                           item.sId ?? '',
                                           finalAmount,
@@ -315,35 +316,32 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                               );
                             },
                           ),
-           
               ],
             ),
           );
         },
       ),
-
       bottomNavigationBar: BottomAppBar(
-        height: context.deviceHeight*.15,
+        height: context.deviceHeight * .15,
         color: Colors.black,
         child: Column(
           children: [
-                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 14),
-                  child: customButton(() {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, RoutesName.bottomNavBarView, (route) => false);
-                  }, context.deviceWidth, 50, 'Return to home screen', false),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Center(
-                    child: Text(
-                  "Check your Results instantly above.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, color: colorLight2),
-                )),
-             
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 14),
+              child: customButton(() {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, RoutesName.bottomNavBarView, (route) => false);
+              }, context.deviceWidth, 50, 'Return to home screen', false),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Center(
+                child: Text(
+              "Check your Results instantly above.",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 12, color: colorLight2),
+            )),
           ],
         ),
       ),

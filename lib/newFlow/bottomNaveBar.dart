@@ -4,15 +4,13 @@ import 'package:app_version_update/app_version_update.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:overcooked/newFlow/completeYourSessionScreen.dart';
 import 'package:overcooked/newFlow/screens/questionsScreen/questionsTestScreen.dart';
-import 'package:overcooked/newFlow/therapistChatscreens/chatBuddyScreen.dart';
+import 'package:overcooked/newFlow/viewModel/walletViewModel.dart';
 import 'package:overcooked/newFlow/widgets/cancelConfirmationDialog.dart';
+import 'package:overcooked/newFlow/widgets/ratingDialog.dart';
 import 'package:provider/provider.dart';
 import 'package:overcooked/Utils/assetConstants.dart';
 import 'package:overcooked/Utils/colors.dart';
-import 'package:overcooked/Utils/responsive.dart';
-import 'package:overcooked/newFlow/callScreens/chatScreen.dart';
 import 'package:overcooked/newFlow/homeScreen.dart';
 import 'package:overcooked/newFlow/model/singleSessionModel.dart';
 import 'package:overcooked/newFlow/services/sharedPrefs.dart';
@@ -20,9 +18,7 @@ import 'package:overcooked/newFlow/viewModel/homeViewModel.dart';
 import 'package:overcooked/newFlow/viewModel/sessionViewModel.dart';
 import 'package:overcooked/newFlow/viewModel/utilViewModel.dart';
 import 'package:overcooked/newFlow/widgets/bookingBottomBar.dart';
-import 'package:overcooked/newFlow/widgets/ratingDialog.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
-import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BottomNavBarView extends StatefulWidget {
   bool? isFilter;
@@ -44,6 +40,8 @@ class BottomNavBarView extends StatefulWidget {
 class _BottomNavBarViewState extends State<BottomNavBarView> {
   late PageController _controller;
   Stream<List<SingleSessionModel>>? _singleSessionStream;
+  bool _wasSessionPresent = false;
+  bool _dialogShown = false;
 
   int currentIndex = 0;
   SharedPreferencesViewModel sharedPreferencesViewModel =
@@ -80,11 +78,11 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
       "icons": AppAssets.homeOutline,
       "selectedIcon": AppAssets.homeFilled
     },
-    {
-      "name": "Chat",
-      "icons": AppAssets.chatIcon,
-      "selectedIcon": AppAssets.chatfillIcon
-    },
+    // {
+    //   "name": "Chat",
+    //   "icons": AppAssets.chatIcon,
+    //   "selectedIcon": AppAssets.chatfillIcon
+    // },
     {
       "name": "Screening",
       "icons": AppAssets.outtestIcon,
@@ -139,142 +137,7 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
 
       _singleSessionStream =
           getSessionData.singleSessionStream(value[1].toString());
-      ZegoUIKitPrebuiltCallInvitationService().init(
-          appID: appId!,
-          appSign: value[6].toString(),
-          userID: value[1].toString(),
-          userName: value[3].toString(),
-          plugins: [ZegoUIKitSignalingPlugin()],
-          uiConfig: ZegoCallInvitationUIConfig(
-              inviter: ZegoCallInvitationInviterUIConfig(
-            showAvatar: false,
-            backgroundBuilder: (context, size, info) {
-              return Container(
-                width: context.deviceWidth,
-                height: context.deviceHeight,
-                color: Colors.black,
-              );
-            },
-          )),
-          requireConfig: (ZegoCallInvitationData data) {
-            var config = (data.invitees.length > 1)
-                ? ZegoCallType.videoCall == data.type
-                    ? ZegoUIKitPrebuiltCallConfig.groupVideoCall()
-                    : ZegoUIKitPrebuiltCallConfig.groupVoiceCall()
-                : ZegoCallType.videoCall == data.type
-                    ? ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
-                    : ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall();
-            config.avatarBuilder = (BuildContext context, Size size,
-                ZegoUIKitUser? user, Map extraInfo) {
-              if (user != null && user.id == value[1].toString()) {
-                return CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 80,
-                  child: Text(
-                    user.name.toString()[0].toUpperCase(),
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: colorDark1),
-                  ),
-                );
-                ;
-              } else {
-                return Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        data.customData,
-                      ),
-                    ),
-                  ),
-                );
-              }
-            };
-            return config;
-          },
-          notificationConfig: ZegoCallInvitationNotificationConfig(
-            androidNotificationConfig: ZegoCallAndroidNotificationConfig(
-                vibrate: true,
-                certificateIndex:
-                    ZegoSignalingPluginMultiCertificate.firstCertificate),
-          ),
-          events: ZegoUIKitPrebuiltCallEvents(
-            onHangUpConfirmation: (event, defaultAction) {
-              getData();
-              final getsessionData =
-                  Provider.of<SessionViewModel>(context, listen: false);
-              getsessionData.updateSessionTimeApi(
-                  sessionId.toString(), '', DateTime.now());
-              return defaultAction();
-            },
-            onCallEnd: (event, defaultAction) {
-              getData();
-              final getsessionData =
-                  Provider.of<SessionViewModel>(context, listen: false);
-              getsessionData.updateSessionTimeApi(
-                  sessionId.toString(), '', DateTime.now());
-              final getHomeData =
-                  Provider.of<HomeViewModel>(context, listen: false);
-              getHomeData.fetchWalletBalanceAPi(
-                  token == null ? value[4].toString() : token.toString());
-              // if (freeStatus == true) {
-              //   Navigator.pushNamedAndRemoveUntil(
-              //     context,
-              //     RoutesName.bottomNavBarView,
-              //     (route) => false,
-              //   );
-              // } else
-              if (getsessionData.isFreeSession == true) {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CompleteYourSessionScreen(
-                        therapist: getsessionData.freeSessionTherapist)));
-              } else {
-                Future.delayed(const Duration(milliseconds: 100), () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return RatingDialog(
-                        therapist: value[2],
-                        token: value[0].toString(),
-                      );
-                    },
-                  );
-                });
-              }
 
-              return defaultAction();
-            },
-          ),
-          invitationEvents: ZegoUIKitPrebuiltCallInvitationEvents(
-            onError: (p0) {
-              print('onError: $p0');
-            },
-            onIncomingCallAcceptButtonPressed: () {
-              print('Accepted 8888888');
-              final getsessionData =
-                  Provider.of<SessionViewModel>(context, listen: false);
-              getsessionData.updateSessionTimeApi(
-                  sessionId.toString(), DateTime.now(), '');
-            },
-            onOutgoingCallAccepted: (callID, callee) {
-              getData();
-              final getsessionData =
-                  Provider.of<SessionViewModel>(context, listen: false);
-              getsessionData.updateSessionTimeApi(
-                  sessionId.toString(), DateTime.now(), '');
-              int? dura = int.tryParse(duration!);
-              print('Animal $dura');
-              Timer(
-                Duration(minutes: dura!),
-                () {
-                  Navigator.pop(context);
-                },
-              );
-            },
-          ));
       setState(() {
         _singleSessionStream =
             getSessionData.singleSessionStream(value[1].toString());
@@ -298,12 +161,10 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
     });
   }
 
-
   void _verifyVersion() async {
     await AppVersionUpdate.checkForUpdates(
-      playStoreId: 'com.ventout.gossip_mark',
-      appleId: '6741849037'
-    ).then((result) async {
+            playStoreId: 'com.ventout.gossip_mark', appleId: '6741849037')
+        .then((result) async {
       print(result.storeUrl);
       print(result.storeVersion);
       if (result.canUpdate!) {
@@ -452,6 +313,35 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
             StreamBuilder<List<SingleSessionModel>>(
               stream: _singleSessionStream,
               builder: (context, snapshot) {
+                if (_wasSessionPresent &&
+                    snapshot.hasData &&
+                    snapshot.data!.isEmpty &&
+                    !_dialogShown) {
+                  _dialogShown = true;
+                  Future.delayed(Duration.zero, () async {
+                    String? therapistId =
+                        await sharedPreferencesViewModel.getTherapistId();
+                    final walletModel =
+                        Provider.of<WalletViewModel>(context, listen: false);
+                    walletModel.fetchWalletBalanceAPi(token ?? '');
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return RatingDialog(
+                          therapist: therapistId ?? '',
+                          token: token.toString(),
+                        );
+                      },
+                    );
+                  });
+                }
+
+                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  _dialogShown = false;
+                }
+                _wasSessionPresent =
+                    snapshot.hasData && snapshot.data!.isNotEmpty;
+
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return SizedBox.shrink();
                 }
@@ -462,18 +352,8 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     var items = snapshot.data!.toList();
-                    String capitalizeName(String name) {
-                      return name
-                          .split(' ')
-                          .where((word) =>
-                              word.isNotEmpty) // Filter out empty words
-                          .map((word) =>
-                              word[0].toUpperCase() + word.substring(1))
-                          .join(' ');
-                    }
-
-                    String formattedName =
-                        capitalizeName(items[index].therapistId!.name!);
+                    sharedPreferencesViewModel
+                        .saveTherapistId(items[index].therapistId.sId);
                     sharedPreferencesViewModel
                         .savePatientId(items.first.bookedBy!.sId);
                     sharedPreferencesViewModel
@@ -487,28 +367,29 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
                           //         'Confirm' &&
                           //     items[index].bookingType ==
                           //         'Chat') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChatPage(
-                                bookingStatus:
-                                    items[index].bookingStatus.toString(),
-                                therapistCate:
-                                    items[index].therapistId!.name.toString(),
-                                duration: items[index].timeDuration.toString(),
-                                chatId: items[index].sId.toString(),
-                                sessionId: items[index].sId.toString(),
-                              ),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => ChatPage(
+                          //       bookingStatus:
+                          //           items[index].bookingStatus.toString(),
+                          //       therapistCate:
+                          //           items[index].therapistId!.name.toString(),
+                          //       duration: items[index].timeDuration.toString(),
+                          //       chatId: items[index].sId.toString(),
+                          //       sessionId: items[index].sId.toString(),
+                          //     ),
+                          //   ),
+                          // );
                           // }
+                          _launchMeetLink(items[index].meetLink);
                         },
                         child: Consumer<HomeViewModel>(
                           builder: (context, value, child) =>
                               BookingBottomBarWidget(
                             bookingStatus: items[index].bookingStatus,
                             status: false,
-                            name: "$formattedName",
+                            name: items[index].therapistId.name.capitalizeFirst,
                             image:
                                 items[index].therapistId!.profileImg.toString(),
                             callType: items[index].bookingType.toString(),
@@ -531,10 +412,10 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
                                         items[index].sId.toString(),
                                         true,
                                         context);
+                                    _dialogShown = true;
                                     final getSessionData =
                                         Provider.of<SessionViewModel>(context,
                                             listen: false);
-
                                     getSessionData
                                         .refreshSessionData(userId.toString());
                                   });
@@ -604,13 +485,15 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
                     duration: const Duration(milliseconds: 20),
                     curve: Curves.easeIn,
                   );
-                } else if (selectedIndex == 1) {
-                  Get.to(
-                      ChatScreen(
-                        chatId: userId.toString(),
-                      ),
-                      transition: Transition.rightToLeft);
-                } else if (selectedIndex == 2) {
+                }
+                // else if (selectedIndex == 1) {
+                //   Get.to(
+                //       ChatScreen(
+                //         chatId: userId.toString(),
+                //       ),
+                //       transition: Transition.rightToLeft);
+                // }
+                else if (selectedIndex == 1) {
                   _controller.animateToPage(
                     2,
                     duration: const Duration(milliseconds: 20),
@@ -638,5 +521,14 @@ class _BottomNavBarViewState extends State<BottomNavBarView> {
             );
           })),
     );
+  }
+
+  void _launchMeetLink(String meetLink) async {
+    final Uri url = Uri.parse(meetLink);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $meetLink';
+    }
   }
 }

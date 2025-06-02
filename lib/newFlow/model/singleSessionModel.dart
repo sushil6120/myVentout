@@ -41,9 +41,15 @@ class SingleSessionModel {
 
   SingleSessionModel.fromJson(Map<String, dynamic> json)
       : sId = json['_id'] ?? '',
-        bookedBy = json['bookedBy'] != null ? BookedBy.fromJson(json['bookedBy']) : BookedBy(),
-        therapistId = json['therapistId'] != null ? TherapistId.fromJson(json['therapistId']) : TherapistId(),
-        fees = json['fees'] ?? 0,
+        bookedBy = json['bookedBy'] != null
+            ? BookedBy.fromJson(json['bookedBy'])
+            : BookedBy(),
+        therapistId = json['therapistId'] != null
+            ? TherapistId.fromJson(json['therapistId'])
+            : TherapistId(),
+        fees = (json['fees'] is int)
+            ? json['fees']
+            : (json['fees'] as num).toInt(),
         timeDuration = json['timeDuration'] ?? '',
         startTime = json['startTime'] ?? '',
         isInstant = json['isInstant'] ?? false,
@@ -56,7 +62,7 @@ class SingleSessionModel {
         slot = json['slot'] != null ? Slot.fromJson(json['slot']) : Slot(),
         createdAt = json['createdAt'] ?? '',
         updatedAt = json['updatedAt'] ?? '',
-        iV = json['__v'] ?? 0;
+        iV = (json['__v'] is int) ? json['__v'] : (json['__v'] as num).toInt();
 
   Map<String, dynamic> toJson() => {
         '_id': sId,
@@ -99,7 +105,9 @@ class BookedBy {
   BookedBy.fromJson(Map<String, dynamic> json)
       : sId = json['_id'] ?? '',
         phone = json['phone'] ?? '',
-        totalValue = json['totalValue'] ?? 0,
+        totalValue = (json['totalValue'] is int)
+            ? json['totalValue']
+            : (json['totalValue'] as num).toInt(),
         age = json['age'] ?? '',
         gender = json['gender'] ?? '',
         name = json['name'] ?? '';
@@ -174,7 +182,7 @@ class Slot {
         isAvailableWebsite = json['isAvailableWebsite'] ?? false,
         createdAt = json['createdAt'] ?? '',
         updatedAt = json['updatedAt'] ?? '',
-        iV = json['__v'] ?? 0;
+        iV = (json['__v'] is int) ? json['__v'] : (json['__v'] as num).toInt();
 
   Map<String, dynamic> toJson() => {
         '_id': sId,

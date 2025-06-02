@@ -18,13 +18,11 @@ import 'package:overcooked/newFlow/reposetries/walletRepo.dart';
 import 'package:overcooked/newFlow/routes/route.dart';
 import 'package:overcooked/newFlow/splashScreens/splash_screen1.dart';
 import 'package:overcooked/newFlow/viewModel/chatViewModel.dart';
-import 'package:overcooked/newFlow/viewModel/homeViewModel.dart';
+import 'package:overcooked/newFlow/viewModel/homeViewModel.dart'; 
 import 'package:overcooked/newFlow/viewModel/razorPayviewModel.dart';
 import 'package:overcooked/newFlow/viewModel/sessionViewModel.dart';
 import 'package:overcooked/newFlow/viewModel/utilViewModel.dart';
 import 'package:overcooked/newFlow/viewModel/walletViewModel.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
-import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'newFlow/reposetries/utilsRepo.dart';
 import 'newFlow/services/app_url.dart';
 import 'newFlow/services/http_service.dart';
@@ -34,33 +32,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'newFlow/viewModel/questionsProvider.dart';
 
 SharedPreferences? preferences;
-final navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-    ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
-    ZegoUIKit().initLog().then((value) {
-      ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(
-        [ZegoUIKitSignalingPlugin()],
-      );
-      runApp(ProviderScope(
-          child: OverCooked(
-        navigatorKey: navigatorKey,
-      )));
-    });
+
+    runApp(ProviderScope(child: OverCooked()));
   } catch (e) {
     print("Error initializing Firebase: $e");
   }
 }
 
 class OverCooked extends StatefulWidget {
-  final GlobalKey<NavigatorState> navigatorKey;
-
   const OverCooked({
-    required this.navigatorKey,
     Key? key,
   }) : super(key: key);
 
@@ -99,7 +85,6 @@ class _OverCookedState extends State<OverCooked> {
         provider.ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: GetMaterialApp(
-        navigatorKey: widget.navigatorKey,
         title: 'OverCooked.',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

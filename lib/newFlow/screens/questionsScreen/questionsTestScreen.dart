@@ -255,6 +255,7 @@ class _QuestionsTestScreenState extends State<QuestionsTestScreen> {
                                 value2.fetchAvailableSlotsAPi(item.sId, "$day");
 
                                 SelectSlotBottomSheet(
+                                  waletBalance:balanceValue.toString() ,
                                     feesValue.toString(),
                                     userId: userId.toString(),
                                     item.sId,

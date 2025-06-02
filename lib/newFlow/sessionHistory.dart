@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:intl/intl.dart';
 import 'package:overcooked/Utils/colors.dart';
 import 'package:overcooked/Utils/responsive.dart';
 import 'package:overcooked/Utils/utilsFunction.dart';
@@ -144,7 +145,11 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
                                         ),
                                         const SizedBox(width: 5),
                                         Text(
-                                          item[index].createdAt!.time,
+                                          DateFormat('hh:mm a').format(
+                                            item[index].createdAt!.toUtc().add(
+                                                Duration(
+                                                    hours: 5, minutes: 30)),
+                                          ),
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 14,
@@ -166,14 +171,18 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
                                       ),
                                     ),
                                     Text(
-                                   item[index].sessionId == null ? '':   "${item[index].sessionId!.timeDuration.toString()} Min",
+                                      item[index].sessionId == null
+                                          ? ''
+                                          : "${item[index].sessionId!.timeDuration.toString()} Min",
                                       style: TextStyle(
                                         color: Colors.grey,
                                         fontSize: 12,
                                       ),
                                     ),
                                     Text(
-                                       item[index].sessionId == null ? '':  "₹ ${item[index].sessionId!.fees.toString()}",
+                                      item[index].sessionId == null
+                                          ? ''
+                                          : "₹ ${item[index].sessionId!.fees.toString()}",
                                       style: TextStyle(
                                         color: primaryColor,
                                         fontSize: 12,
