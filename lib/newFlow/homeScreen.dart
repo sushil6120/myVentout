@@ -12,7 +12,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overcooked/Utils/assetConstants.dart';
 import 'package:overcooked/Utils/colors.dart';
 import 'package:overcooked/Utils/responsive.dart';
-import 'package:overcooked/newFlow/googleMeet/googleMeetScreen.dart';
 import 'package:overcooked/newFlow/model/allTherapistModel.dart';
 import 'package:overcooked/newFlow/routes/routeName.dart';
 import 'package:overcooked/newFlow/services/sharedPrefs.dart';
@@ -26,14 +25,12 @@ import 'package:overcooked/newFlow/widgets/agentCardWidget.dart';
 import 'package:overcooked/newFlow/widgets/bannerWidget.dart';
 import 'package:overcooked/newFlow/widgets/creditDialog.dart';
 import 'package:overcooked/newFlow/widgets/emergencyNumberWidget.dart';
-import 'package:overcooked/newFlow/widgets/therapistChatDialog.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:overcooked/pushNotifications.dart';
 
 import 'shimmer/walletHistoryShimmer.dart';
-import 'therapistChatscreens/widgets/chatHomeCardWidget.dart';
 import 'viewModel/homeViewModel.dart';
 import 'viewModel/utilsClass.dart';
 
@@ -516,64 +513,64 @@ class _HomePageState extends State<HomePage> {
                             child: Row(
                               children: [
                                 // Filter Button
-                                GestureDetector(
-                                  onTap: () async {
-                                    var result = await Navigator.pushNamed(
-                                      context,
-                                      RoutesName.sortFilterScreen,
-                                      arguments: {'isHome': true},
-                                    );
-                                    setState(() {
-                                      widget.isFilter = result !=
-                                          null; // Update isFilter based on result
-                                    });
-                                    print(result);
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                        right: 15, left: 4),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xff202020),
-                                      border: Border.all(
-                                        color: widget.isFilter == true
-                                            ? primaryColor
-                                            : Colors.transparent,
-                                        width: 0.5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/img/filter.png',
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              .038,
-                                        ),
-                                        const Text(
-                                          ' Filters',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                // GestureDetector(
+                                //   onTap: () async {
+                                //     var result = await Navigator.pushNamed(
+                                //       context,
+                                //       RoutesName.sortFilterScreen,
+                                //       arguments: {'isHome': true},
+                                //     );
+                                //     setState(() {
+                                //       widget.isFilter = result !=
+                                //           null; // Update isFilter based on result
+                                //     });
+                                //     print(result);
+                                //   },
+                                //   child: Container(
+                                //     margin: const EdgeInsets.only(
+                                //         right: 15, left: 4),
+                                //     padding: const EdgeInsets.symmetric(
+                                //         horizontal: 16, vertical: 6),
+                                //     decoration: BoxDecoration(
+                                //       color: const Color(0xff202020),
+                                //       border: Border.all(
+                                //         color: widget.isFilter == true
+                                //             ? primaryColor
+                                //             : Colors.transparent,
+                                //         width: 0.5,
+                                //       ),
+                                //       borderRadius: BorderRadius.circular(25),
+                                //     ),
+                                //     child: Row(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.center,
+                                //       children: [
+                                //         Image.asset(
+                                //           'assets/img/filter.png',
+                                //           height: MediaQuery.of(context)
+                                //                   .size
+                                //                   .width *
+                                //               .038,
+                                //         ),
+                                //         const Text(
+                                //           ' Filters',
+                                //           style: TextStyle(
+                                //               fontSize: 18,
+                                //               color: Colors.white),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
 
                                 // All Button
+                                SizedBox(width: 14,),
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
                                       selectedCategoryId = null;
                                       selectedindex = null;
-                                      widget.isFilter =
-                                          false; // Remove the filter when "All" is selected
+                                      widget.isFilter = false;
                                       _updateStream();
                                     });
                                   },
@@ -717,19 +714,14 @@ class _HomePageState extends State<HomePage> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  //  Get.to(WebViewPage(),transition: Transition.rightToLeft);
-                                },
-                                child: Text(
-                                  'Popular Experts',
-                                  style: TextStyle(
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              .045,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
-                                ),
+                              Text(
+                                'Popular Experts',
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            .045,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
                               ),
                             ],
                           ),

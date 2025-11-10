@@ -23,17 +23,32 @@ class HomeRepo {
   Future<List<AllTherapistModel>> fetchTherapistApi(String sortByFees, category,
       language, sortByRating, experience, token, page) async {
     try {
+      final queryParams = <String, String>{
+        if (sortByFees != null && sortByFees.isNotEmpty)
+          'sortByFees': sortByFees,
+        if (sortByRating != null && sortByRating.isNotEmpty)
+          'sortByRating': sortByRating,
+        if (experience != null && experience.isNotEmpty)
+          'experience': experience,
+        if (language != null && language.isNotEmpty) 'language': language,
+        if (category != null && category.isNotEmpty) 'category': category,
+        'gender': '', 
+        'page': page.toString(),
+        'limit': '5',
+      };
+
+      final uri = Uri.parse('${AppUrl.baseUrl}${AppUrl.allTherapistUrl}')
+          .replace(queryParameters: queryParams);
       final response = await http.get(
-        Uri.parse(
-            '${AppUrl.baseUrl}${AppUrl.allTherapistUrl}?sortByFees=$sortByFees&sortByRating=$sortByRating&experience=$experience&language=$language&category=$category&gender=&page=$page&limit=5'),
+        uri,
         headers: {
           "Content-type": "application/json",
           "Authorization": "Bearer $token"
         },
       );
-      print('Response body: ${response.body}'); // Debug line
+      print('Response body: ${response.body}');
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('Response body: ${response.body}'); // Debug line
+        print('Response body: ${response.body}');
         var data = jsonDecode(response.body);
         if (data is List) {
           List<AllTherapistModel> therapist = data.map((item) {

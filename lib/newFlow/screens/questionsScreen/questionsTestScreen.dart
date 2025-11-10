@@ -147,7 +147,7 @@ class _QuestionsTestScreenState extends State<QuestionsTestScreen> {
                           value.userProfileModel!.totalValue != 0 &&
                           value.userProfileModel!.totalValue > 7
                       ? TestResultButton(
-                          testName: "Depression Screening Result",
+                          testName: "Relationship Stress Test Result",
                           resultStatus: getDepressionLevel(
                               value.userProfileModel!.totalValue),
                           onTap: () {

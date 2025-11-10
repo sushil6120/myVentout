@@ -137,6 +137,9 @@ class SessionRepo {
       "Content-type": "application/json",
     });
     final List<dynamic> dataJson = json.decode(response.body);
+    if(kDebugMode){
+      print("Session History : ${response.body}");
+    }
     return dataJson.map((json) => SessionHistoryModel.fromJson(json)).toList();
   }
 

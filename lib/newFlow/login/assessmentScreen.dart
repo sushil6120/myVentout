@@ -37,7 +37,7 @@ class AssessmentScreen extends StatelessWidget {
                   ),
                   children: [
                     TextSpan(
-                      text: "Depression ",
+                      text: "Relationship Stress Test ",
                       style: TextStyle(
                         color: primaryColor,
                         fontSize: 30,
@@ -45,7 +45,7 @@ class AssessmentScreen extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                        text: "Screening Test (HAM-D Based)",
+                        text: "(HAM-D Based)",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,

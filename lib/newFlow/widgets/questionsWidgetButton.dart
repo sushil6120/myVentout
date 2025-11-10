@@ -123,7 +123,7 @@ class QuestionsButtonWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 2),
                     child: Text(
-                      "Am I depressed or just overthinking?",
+                      "Relationship Stress Test",
                       style: GoogleFonts.inter(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -143,7 +143,7 @@ class QuestionsButtonWidget extends StatelessWidget {
                           text: "Take a 10-question (HAM-D Based) ",
                         ),
                         TextSpan(
-                          text: " depression test",
+                          text: " Relationship Stress Test",
                           style: TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.bold

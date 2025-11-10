@@ -31,13 +31,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void initState() {
-    if (widget.arguments!['gender'] == "Male") {
-      title = "Mr. Self Aware";
-    } else if (widget.arguments!['gender'] == "Female") {
-      title = "Sweetheart";
-    } else {
-      title = "Cutie";
-    }
+    // if (widget.arguments!['gender'] == "Male") {
+    //   title = "Mr. Self Aware";
+    // } else if (widget.arguments!['gender'] == "Female") {
+    //   title = "Sweetheart";
+    // } else {
+    //   title = "Cutie";
+    // }
+    title = "Sweetheart";
+
     // TODO: implement initState
     super.initState();
   }

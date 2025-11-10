@@ -1,5 +1,5 @@
 class AppUrl {
-  static var baseUrl = "https://overcooked.space";
+  static var baseUrl = "https://www.overcooked.space";
   // static var baseUrl = "https://api.techazora.com";
   static var sendOtpApi = "/api/user/auth/login";
   static var otpVerifyUrl = "/api/user/auth/verify";

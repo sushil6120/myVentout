@@ -62,7 +62,7 @@ class _TherapistPreferencesScreenState
                     child: Icon(Icons.arrow_back_ios_new_rounded))
                 : SizedBox.shrink(),
             title: const Text(
-              "Depression Screening Test (HAM-D Based)",
+              "Relationship Stress Test (HAM-D Based)",
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
             elevation: .5,

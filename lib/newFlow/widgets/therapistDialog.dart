@@ -128,7 +128,7 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                               ),
                               TextSpan(
                                 text:
-                                    " we strongly recommend you to try therapy.",
+                                    " we strongly recommend you to try Relationship Wellness Session.",
                                 style: TextStyle(
                                     color: primaryColor,
                                     fontSize: 14,
@@ -136,7 +136,7 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                               ),
                               TextSpan(
                                 text:
-                                    " We've shared your Overcooked Depression Screening results with our psychologists:",
+                                    " We've shared your Overcooked Relationship Stress Test results with our psychologists:",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -153,7 +153,7 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                         ? Padding(
                             padding: const EdgeInsets.only(bottom: 14),
                             child: TestResultButton(
-                              testName: "Depression Screening Result",
+                              testName: "Relationship Stress Test Result",
                               resultStatus: getDepressionLevel(
                                   value.userProfileModel?.totalValue ?? 0),
                               onTap: () {

@@ -57,7 +57,7 @@ class AuthViewModel with ChangeNotifier {
       if (newData.isRegistered == false) {
         sharedPreferencesViewModel.saveSignUpToken(newData.token);
         sharedPreferencesViewModel.saveUserId(newData.userId);
-        sharedPreferencesViewModel.saveFirstTimeUserValu(true);
+        sharedPreferencesViewModel.saveFirstTimeUserValu(newData.status);
         sharedPreferencesViewModel
             .saveUserName(newData.name == null ? 'Name' : newData.name);
         sharedPreferencesViewModel.saveFreeStatus(newData.freeStatus);
